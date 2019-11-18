@@ -1,0 +1,14 @@
+<article id="section_156950248119285" class="clipboard-section" data-clipname="New Title Section">
+<div class="section topsection defaulttopsection tt_esection">
+<div class="sectiontopinner">
+<ul class="area headerarea">
+<li id="menutrigger" class="column"></li>
+<li class="column pagetitle">
+<div class="row">
+<div class="text"><h1>Clipboard Items</h1><div class="crumb"><p><a href="Layout.html">Layout</a><span class="crumbjoin"></span>Clipboard Items</p></div></div>
+</div>
+</li>
+<li id="menutrigger" class="column"></li>
+</ul>
+</div>
+</div></article>

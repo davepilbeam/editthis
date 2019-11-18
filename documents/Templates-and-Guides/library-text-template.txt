@@ -1,0 +1,131 @@
+url:CARIBSAVE-Bahamas-Workshop-01-Presentation.pdf
+image:CARIBSAVE-Bahamas-Workshop-01-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,Bahamas
+title:CARIBSAVE Bahamas Workshop 01 Presentation
+text:
+published:19/05/2009
+author:
+
+url:CARIBSAVE-Bahamas-Workshop-02-Presentation.pdf
+image:CARIBSAVE-Bahamas-Workshop-02-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,Bahamas
+title:CARIBSAVE Bahamas Workshop 02 Presentation
+text:
+published:19/05/2009
+author:
+
+url:CARIBSAVE-Bahamas-Workshop-03-Climate-Modelling-in-the-Caribbean--Eleuthera-Bahamas-Presentation.pdf
+image:CARIBSAVE-Bahamas-Workshop-03-Climate-Modelling-in-the-Caribbean--Eleuthera-Bahamas-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,Bahamas,Eleuthera
+title:CARIBSAVE Bahamas Workshop 03 Climate Modelling in the Caribbean-Eleuthera Bahamas Presentation
+text:
+published:19/05/2009
+author:
+
+url:CARIBSAVE-Jamaica-Workshop-01-Presentation.pdf
+image:CARIBSAVE-Jamaica-Workshop-01-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,Jamaica
+title:CARIBSAVE Jamaica Workshop 01 Presentation
+text:
+published:04/10/2014
+author:
+
+url:CARIBSAVE-Jamaica-Workshop-02-Presentation.pdf
+image:CARIBSAVE-Jamaica-Workshop-02-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,Jamaica
+title:CARIBSAVE Jamaica Workshop-02 Presentation
+text:
+published:12/05/2009
+author:
+
+url:CARIBSAVE-Jamaica-Workshop-03-Climate-Model-Projections-for-Caribbean-Tourist-Destinations-Presentation.pdf
+image:CARIBSAVE-Jamaica-Workshop-03-Climate-Model-Projections-for-Caribbean-Tourist-Destinations-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,Jamaica
+title:CARIBSAVE Jamaica Workshop 03 Climate Model Projections for Caribbean Tourist Destinations Presentation
+text:
+published:12/05/2009
+author:
+
+url:CARIBSAVE-St-Lucia-Workshop-01-Introduction-Presentation.pdf
+image:CARIBSAVE-St-Lucia-Workshop-01-Introduction-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,St Lucia
+title:CARIBSAVE St Lucia Workshop 01 Introduction Presentation
+text:
+published:12/05/2009
+author:
+
+url:CARIBSAVE-St-Lucia-Workshop-02-Dr-Charlery-CCCCC-Presentation.pdf
+image:CARIBSAVE-St-Lucia-Workshop-02-Dr-Charlery-CCCCC-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,St Lucia
+title:CARIBSAVE St Lucia Workshop 02 Dr Charlery CCCCC Presentation
+text:
+published:02/11/2009
+author:
+
+url:CARIBSAVE-St-Lucia-Workshop-03-Global-Context-Presentation.pdf
+image:CARIBSAVE-St-Lucia-Workshop-03-Global-Context-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,St Lucia
+title:CARIBSAVE St Lucia Workshop 03 Global Context Presentation
+text:
+published:02/11/2009
+author:
+
+url:CARIBSAVE-St-Lucia-Workshop-04-Sector-Links-Presentation.pdf
+image:CARIBSAVE-St-Lucia-Workshop-04-Sector-Links-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,St Lucia
+title:CARIBSAVE St Lucia Workshop 04 Sector Links Presentation
+text:
+published:02/11/2009
+author:
+
+url:CARIBSAVE-St-Lucia-Workshop-05-Climate-Model-Projections-Presentation.pdf
+image:CARIBSAVE-St-Lucia-Workshop-05-Climate-Model-Projections-Presentation.jpg
+focus:Biodiversity, Eco-systems and Marine Conservation
+focus:Climate Change Science, Policy and Practice
+region:Caribbean
+project:
+tags:CARIBSAVE,St Lucia
+title:CARIBSAVE St Lucia Workshop 05 Climate Model Projections Presentation
+text:
+published:02/11/2009
+author:

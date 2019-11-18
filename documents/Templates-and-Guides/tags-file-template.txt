@@ -1,0 +1,55 @@
+focus:Climate Change Science, Policy and Practice
+focus:Low Carbon Development and Renewable Energy
+focus:Society and Sustainable Livelihoods
+focus:Biodiversity, Eco-systems and Marine Conservation
+
+region:Africa
+region:Asia-Pacific
+region:Caribbean
+region:China
+region:UK-Europe
+
+type:Brochure
+type:Newsletter
+type:Presentation
+type:Profile
+type:Report
+type:Snapshot
+type:Summary
+
+Africa
+Angola
+Anguilla
+Antigua
+Bahamas
+Bangladesh
+Barbados
+Belize
+Caicos
+China
+Caribbean
+Dominica
+Eleuthera
+Ethiopia
+Grenada
+Indonesia
+Jamaica
+Kenya
+Montego Bay
+Negril
+Nepal
+Nevis
+Rwanda
+St Lucia
+St Kitts
+St Vincent
+South Africa
+Suriname
+Turks
+
+agriculture
+coastal
+health
+livestock
+research
+water

@@ -1,0 +1,49 @@
+<article id="grid_15694105556356" class="clipboard-grid" data-clipname="New Team Grid Element">
+<div class="wrappergrid teamgrid">
+<div class="onefourgrid">
+<ul class="area editablearea contentarea">
+<li class="column">
+<div class="row editblock">
+<div class="editimage">
+<div class="text" style="background-image: url(documents/Images/team/Ricky-Hirschfield_team.jpg);">
+<p></p>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="threefourgrid">
+<ul class="area editablearea contentarea">
+<li class="column">
+<div class="row editblock">
+<div class="edittext">
+<div class="text">
+<p class="format4">Ricky Hirshfield</p>
+<p class="format5">IT Director</p>
+</div>
+</div>
+<div class="edittext">
+<div class="text"><p>Originally from Chatham in Kent, Online Derby Board Director Ricky Hirshfield's childhood dream was to become an architect.</p>
+</div>
+</div>
+</div>
+</li>
+</ul>
+<ul class="area editablearea contentarea">
+<li class="column tt_accordion">
+<input id="toggle_15694105556356" name="accordion0" type="radio"><label for="toggle_15694105556356"><p class="format2">LEARN MORE ABOUT RICKY</p></label>
+<div class="wrappergrid">
+<div class="row editblock">
+<div class="edittext">
+<div class="text">
+<p class="format5">Why should people buy paper from Online Derby?</p>
+<p>They should buy paper from people they enjoy dealing with, who don't let them down, who actually care and do their best to keep their promises.</p>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div></article>

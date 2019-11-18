@@ -1,0 +1,12 @@
+User-Agent: *
+Disallow: /admin/
+Disallow: /cgi-bin/
+Disallow: /documents/Dropbox/
+Disallow: /documents/Images/
+Disallow: /documents/Sandbox/
+Disallow: /documents/Templates-and-Guides/
+Disallow: /hticons/
+Disallow: /FONTS/
+Disallow: /LIB/
+Disallow: /UPLOADS/
+Disallow: /VERSIONS/

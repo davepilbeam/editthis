@@ -1,0 +1,61 @@
+/*#editthis version:8.2.2 EDGE inline*/
+/*LIBRARY*/
+.librarydata { }
+.librarydata .tt_accordion > label { padding:10px 15px; }
+.librarydata .tt_accordion.librarylevel1 > label > p { font-size:100%; color:#fff; }
+.librarydata .librarygrouptitle { color:#9b2580; font-size:130%; text-transform:uppercase; padding-bottom:10px; overflow:hidden; }
+.librarydata .librarygrouptext { width:80%; margin:5px 10px 0; clear:right; float:left; }
+.librarydata .librarygrouptext:nth-child(2) { color:#9b2580; font-size: 120%; }
+.librarydata .librarygroup ~ .librarygrouptext { display:none; }
+.librarydata .librarygroup { width:75%; background-color:transparent; margin:0; padding:15px; overflow:hidden; clear:none; float:left; }
+.librarydata .libraryitem { position:relative; display:table; margin-bottom:20px; padding:0; overflow:hidden; float:left; width:50%; }
+.librarydata .tt_accordion + .libraryitem { margin-top: 20px; }
+.librarydata .libraryblock { position:relative; display:table-cell; min-height:150px; width: 100%; margin:0; padding-right:20px; clear:none; vertical-align:middle; }
+.librarydata .libraryblock > .librarygrouptext { margin:0 0 10px; clear:both; overflow:hidden; }
+.librarydata .libraryblock > .librarylink { display:inline; bottom:0; left:0; right:0; min-width:160px; min-height:34px; color:#676767; background:transparent; margin:0; padding:4px 0; overflow:hidden; clear:both; float:none; }
+.librarydata .libraryblock > .librarylink label.css-check::before { background: #fff none repeat scroll 0 0; border: 1px solid #ccc; content: ""; display: block; float: left; height: 26px; margin: -3px 10px 40px 0; width: 26px; }
+.librarydata .libraryblock > .librarylink input.css-check:checked + label.css-check::before { background: #fff url("documents/Images/elements/check-tick.png") no-repeat scroll center center; border-color: #9b2580; }
+.librarydata .libraryblock > .librarylink label.css-check::after { display:none; } 
+.librarydata .libraryblock > .librarylink a { display:block; width:100%; color:#676767; background:#fff; padding:10px;  }
+.librarydata .libraryblock > .librarylink a:hover { background-color:#9b2580; }
+.librarydata .librarygroup > .libraryitem > .libraryblock { min-height:auto; }
+.librarydata .librarygroup > .libraryitem > .libraryblock > .librarylink { position:relative; }
+.librarydata .editimage {	width: 100px; display:table-cell; background-color:transparent; margin:0; overflow:hidden; clear:none;	float:left; }
+.librarydata .editimage a { display:block; width:75px; height:101px; background-repeat:no-repeat; background-size:75px 101px; margin:0; clear:none; float:none; cursor:pointer; background-size:contain;  }
+.librarygroup + .editimage { display:none; }
+.librarydata .librarylevel1 > div:nth-child(3) .editimage a {  } /*height:60px; width:128px; margin-bottom: 40px; */
+.librarydata .librarylevel1 > div:nth-child(6) .editimage a { }
+.librarydata .librarylevel1 > div:nth-child(9) .editimage a { background-size: auto 100%; }/*height:180px; width:60px;*/
+.librarydata .librarylevel1 > .editblock > .librarygroup { width:100%; border:none; margin:0; padding:0; float:none; padding: 20px; }
+.librarydata .librarylevel1 > .editblock > .librarygroup > .librarygrouptitle { display:none; }
+/*.librarydata .librarylevel1 > .editblock > .librarygroup > .libraryitem > .libraryblock { position:absolute; left:120px; bottom:5px;	 clear:none; float:none; }*/
+.librarydata .librarylevel1 > .editblock > .librarygroup > .libraryitem > .libraryblock { width:75%; border-bottom:1px solid #ccc; margin-top:80px; padding:10px; clear:none; float:left; }
+.librarydata .librarylevel2 > label { color:#fff; background-color:#999; }
+.librarydata .librarylevel2 > .libraryitem > .libraryblock {  }
+.librarydata .librarylevel2 > input.checked + label + .editblock { height:auto; opacity:1; } 
+.librarydata .librarylevel2 > .editblock:nth-child(2n) .tt_accordion.librarylevel3 { background-color:#ececed; } 
+.librarydata .librarylevel3 { border-top:none; background-color:#e6e6e8; padding:20px; } 
+.libraryformarea label.css-check { font-size:100%; }
+.libraryitem[data-code=A4]:before { content:attr(data-code); position:absolute; top:0; left:0; width:30px; height:30px; color:#fff; background:#C00; font-size:150%; text-align:center; line-height:160%; }
+.libraryitem[data-code=US]:before { content:attr(data-code); position:absolute; top:0; left:0; width:30px; height:30px; color:#fff; background:#0086FF; font-size:150%; text-align:center; line-height:160%; }
+
+/*--------all at 980*/
+@media screen and (max-width:980px) { 
+}
+/*--------all at 768*/
+@media screen and (max-width:768px) {
+.libraryformarea .fli { margin: 8px 0 8px 0; }
+.libraryformarea .fli label { min-width:20%; }
+}
+/*all at 640*/
+@media screen and (max-width:640px) {
+.librarydata .tt_accordion > label { padding:10px; }
+.librarydata .libraryitem { width:100%; }
+}
+/*--------all at 480*/
+@media screen and (max-width:480px) {
+.tt_accordion > label { width:auto; }
+.librarydata .librarygroup { width:90%; }
+.librarydata .libraryblock { min-height:auto; padding-bottom:10px; padding-right:10px; }
+.librarydata .libraryblock > .librarylink { position:relative; }
+}

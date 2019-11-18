@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="//domain.com/" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<style>
+@font-face { font-family:'font_light';src:url('FONTS/opensans/opensans-light-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; } 
+@font-face { font-family:'font_regular';src:url('FONTS/opensans/opensans-regular-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; } 
+@font-face { font-family:'font_bold';src:url('FONTS/opensans/opensans-semibold-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; } 
+@font-face { font-family:'font_italic';src:url('FONTS/opensans/opensans-italic-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; } 
+@font-face { font-family:'head_light';src:url('FONTS/opensans/opensans-light-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; } 
+@font-face { font-family:'head_regular';src:url('FONTS/opensans/opensans-regular-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; } 
+@font-face { font-family:'head_bold';src:url('FONTS/opensans/opensans-semibold-webfont.woff') format('woff'), local("Arial"), local("Verdana"), local("sans-serif"); font-weight:normal; font-style:normal; }
+.index .facebookbutton,.index .twitterbutton,.index .linkedinbutton { display:none; }
+#tt_topdiv { position:fixed; top:-1px; left:0; right:0; bottom:0; border-bottom:1px solid #fff; transition: all 0.5s ease-in-out 0s; overflow:visible; z-index:200000; }
+#tt_topdiv,#tt_paddiv { width:100%; min-width:280px; height:181px; background-color:#fff; margin:0 auto; padding-top:36px; clear:both; }
+#tt_topdiv::before { content:""; display:block; position:absolute; width:100%; height:50px; background:-webkit-linear-gradient(0deg,rgba(0,0,0,0),rgba(0,0,0,0.6)); background:linear-gradient(0deg,rgba(0,0,0,0),rgba(0,0,0,0.5)); margin-top:145px; z-index:9999; pointer-events:none; }
+.tt_topdivinner,.sectiontopinner,.sectioninner,.sectioninnerful,.sectionfooterinner { width:100%; min-width:280px; max-width:1200px; height:100%; background:transparent; margin:0 auto; padding:0; overflow:hidden; }  
+.tt_topdivinner,.sectioninner,.sectioninnerful,.sectionfooterinner { position:relative; padding-left:5vw; padding-right:5vw; }
+.m-logo-unfixed { display:block; position:absolute; top:0; left:0; width:27vw; min-width:230px; max-width:280px; height:auto; background-color:transparent; margin:0 0 0 3%; padding:32px 0 0; transition:all 0.5s ease-in-out 0s; z-index:300002; }
+a.homelogo { display:block; width:100%; min-width:150px; height:86px; color:#fff; background:transparent url(documents/Images/logos/logo_home.png) no-repeat scroll left center; background-size:86% auto; z-index:999999999; } 
+.topdivinfo { position:absolute; top:25px; right:2vw; width:auto; z-index:10000; }
+.topdivinfoarea { overflow:visible; }
+.topdivinfoarea { width:auto; margin:0;opacity:1; transition:all 0.5s ease-in-out; overflow:visible; float:right; }
+.topdivinfoarea li .text { display:inline-block; height:37px; background-color:#efefef; border-radius:30px; margin:0; padding:6px 130px 10px 20px; float:right;  }
+.topdivinfoarea li .text p.format2 { font-size:180%; line-height:140%; }
+.topdivinfoarea li .text p.format3 { color:#333; margin-bottom:0;  }
+.topdivinfoarea span.tt_display { margin:0 5px; display:inline-block; }
+ul.navarea { position:absolute; bottom:-1px; right:2vw; width:auto; min-width:280px; min-height:35px; background-color:transparent; margin:0; padding-top:14px; border-top: 1px solid #ccc; transition:all 0.5s ease-in-out 0s; overflow:visible; z-index:300003; }
+.menu.navigation { width:100%; min-height:49px; margin:0 auto; } /*.menu HEIGHT*/ 
+.navigation ul li { position:relative; height:49px; background:transparent; border:none; clear:none; float:left;  } /*.menu HEIGHT*/ 
+.navigation > ul > li { width:auto; min-width:160px; margin:0 0 0 2px; background-color:#393634; }
+.navigation ul a { display:block; width:auto; height:auto; min-height:37px; color:#fff; font-size:110%; line-height:120%; text-decoration:none; text-transform:uppercase; text-align:center; margin:0; padding:16px 14px; border:1px solid transparent; cursor:pointer; } 
+.tt_pointer .navigation ul.menu label.subtogglelabel,.tt_touch .navigation ul.menu label.subtogglelabel { display:block; color:#fff; background:transparent; font-size:110%; line-height:120%; text-align:center; border:1px solid transparent; padding:16px 14px; cursor:pointer; }/*parent links LABEL*/ 
+.editimage.icon2 > .text { height:70px; background-size:auto 100%; background-repeat:no-repeat; background-position:center; padding-bottom:0; }
+.contentarea.minheightsarea .text { text-align:center; }
+.contentarea.minheightsarea.mhbuttonarea.threethreegrid .editblock .edittext:last-child { height:60px; }
+.contentarea.minheightsarea.mhbuttonarea.threethreegrid .editblock .edittext:last-child .text p:first-child { padding-top:0; padding-bottom:20px; text-align:center; }
+/*denmaur*/
+.index h1,.paper h1,.media h1,.delipac h1 { height:0; visibility:hidden; }
+.index .crumb,.paper .crumb,.media .crumb,.delipac .crumb { display:none; }
+#tt_contactwrapper { position:absolute; right:130px; width:auto; height:36px; background:transparent; z-index:200000; }
+input.contacter { position:absolute; top:-100px; opacity:0; }
+.table.contacttable { position:absolute; width:280px; left:-300px; height:0; margin-left:0; margin-top:37px; padding:0 10px; overflow:hidden; clear:none; color:#fff; }
+.contactbutton { position:absolute; display:block; width:110px; height:37px; color:#fff; background-color:#a2a09f; font-family:"head_regular"; font-size:100%; line-height:180%; margin:0 20px 0 0; padding:8px; clear:none; }
+.navigation > ul > li > a::before, .navigation > ul > li > label::before { content:"Domain Name "; }
+.navigation > ul.menu > li:nth-child(1) { background-color:#393634; border-color:#393634; }
+.navigation > ul.menu > li:nth-child(2) { background-color:#9ecb84; border-color:#9ecb84 }
+.navigation > ul.menu > li:nth-child(3) { background-color:#23b9d6; border-color:#23b9d6; margin-right:40px; }
+.navigation > ul.menu > li:nth-child(4) { background:#544742 url(LIB/css/revive-bg.png) no-repeat center; background-size:cover; float:right; }
+.navigation > ul.menu > li:nth-child(4) a,.navigation > ul.menu > li:nth-child(5) a { color:transparent; }
+.navigation > ul > li:nth-child(4) > a::after { display:block; content:""; position:absolute; left:0; top:0; width:100%; height:100%; background:transparent none no-repeat scroll center; background-size:85% auto;  }
+.navigation > ul.menu > li:nth-child(4) a:hover { color:transparent; background:#5d872c; }
+.navigation > ul.menu > li:nth-child(5) { background-color:#f18e22; background-image:none; float:right; }
+.navigation > ul > li:nth-child(5) > a::after,.delipac .navigation > ul > li:nth-child(5) > label::after { display:block; content:""; position:absolute; left:0; top:0; width:100%; height:100%; background:transparent none no-repeat scroll center; background-size:70% auto;  }
+.navigation > ul.menu > li:nth-child(5) a:hover { color:transparent; background:#1ba1db none repeat scroll 0 0; }
+.groupslideouter,.paperslideouter,.mediaslideouter,.delipacslideouter { height:75vh; min-height:240px; max-height:650px; max-width:none; margin:0; padding:0; border:none; }
+.slideshowarea { width:100%; height:100%; min-height:70vh; background:transparent; margin:0; cursor:pointer; }
+.slideshowarea .tt_slideshow-inner,.slideshowarea .slideholder { position:absolute; top:0; bottom:0; width:100%; height:100%; background:transparent none no-repeat center; }
+.slideshowarea .tt_slideshow-inner .editblock { position:absolute; min-height:16px; background:transparent; }
+.slideshowarea .editimage > .text { height:100%; padding:0; }
+.slideshowarea .tt_slideshow-el  { height:auto; padding:20px; }
+.slideshowarea .editblock:not(.tt_slideshow-el) { position:absolute; top:0; bottom:0;	left:0; right:0;}
+.slideshowarea .editblock .editimage { width:100%; height:100%; } 
+.groupslidearea .tt_slideshow-el { top:25%; width:100%; height:auto; min-height:auto; font-size:400%; opacity:0; }
+/*domain*/
+#body0 { height:100%; min-height:600px; color:#454545; background-attachment:fixed; background-image:none; background-position:center top; background-repeat:no-repeat; background-color:#fff; font-size:76%; font-family:'font_regular',Arial,Verdana,sans-serif; line-height:120%; margin:0 auto; padding:0; border:0; text-align:center; }
+html { height:100%; overflow-y:scroll; } 
+* { margin:0; padding:0; box-sizing:border-box; } 
+::before,::after { content:""; box-sizing:border-box; } 
+html { height:100%; overflow-y:scroll; } 
+#loader { position:fixed; top:50%; left:50%; height:100px; width:500px; color:#fff; font-size:600%; text-align:center; margin:0 auto 0 -250px; } 
+#timer { display:none; width:32px; height:32px; margin:2px auto; clear:both; float:none; } 
+img { display:inline; border:0; }
+a { color:#23b9d6; background:transparent; text-decoration:none; font-weight:normal; }
+p  { margin:0; padding:0; } 
+ul { list-style-type:none; list-style-image:none; list-style-position:outside; } 
+hr { margin:10px 0; padding:0; width:100%; height:0; border-top:1px #ddd solid; clear:both; overflow:hidden; } 
+strong { font-weight:bold; } 
+form  { width:auto; margin:0; padding:0; } 
+fieldset { margin:0; padding:0; border:0; } 
+object,object.focus,a.focus { outline:none; } 
+.area,.column,.row { position:relative; height:auto; border:0; margin:0; padding:0; list-style:none; list-style-type:none; list-style-image:none; overflow:hidden; } 
+.area { width:auto; clear:both; } 
+.column { width:100%; clear:none; float:left; } 
+.row { width:auto; text-align:left; clear:both; }
+.min_timer { min-height:32px; }
+.tt_editref { display:none; }
+@-webkit-keyframes fademein { to { opacity:1; } }
+@keyframes fademein { to { opacity:1; } } 
+@-webkit-keyframes tt_loader { 0%{ opacity:1; } 100%{ opacity:0; } } 
+@keyframes tt_loader { 0%{ opacity:1; } 100%{ opacity:0; } }
+.tt_loader { position:absolute; top:50%; left:50%; width:32px; height:32px; background:transparent url(LIB/css/T0.png) center no-repeat; margin:-16px 0 0 -16px; opacity:0.8; z-index:1000; } 
+.tt_loader span { position:absolute; display:block; width:16px; height:16px; background:transparent none center no-repeat; margin:0; padding:0; -webkit-animation:tt_loader 1.2s infinite; animation:tt_loader 1.2s infinite; } 
+span.tt_loader1 { background-image:url(LIB/css/T1.png); -webkit-animation-delay:0.2s; animation-delay:0.2s; top:0; right:0; } 
+span.tt_loader2 { background-image:url(LIB/css/T2.png); -webkit-animation-delay:0.4s; animation-delay:0.4s; bottom:0; right:0; } 
+span.tt_loader3 { background-image:url(LIB/css/T3.png); -webkit-animation-delay:0.6s; animation-delay:0.6s; bottom:0; left:0; } 
+span.tt_loader4 { background-image:url(LIB/css/T4.png); -webkit-animation-delay:0.8s; animation-delay:0.8s; top:0; left:0; } 
+.css-move5 {  -webkit-transition:all .5s ease-in-out; transition:all .5s ease-in-out; } 
+.css-move { -webkit-transition:all 1s ease; transition:all 1s ease; }
+.tt_accordion > .editblock,#optbar_analytics { -webkit-transition:all 1s ease-out; transition:all 1s ease-out; }
+.tt_timeon { display:block; padding:0 !important; }
+div.tt_display,ul.tt_display,li.tt_display,span.tt_display,a.tt_display,p.tt_display,.tt_display { display:block; }
+div.tt_undisplay,ul.tt_undisplay,li.tt_undisplay,span.tt_undisplay,a.tt_undisplay,p.tt_undisplay,.tt_undisplay { display:none; }
+.tt_hidden { visibility:hidden; }.tt_unhidden { visibility:visible; }
+.text,.sizer { text-align:left; overflow:hidden; clear:both; }
+.text,.dater { font-size:120%; line-height:140%; } 
+.edittitle > .text { font-size:130%; line-height:120%; margin:20px 0 10px; } 
+h1, h2, h3, h4, h5, h6 { margin:0 0 10px; }
+h1, .edittitle h1,.pagetitle p.format1, .pagetitle span.format { font-size:220%; line-height:120%; font-family:'head_light'; color:#fff; font-weight:normal; padding-bottom:5px; }
+h2 { font-size:170%; line-height:140%; font-family:'head_regular', Arial,Verdana,sans-serif; color:#ccc; font-weight:normal; padding-bottom:10px; } 
+h3 { font-size:155%; line-height:140%; font-family:'head_regular'; font-weight:normal; color:#393634; padding-bottom:10px;  } 
+h4 { font-size:130%; line-height:140%; font-family:'head_regular'; color:#a2a09f; font-weight:normal; padding-bottom:10px; } 	
+h5 { font-size:110%; line-height:110%; font-family:'head_bold'; color:#23b9d6; text-align:left; font-weight:normal; padding-bottom:10px; } 	
+h6 { font-size:100%; line-height:110%; font-family:'head_regular'; color:#23b9d6; text-transform:uppercase; font-weight:normal; padding-bottom:10px; }	
+.editblock .edittext .text > p,.tt_ce-editor > p { padding-top:0px; padding-bottom:8px; } 
+a.format0,p.format0,span.format0 { display:block; font-size:100%; line-height:140%; padding-left:20px; clear:both; float:none; }  /*bullet*/ 	
+a.format0::before, p.format0::before, span.format0::before { display:block; content:""; position:absolute; left:0;  width:8px; height:8px; border-radius:4px; background-color:#ccc; margin-top:4px; }/*bullet*/ 	
+a.format1,p.format1,.editblock .edittext .text > p.format1,span.format1 { font-size:160%; line-height:130%; font-family:'head_light'; color:#000; margin-bottom:10px ; } 		
+a.format2,p.format2,.editblock .edittext .text > p.format2,span.format2 { font-size:140%; line-height:130%; font-family:'head_regular'; color:#23b9d6; margin-bottom:10px ; padding-bottom:0; } 		
+a.format3,p.format3,.editblock .edittext .text > p.format3,span.format3 { font-size:120%; line-height:130%; font-family:'head_regular'; color:#000; margin-bottom:10px ; padding-bottom:0; }		
+a.format4,p.format4,.editblock .edittext .text > p.format4,span.format4 { font-size:115%; line-height:130%; font-family:'head_regular'; color:#23b9d6; margin-bottom:10px ; padding-bottom:0; } 		
+a.format5,p.format5,.editblock .edittext .text > p.format5,span.format5 { font-size:100%; line-height:130%; font-family:'head_regular'; color:#000; margin-bottom:10px; padding-bottom:0; } 		
+a.format6,p.format6,.editblock .edittext .text > p.format6,span.format6 { font-size:90%; line-height:130%; font-family:'head_bold'; color:#23b9d6; margin-bottom:10px; padding-bottom:0;} 		
+a.format7,p.format7,span.format7 { display:block; font-size:100%; line-height:140%; padding-left:40px; clear:both; float:none; }  /*sub-bullet*/ 		
+a.format7::before, p.format7::before, span.format7::before { display:block; content:"\2013"; position:absolute; left:20px; color:#A2A09F; }/*sub-bullet*/ 	
+a.format8,p.format8,span.format8 { font-size:120%; line-height:120%; font-family:'head_light'; padding-left:20px; } /*big-bullet*/ 	
+a.format8::before, p.format8::before, span.format8::before { display:block; content:""; position:absolute; left:0;  width:8px; height:8px; border-radius:4px; background-color:#ccc; margin-top:8px; }/*big-bullet*/ 	
+a.format9,p.format9,.editblock .edittext .text > p.format9,span.format9 { text-transform:uppercase; }
+a.italictext,p.italictext,span.italictext,li.fli.italictext > p { font-style:italic; } 
+a.boldtext,p.boldtext,span.boldtext,li.fli.boldtext > p { font-weight:bold; }
+#menutoggle .m-overlay { display:none; background:transparent; }
+#menutoggle .menucontrol { transition:all .5s ease-in-out; }
+.m-container { position:relative; height:100%; } 
+.m-toggle,#menutoggle { position:absolute; left:-9999px; top:-9999px; }
+.m-container { position:relative; height:100%; }
+.m-pusher-container { position:relative; height:100%; background:#efefef; }
+.m-drawer { visibility:hidden; } 
+#menutoggle .m-overlay { display:none; background:transparent; }
+.subtoggle { position:absolute; top:-20px; left:-20px; }
+.m-toggle-label { display:block; position:fixed; top:48px; right:24px; width:70px; height:70px; cursor:pointer; z-index:300002; }
+.m-toggle-label .m-toggle-icon,.m-toggle-label .m-toggle-icon:before,.m-toggle-label .m-toggle-icon:after { display:block; content:''; position:absolute; top:28px; left:auto; right:0; width:34px; height:4px; background:#ccc; transition:all .5s ease-in-out; cursor:pointer; }
+.m-toggle-label .m-toggle-icon:before { top:0; -webkit-transform:translate3d(0,-12px,0); transform:translate3d(0,-12px,0); }
+.m-toggle-label .m-toggle-icon:after { top:0; -webkit-transform:translate3d(0,12px,0); transform:translate3d(0,12px,0); } 
+#tt_alldiv { position:relative; width:100%; background:#fff; transition-property:transform; transition-duration:.5s; transition-timing-function:ease-out; }
+#tt_mobdiv { position:relative; width:100%; margin:0 auto; overflow:hidden; }
+#tt_scrolldiv { position:relative; width:auto; margin:0 auto; padding:0; overflow:auto; }
+#tt_topbar .tt_topbarinner { position:fixed; top:0; width:100%; height:36px; background-color:#393634; overflow:hidden; z-index:999999999;  }
+#tt_topbar .tt_topbarinner .text > a { display:block; width:100%; height:100%; font-size:80%; line-height:100%; }
+#tt_topbar .tt_topbarinner > div { position:relative; width:100%; height:36px; margin:0 auto; padding:1px 2vw 0 2vw; }
+#tt_topbar .search { position:absolute; bottom:50px; right:36px; width:280px; height:36px; background:transparent; overflow:hidden; z-index:1; }
+.searchwrapperarea { position:relative; width:auto;	height:36px; clear:none; float:right; }
+.section { position:relative; width:100%; min-height:22vh; background:#fff; }
+.topsection { max-width:none; max-height:none; background:#ccc none no-repeat center; background-size:cover; margin:0; padding:0; overflow:hidden; }
+.topsection.homesection { height:70vh; background-image:url(documents/Images/headers/header-1-bw.jpg); }
+.topsection.videosection { height:70vh; }
+.tt_topdivinner { overflow:visible; }
+.wrappergrid,.twotwogrid,.threethreegrid,.fourfourgrid,.fivefivegrid { width:100%; overflow:hidden; }
+.fullwidthgrid { width:98%; margin:0 1% 20px; overflow:hidden; }
+ul.navarea li.column, ul.navarea .row, ul.navarea div { overflow:visible; }
+ul.navarea .column { width:auto; clear:both; float:right; }
+ul.menu { list-style:none; }
+ul.menu label { display:block; text-transform:uppercase; }
+.menu { display:block; position:relative; width:auto; padding:0; float:none; overflow:visible; } 
+.resizing .menu.navigation { overflow:hidden; } 
+.navigation ul.menu input,.navigation ul.menu label { display:none; }
+.navigation ul { margin:0; padding:0; border:none; } 
+.navigation > ul > li:first-child { margin-left:0; }
+.navigation > ul > li > a { border:1px solid transparent; }/*parent links A*/  
+.tt_pointer .navigation ul.menu .subtogglelabel+a,.tt_touch .navigation ul.menu .subtogglelabel+a { display:none; }
+.bloggerbutton, .facebookbutton, .twitterbutton, .linkedinbutton, .youtubebutton, .instagrambutton, .cookiebutton, .sitebutton, .googlebutton, .searchbutton, .tooltipbutton { -webkit-animation:fademein 1s ease-in forwards; animation:fademein 1s ease-in forwards; display:block; width:24px; height:24px; color:transparent; background:#fff; margin:5px 4px 4px; opacity:0; border-radius:12px; cursor:pointer; clear:none; float:right; }
+.bloggerbutton, .facebookbutton, .twitterbutton, .linkedinbutton, .youtubebutton, .instagrambutton, .cookiebutton, .sitebutton, .googlebutton { background:#a2a09f url(LIB/css/logo_socialmedia.png) no-repeat scroll center center; background-size:234px 20px; margin-top:5px; }
+.cookiebutton { background-position:11% center; }
+.facebookbutton { background-position:25% center; }
+.instagrambutton { background-position:38% center; }
+.linkedinbutton { background-position:50% center; }
+.youtubebutton { background-position:62% center; }
+.bloggerbutton { background-position:75% center; }
+.twitterbutton { background-position:87% center; }
+.googlebutton { background-position:99% center; }
+.emailbutton { background-image:url(LIB/css/logo_email_media.png); }
+.searchbutton { background:transparent url(LIB/css/search.png) center no-repeat; background-color:transparent; background-size:24px auto; }
+a.searchbutton { display:none; }
+input.searcher { position:absolute; top:-100px; opacity:0; }
+.homeslideouter { height:75vh; }
+div[class$=grid]:not(.ehilitegrid):not(.wrappergrid):not(.fullwidthgrid) { position:relative; margin:0 1% 20px; clear:none; float:left; }
+.onetwogrid  { width:48%; }
+.onethreegrid { width:31.33%; }
+.twothreegrid { width:64.66%; }
+.onefourgrid { width:23%; }
+.twofourgrid { width:48%; }
+.threefourgrid { width:73%; }
+.onefivegrid { width:18%; }
+.twofivegrid { width:38%; }
+.threefivegrid { width:58%; }
+.fourfivegrid { width:78%; }
+ul.twotwogrid > li { width:50%; padding:0 1%; margin-bottom:2%;  }
+ul.threethreegrid > li { width:33.33%; padding:0 1%; margin-bottom:2%;  }
+ul.fourfourgrid > li { width:25%; padding:0 1%; margin-bottom:2%; }
+ul.fivefivegrid > li { width:20%; padding:0 1%; margin-bottom:2%; }
+.editimage > .text { height:0; padding-bottom:100%; background-size:cover; background-repeat:no-repeat; background-position:center; }
+.editimage > .text > p, .editimage > .text > p > a.edittextlink { position:absolute; display:block; width:100%; height:0; background:transparent; margin:0; padding:0 0 100%; }
+.editimage.letterbox > .text { height:0; padding-bottom:33%; background-size:100% auto; background-repeat:no-repeat; background-position:center; }
+.editimage.landscape > .text { height:0; padding-bottom:48.5%; background-size:100% auto; background-repeat:no-repeat; background-position:center; }
+.editimage.landscape > .text > p, .editimage.landscape > .text > p > a.edittextlink { position:absolute; display:block; width:100%; height:0;	background:transparent; margin:0; padding:0 0 50%; }
+.editimage.portrait > .text { height:0; padding-bottom:152%; background-size:auto 100%; background-repeat:no-repeat; background-position:center; }
+.editimage.portrait > .text > p, .editimage.portrait > .text > p > a.edittextlink { position:absolute; display:block; width:100%; height:0;	background:transparent; margin:0; padding:0 0 150%; }
+.editimage > .text > a { position:absolute; display:block; width:100%; height:100%; color:transparent; }
+.editimage.icon > .text { height:100px; padding-bottom:0; background-size:contain; background-repeat:no-repeat; background-position:center; }
+.editimage.icon > .text > p, .editimage.icon > .text > p > a.edittextlink { position:absolute; display:block; width:100%; height:140px;	background:transparent; margin:0; padding:0 0 0; }
+a.edittextlink { display:inline-block; width:auto; height:auto; color:#fff; background-color:#393634; font-size:100%; line-height:130%; text-align:center; margin-top:5px; margin-right:8px; padding:8px 16px; }
+.videopanelarea, .videopanelarea > li, .videopanelarea > li.column > div.row { height:100%; }
+.videopanel .responsive-video video { width:100%; }
+.sectioninner,.sectionfooterinner { padding-top:40px; }
+.wrappersection .sectioninner { padding-top:20px; }
+.footersection { background:#393634; padding-bottom:40px; }
+.sectionfooterinner .editimage { max-width:140px; }
+.sectionfooterinner .editimage > .text { height:0; padding-bottom:50%; background-size:contain; background-repeat:no-repeat; background-position:left; margin-bottom:5px; }
+.footerbasearea { margin-top:20px; }
+.footerbasearea > li:first-child { width:80%; }
+.footerbasearea > li:last-child { width:20%; }
+/*inline*/
+.navigation ul ul { display:none; visibility:hidden; }
+/*inline*/
+@media screen and (max-width:1200px) { #tt_topdiv,#tt_paddiv { height:121px; }#tt_topdiv::before { margin-top:85px; }.topdivinfo { right:85px; }.m-logo-unfixed { width:230px; padding:0; }a.homelogo { background-size: 80% auto; }#tt_topdiv.topdivscroll .topdivinfoarea { opacity:1 !important; }.m-toggle-label.tt_hidden { visibility:visible; }ul.navarea { display:none; } }
+@media screen and (max-width:980px) { #tt_topbar .tt_topbarinner > div { padding-right:2vw; } }
+@media screen and (max-width:766px) { #tt_topdiv .topdivinfo { display:none; } }
+@media screen and (max-width:640px) { .topsection { height:50vh; min-height:30vh; } }
+@media only screen and (max-width:480px) { .topsection { height:64vh; }#tt_topbar .tt_topbarinner > div { padding-left:2vw; }.wrappersection .sectioninner { padding-top:0; } }
+</style>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta content="UA-000000000-1" name="analytics_gref" />
+<meta content="Copyright (c) Domain Name 2019" name="copyright" />
+<meta content="Domain Name" name="author" />
+<meta content="thatsthat" name="application-name" />
+<meta content="1541430965" name="editmodified" />
+<meta property="og:image" content="//domain.com/LIB/Legal-Disclaimer.jpg" />
+<meta content="12/09/17" name="editdate" />
+<meta content="Legal-Disclaimer.html" name="editlink" />
+<meta content="Legal-Disclaimer.html" name="editurl" />
+<meta content="Legal Disclaimer" name="editshortname" />
+<meta content="006.0" name="editmenu" />
+<meta content="Description" name="description" />
+<meta content="Keywords" name="keywords" />
+<title>Legal Disclaimer - Domain Name</title>
+</head>
+<body id="body0" class="legal-disclaimer tt_nopointer tt_notouch tt_nocss3 tt_uncookied tt_unjs">
+	<div class="m-container">
+		<input id="m-toggle-top" type="checkbox" class="m-toggle">
+		<label class="m-toggle-label tt_hidden" for="m-toggle-top">
+			<span class="m-toggle-icon sitemapbutton"></span>
+		</label>
+		<label class="m-overlay" for="m-toggle-top"></label>
+		<div class="m-drawer">
+			<div class="m-nav">
+<ul class="menu">
+<li><input id="toggle1-1-0" class="subtoggle" type="checkbox" /><label for="toggle1-1-0" class="subtogglelabel nonselect">About Us<span class="subtoggleicon"></span></label><a href="About-Us.html">About Us</a>
+<ul>
+<li><a href="About-Us.html">About Us</a></li>
+<li><a href="About-Us.Who-We-Are.html">Who We Are</a></li>
+</ul>
+</li>
+<li><a href="News.html">News</a></li>
+<li><a href="Contact-Us.html">Contact Us</a></li>
+</ul>
+			</div>
+		</div>
+		<div class="m-pusher-container css-move"> 
+			<div id="tt_alldiv">
+				<div id="tt_topbar">
+					<div class="tt_topbarinner">
+						<div>
+							<div class="text linkedinbutton"><a href="https://www.linkedin.com/domainname" class="blank" title="See our profile" target="_blank">&#160;</a></div>
+							<div class="text twitterbutton"><a href="https://twitter.com/twittername" class="blank" title="Follow us on Twitter" target="_blank">&#160;</a></div>
+							<div class="text facebookbutton"><a href="https://www.facebook.com/facebookname/" class="blank" title="Like us on Facebook" target="_blank">&#160;</a></div>
+								<div class="searchwrapperarea">
+									<input id="searchbox0" class="searcher" type="checkbox" />
+									<div class="editmodule search css-move5">
+										<div class="text"><a href="../cgi-bin/search.pl" title="Search">Site Search </a></div>
+									</div>
+									<label for="searchbox0" class="searchbutton nonselect" title="Site Search">&#160;<span class="searchboxicon"></span></label>
+								</div>
+						</div>
+					</div>
+				</div>
+				<div id="tt_topdiv" class="tt_animate shadow" data-scrolltrigger="75" data-scrollclass="topdivscroll">
+				<div class="tt_topdivinner">
+					<div class="m-logo-unfixed"><a class="homelogo css-move5" href="index.html" title="link to Home page">&#160;</a></div>
+					<div class="topdivinfo">
+						<ul class="area editablearea topdivinfoarea">
+							<li class="column">
+								<div class="row editblock">
+									<div class="edittext">
+										<div class="text">
+											<p class="format3">Paper for Publishers, Printers and Designers<span class="grey tt_display">&#160;&#124;&#160;</span><a class="tt_display" href="mailto:info@domain.com" title="Email Domain Name">info@domain.com</a><span class="grey">&#160;&#124;&#160;</span></p>
+										</div>
+									</div>
+								</div>
+							</li>
+							<div id="tt_contactwrapper" class="tt_animate">
+								<input id="contactbox0" class="contacter" type="checkbox" />
+									<div class="editmodule table contacttable css-move5">
+										<div class="text">
+											<table border="0" cellpadding="0">
+												<tr>
+													<td>Head Office:</td>
+													<td>00000 000000</td>
+												</tr>
+												<tr>
+													<td>Credit Control:</td>
+													<td>00000 000000</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								<label for="contactbox0" class="contactbutton nonselect" title="Contacts">CONTACT US<span class="contactboxicon"></span></label>
+							</div>
+						</ul>
+					</div>
+					<ul class="area navarea">
+						<li class="column">
+							<div class="row">
+								<input id="menutoggle" type="checkbox" />
+								<label id="menuoverlay" class="m-overlay" for="menutoggle"></label>
+								<div class="menu navigation">
+<ul class="menu">
+<li><input id="toggle2-1-0" class="subtoggle" type="checkbox" /><label for="toggle2-1-0" class="subtogglelabel nonselect">About Us<span class="subtoggleicon"></span></label><a href="About-Us.html">About Us</a>
+<ul>
+<li><a href="About-Us.html">About Us</a></li>
+<li><a href="About-Us.Who-We-Are.html">Who We Are</a></li>
+</ul>
+</li>
+<li><a href="News.html">News</a></li>
+<li><a href="Contact-Us.html">Contact Us</a></li>
+</ul>
+									</div>
+							</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="tt_paddiv">&#160;</div>
+				<div id="tt_mobdiv">
+					<div id="tt_scrolldiv">
+								<div class="section topsection" style="background-image:url(documents/Images/headers/header-1-bw.jpg);">
+								<div class="sectiontopinner">
+									<ul class="area pageheaderarea">
+										<li id="menutrigger" class="column"></li>
+										<li class="column pagetitle">
+											<div class="row">
+											<div class="text"><h1>Legal Disclaimer</h1><div class="crumb"><p>Legal Disclaimer</p></div></div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="section editablesection wrappersection">
+							<div class="sectioninner">
+								<div class="threefourgrid">
+								<ul class="area editablearea contentarea">
+									<li class="column">
+										<div class="row editblock">
+											<div class="edittext">
+												<div class="text">
+													<p class="format2">Privacy and Copyright</p>
+													<p class="format4">Use of our web site</p>
+													<p>We offer our web site as an online information and communications service that we hope you will find informative. There are a few rules that our visitors must follow when using our site, so we ask all our visitors to read these General Terms and Conditions ("Agreement") carefully.</p>
+													<p>Please be sure to read this Agreement carefully, especially the disclaimers and limitations of our liability, since use of this site constitutes your acceptance of, and agreement with, the terms and conditions set out in this Agreement.</p>
+													<p>We do not intend to make changes to our terms and conditions very often but reserve the right to do so. However, it is always a good idea to doublecheck when you visit our site to ensure that you have read and agree with our most current terms and conditions. Any change in our terms and conditions will be prospective only. We generally do not make any changes to our terms and conditions that have a retrospective effect unless legally required to do so. Your continued use of this site after that time will constitute your acceptance of any new or amended terms.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+												<p class="format4">Copyrights</p>
+													<p>All copyrights and other intellectual property rights in the artwork, graphics, text, video and audio clips, trademarks, logos and other content available on this web site ('Content') are owned by our company or used with permission.</p>
+													<p>Although you can copy any part of this web site to your own computer for your personal use, you may not copy or incorporate any of the Content available on the web site into any other work, including your own web site, or use the Content in any other public or commercial manner. That means you may not post or redistribute any portion of our web site unless you have written permission from us to do so. That also means that our company retains full and complete title to all such Content, including any downloadable software or code, any images incorporated in or generated by the software, and all data accompanying it. You must not copy, modify, reproduce, upload, transmit, distribute, disassemble or otherwise convert it to another form.</p>
+													<p>You may not change any of the notices regarding copyright, trademarks or other marks that may accompany the Content. If you want to link to the home page of our site, that's acceptable, but please don't use our Content in your own site. You may not deep link (i.e., link to any page other than the home page) to our site without our specific written permission.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">Submissions</p><p>We will respect your rights regarding the protection of personal data and while we are glad to receive from you any stories, comments, suggestions, ideas, graphics, pictures or anything else you wish to send to us, do please remember that, by uploading or sending us such material through this site, you assign all your interest in it to us and, depending on which law applies, we will either own the material you send to us on this site or you will be deemed to have granted us an exclusive and perpetual license to use it.</p>
+													<p>That means that all stories, comments, suggestions, ideas, graphics, pictures or other information uploaded or sent through this site, not in connection with a job application, are automatically deemed to be either the property of our company or can be used by it. This information is not confidential and we can use it as we see fit - that includes reproducing it, disclosing it, publishing it, or broadcasting it here or somewhere else, in this or any other medium now known or later invented. Under no circumstances are you entitled to any payment if we do use your submission for any purpose.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">Use Restrictions</p>
+													<p>You may not engage in any activities through the web site which are unlawful, offensive, abusive, which violate the rights of third parties, or which inhibit other users from using and enjoying this web site. You may not monitor or copy Content on this web site, by using any robot, "bot," spider, crawler or other automatic device or manual process, without our written permission, or engage in any activity which interferes with the proper working of this web site. You agree to indemnify, defend and hold harmless our company and its subsidiaries, affiliates and employees from any damages, liabilities and expenses (including reasonable legal fees) arising from any third party claims resulting from, or arising out of, your use of the web site. We reserve the right to terminate your access to our web site at any time, without notice, for any reason whatsoever.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">No Endorsements</p>
+													<p>Although this web site may refer to products or services of third parties or link to third party sites or information, we do not endorse or make any warranties or representations about them. Any links to other sites are provided for your convenience only. You need to make your own decisions regarding third party products, services and web sites.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">Privacy Policy</p>
+													<p>Please ensure that you read our Privacy Policy and the data protection consents, in order to learn about what personal information we collect at this site, how we handle it and for what purposes we use it.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">Use of this Site: Limitation of Liability and Disclaimer</p>
+													<p>Neither Domain Name Finance nor any of its worldwide affiliates, nor anyone who helped develop, create, produce or deliver the content on this site is liable for any damages related to your use of or inability to use the site, even if advised of the possibility of such damages, unless they acted willfully or with gross negligence or that liability may not otherwise be lawfully excluded. This includes, but is not limited to:</p>
+													<p class="format5">Damages intended to compensate you directly for any loss or injury;</p>
+													<p class="format5">Damages that do not flow directly from an action, but only from some of the consequences or results of such action (consequential damages); and</p>
+													<p class="format5">Other miscellaneous damages and expenses, such as incidental, special or punitive damages. This exclusion will not cover liability for death or personal injury or liability for a breach of statutory or contractual duties.</p>
+													<p>We use reasonable efforts to ensure that accurate information is provided on this site, but do not guarantee such accuracy, and make no representations regarding the use or results of use of any Content on this site in terms of its accuracy, reliability or any other matter. Without limiting the foregoing, and to the extent permitted by law, the functions contained in this site, the operations of this site and all content on this site are provided as is, without warranty of any kind, either express or implied, including, but not limited to, any implied warranties of merchantability, fitness for a particular purpose, accuracy or non-infringement (but excluding any implied warranty or condition which may not be lawfully excluded). There is no warranty against interference with your enjoyment of the information on this website.</p>
+													<p>There is no warranty that this web site, the information contained in it or our efforts will fulfill any of your particular purposes or needs.</p>
+													<p>While we reserve the right to remove any postings or any other information that we feel may be offensive or otherwise objectionable, we are not responsible for any material posted by any user or for any information whatsoever contained in any linked sites. You agree that our company and its worldwide affiliates are not responsible or liable for any defamatory, offensive, infringing or illegal conduct of any other visitor to this site or any other third party.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">Other</p>
+													<p>If any provision of this Agreement is found to be void, unlawful or unenforceable for any reason, that portion shall be deemed severable from these terms and shall not otherwise affect the validity and enforceability of any remaining provisions. We reserve the right to pursue any remedy available to it at law or in equity if you breach this Agreement.</p>
+													<p>&#160;</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format2">Privacy Policy</p>
+													<p>We care about your privacy. We want to tell you in detail about the policies and practices which we have adopted to protect your privacy so that you can feel confident about how we handle the personally identifiable information ('personal information') you entrust to us, and understand how we manage your personal information to offer you the best possible products, services and experiences. The server(s) that make(s) this site available, and databases where information may be stored, may be located outside the country from which you accessed this site, but we will collect, process and use personal information only in accordance with this policy. The personal information made available to us may, therefore, be transmitted abroad. By visiting this site and submitting information, you consent to such collection, processing, transfer and/or storage of your personal information.</p>
+													<p>While we do not intend to make changes to our policies very often, it is always a good idea to double check when you visit our site to be sure that you have read and agree with our most current policy statement. We will not make any changes that have retrospective effect unless legally required to do so.</p>
+													<p>The content on our sites may include, among other items of interest, entertainment, games, surveys,and competitions and may also include advertising and opportunities to shop online. We may also provide information on our company and our products, and may also offer opportunities to apply for employment or obtain information about job vacancies. We hope that you enjoy our site and will come back often to visit!</p>
+													<p>Please take a moment to review our policy in detail. To assist you, we offer this short summary.</p>
+													<p class="format5">We use your personal information to fulfill your requests and serve you better. We do not share your personal details with outside third parties without your consent.</p>
+													<p class="format5">We will only send you materials you have indicated you want to receive according to your preferences, and we will honour your opt-out requests. We use cookies to help us understand the features that apply to visitors, provide better functionality, and offer you personalised content.</p>
+													<p class="format5">We adopt careful procedures to protect your personal information, and use special care to protect credit card data you give us when you shop online.</p>
+													<p class="format5">We do reserve the right to use or disclose your personal information in certain circumstances, such as to satisfy a legal request or protect our property.</p>
+													<p class="format4">When do we collect personal information?</p>
+													<p>We collect personal information, such as names, addresses, e-mail addresses, hobby or activity information, demographic information (age, gender, etc.), employment and job preferences, or other preference information, and the like, when voluntarily submitted by a visitor. Visitors may choose to submit personal information online to enter competitions, to obtain information or submit a comment, to register for a newsletter, or to place an order. We may also obtain contact lists, demographic, and other information from other sources. For the convenience of our customers and to better serve you, we combine the data. You can change your preferences about receiving offers and information from us at any time.</p>
+													<p class="format4">What do we do with your personal information?</p>
+													<p>We collect personally identifiable information to enter you in competitions and notify you of results, to e-mail you with updates and news, to respond to your questions or comments, to register you for certain features, to send you updates when job vacancies that fit your profile arise, to provide personalised content, information, and/or to send out brochures, coupons, samples, offers and other information on our products or our company.</p>
+													<p>We ask visitors providing e-mail addresses to let us know if they would like further information or updates from us or our site; only those who request it will receive follow-up e-mail or other communications from us. We may also ask if you would like to receive information about other products available from members of our family of companies. Only those who expressly ask to receive such information online will get it. If we are not sure of your preferences we may ask you about them. We also offer visitors an "opt-out" option at any time they wish to cease receiving e-mails or other information from us.</p>
+													<p>Sometimes our brands will make offers, coupons and information, including catalogues, available to you via mail. We may also use lists we have received from third parties or public sources to send you this information. You may "opt-out" of receiving offline communications from our brands at any time.</p>
+													<p>We may purchase and use opt-in e-mail lists to contact potential customers. We will honour opt-out requests and ask those providing lists to give us assurances that e-mail contact information is provided only for those consumers who have expressed a desire to receive offers and information by e-mail.</p>
+													<p>Personal information is used solely by us, and our affiliates, agents or business partners who help make this site and its content and the products and services at this site, available to you in order to respond to your requests (like fulfilling online shopping orders or offering a competition or promotion), and to better serve you, consistent with this policy.</p>
+													<p>Data may be shared or combined between current or future affiliates, subsidiaries or other related entities of our company to enhance efficiency and minimise duplication of contacts with you. In addition, we may occasionally ask you if we may share information with other trusted third parties. We will let you know at the time the information is collected if such third-party sharing is anticipated, will identify the types of businesses at the area of
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4"><a class="editlinkinline blank" href="Cookies.html" title="link to cookies page">Cookies and their usage on this site</a></p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">What about message boards, or other interactive forums?</p>
+													<p>We may offer message or bulletin boards, or interactive areas where visitors may post comments or information for our visitors' enjoyment. If there is a bulletin or message board, or other interactive areas where personal information may be posted at this site, be sure to check our rules before entering, as you will be bound by them as well as our General Terms and Conditions. As you know, anything you post online is available for the world to see. We make no representations and undertake no obligations as to information you voluntarily post.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">What do we do to safeguard personal information?</p>
+													<p>We have instituted safeguards to check that our internal procedures meet our high policy standards. We also use our best efforts to be sure that third parties who work with us as our agents to make this site and its contents available to you, and to fulfill your orders and requests, agree to protect personal information that they must access in order to serve our site and our visitors, and honour your preferences about contacts you receive.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">What about links to other web sites?</p>
+													<p>We may offer links to other sites outside our family of companies. However, we try to link only with Websites that share our values. You should always check the privacy policy of any linked Web site to understand their personal information collection practices, including how they may use cookies. We are not responsible for the content or information collection policies of sites operated by other companies. If you visit another site, you should review their privacy and other policies.</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">What else do you need to know?</p>
+													<p>We reserve the right to use or disclose any personal information as needed to satisfy any law, regulation or legal request, to conduct investigations of consumer complaints or possible breaches of law, to protect the integrity of the site, to fulfill your requests, or to cooperate in any legal investigation.</p>
+													<p>What should you do if you have questions, wish to access, update or delete information, or wish to opt out of receiving future communications? If you would like us to access, update, change, or delete information we have about you in our marketing database (subject to any applicable legal exceptions), would like to opt out of receiving further communications from us, or have questions about our privacy policy, please contact us:</p>
+												</div>
+											</div>
+											<div class="edittext">
+												<div class="text">
+													<p class="format4">Company Registration</p>
+													<p>Our company registration number is 01707312.</p>
+													<p>Our Head Office Address is:<br />Bourncrete House, Bonham Drive, Sittingbourne, Kent, ME10 3RY</p>
+												</div>
+											</div>
+										</div>
+									</li>
+								</ul>
+									</div>
+							</div>
+						</div>
+						<div class="section footersection">
+							<div class="sectionfooterinner">
+							<div class="wrappergrid">
+								<ul class="area editablearea footerarea twotwogrid">
+									<li class="column">
+										<div class="row editblock">
+ 
+											<div class="edittext"><div class="text"><p class="format4">LATEST NEWS</p></div></div>
+										</div>
+										<div class="row editblock">
+ 
+											<div class="editmodule rss">
+													<div class="text"><a href="https://www.facebook.com/facebookname/" title="read our latest posts on Facebook">Follow Domain Name on Facebook</a></div>
+												</div>
+									
+										</div>
+									</li>
+									<li class="column">
+										<div class="row editblock">
+ 
+											<div class="edittext"><div class="text"><p class="format4">TWEETS</p></div></div>
+										</div>
+										<div class="row editblock">
+ 
+											<div class="editmodule rss">
+												<div class="text"><a data-posts="3" href="https://twitter.com/twittername" title="read our latest posts on Twitter">Follow Domain Name on Twitter</a></div> 
+											</div>
+			
+										</div>
+									</li>
+									
+								</ul>
+								<!--ul class="area editablearea footerarea footernavarea">
+									<li class="column">
+										<div class="row editblock"></div>
+									</li>
+								</ul-->
+							</div>
+							<div class="fullwidthgrid">
+								<ul class="area editablearea footercertificationsarea">
+									<li class="column">
+										<div class="editblock">
+											
+											<div class="editmodule view">
+												<div class="text"><a data-id="images" data-link="off" href="documents/Images/logos/certifications/footer/" title="view gallery">image gallery</a></div>
+											</div>
+											
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="fullwidthgrid">
+								<ul class="area editablearea footerbasearea twotwogrid">
+									<li class="column">
+										<div class="row editblock">
+											<div class="edittext"><div class="text"><p>&#169; Domain Name 2019 <span class="grey"> | </span> All Rights Reserved</div></div>
+					  
+										</div>
+									</li>
+									<li class="column">
+										<div class="row editblock">
+ 
+											<div class="edittext"><div class="text"><p>Site: <a class="editlinkinline blank" href="https://thatsthat.co.uk" title="that'sthat ltd">thatsthat</a></p></div></div>
+					  
+										</div>
+									</li>
+								</ul>
+							</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tt_editref"></div>
+		</div>
+	</div>
+	<div id="tt_modal"><div class="modal-container"><div class="modal-wrapper"><div class="m-header"><p></p></div><div class="m-inner"><p></p></div></div></div><a id="m-close" href="#">&times;</a></div>
+<noscript><link id="nojs-css" rel="stylesheet" type="text/css" href="nojs.css" /></noscript>
+<noscript id="deferred-styles"><link rel="stylesheet" type="text/css" href="all-css.css" /><link rel="stylesheet" type="text/css" href="desktop-css.css" /></noscript>
+<script>var loadDeferredStyles = function(){var a = document.getElementById('deferred-styles'),r = document.createElement('div');if(a){r.innerHTML = a.textContent;document.body.appendChild(r);a.parentElement.removeChild(a);}};var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;if(raf){raf(function() { window.setTimeout(loadDeferredStyles,0); });} else {window.addEventListener('load',loadDeferredStyles);}</script>
+<script async charset="utf-8" src="config.js" type="application/javascript"></script></body>
+</body>
+</html>

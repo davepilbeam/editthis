@@ -1,0 +1,1235 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<base href="../" />
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<link rel="stylesheet" type="text/css" media="screen" href="admin/admin.css" />
+
+<script charset="utf-8" src="admin/min.js" type="application/javascript"></script>
+<script charset="utf-8" src="admin/minsu.js" type="application/javascript"></script>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+<meta content="Content: Copyright (c) That's That Ltd 2019" name="copyright" />
+<meta content="Dave Pilbeam" name="author" />
+<meta content="thatsthat" name="application-name" />
+
+<title>Modules - Admin</title>
+</head>
+<body id="body0" class="editpages tt_nopointer tt_notouch tt_nocss3 tt_uncookied tt_unjs">
+
+	<div class="m-container tmp">
+		<input id="m-toggle-top" type="checkbox" class="m-toggle">
+		<label class="m-toggle-label tt_hidden" for="m-toggle-top">
+			<span class="m-toggle-icon sitemapbutton"></span>
+		</label> 
+		<label class="m-overlay" for="m-toggle-top"></label>
+
+		<div class="tmp m-drawer">
+			<div class="tmp m-nav">
+
+			</div>
+		</div>	
+		<div class="m-pusher-container css-move tmp">
+			<div id="tt_alldiv" class="tmp">
+				
+				<div id="tt_topbar" class="tmp"></div>
+				<div id="tt_topdiv" class="tt_fixhead tmp">
+					
+					<div class="topbar">
+						<a class="navblock nav-tt" target="_blank" href="index.html"  title="Back to Live Site">&#160;</a><a class="navblock nav-home" href="../cgi-bin/admin/libraryadmin.pl?type=viewall" title="back to Admin home">&#160;</a><h1 class="tt_hide"><a class="navtext" href="../cgi-bin/admin/libraryadmin.pl?type=viewall" title="back to home">Home</a></h1><a class="navblock nav-search" href="../cgi-bin/admin/libraryadmin.pl?type=searchfolders" title="site search">&#160;</a><a class="navblock nav-help" target="_blank" href="admin/help.html" title="Admin help">&#160;</a><a class="navblock nav-backup" href="../cgi-bin/admin/libraryadmin.pl?type=downloadfolders" title="site backup and restore">&#160;</a><a class="navblock nav-alert" href="../cgi-bin/admin/libraryadmin.pl?type=alertfolders" title="site alerts">&#160;</a>
+					</div>
+				
+				</div>
+
+				<div id="tt_mobdiv" class="tmp">
+					<div id="tt_scrolldiv" class="tmp">
+
+						<div id="tt_tmp1" class="tmp">
+							<div class="tt_tmp1inner tmp">
+
+								<form id="cgi_form_0" class="sendable" method="post" accept-charset="UTF-8" action="../cgi-bin/admin/libraryadmin.pl">  
+
+								   <ul class="area modulesarea">
+										<li class="column tt_accordion">
+											<div class="row editblock">
+			
+												<div class="edittitle">
+													<div class="text"><p class="format1">Modules</p></div>
+												</div> 
+			
+											</div>
+											<input id="toggle1" type="radio" name="accordion" /><label for="toggle1"><p class="format2">Counter Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext"> 
+													<div class="text">
+														<p class="format2 tt_undisplay">Counter Module</p>											   
+														<p class="format1">Displays an Up or Down Numeric Count.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to a div with a class of text inside an <span class="boldtext">editmodule with a class of counter</span></p>
+														<p></p>
+														<p><span class="boldtext">data-start</span> = '0kg': [ sets the starting number (add the unit extension if needed) ] REQUIRED - make sure your target paragraph text is identical</p>
+														<p><span class="boldtext">data-end</span> = '9000': [ sets the end number (no extension is required) ] REQUIRED</p>
+														<p><span class="boldtext">data-interval</span> = '100': [ sets the time between each count in milliseconds ] (the default is 100ms)</p>
+														<p><span class="boldtext">data-target</span> = '2': [ sets the number of the target paragraph within the parent module ] (the default is paragraph 1)</p>
+														<p><span class="boldtext">data-units</span> = '0.01': [ sets the amount to count up each time ] (the default is 1)</p>
+														<p></p>
+														<p class="format3">Roundel:</p>
+														<p class="code">&#60;div class="onefourgrid"&#62;</p>
+														<p class="code">&#60;ul class="area editablearea contentarea roundelarea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule counter" &#62;</p>
+														<p class="code">&#60;div class="text" data-start="0kg" data-end="880" data-interval="30" data-units="10" data-target="2"&#62;</p>
+														<p class="code">&#60;p class="format4"&#62;offsets&#60;/p&#62;</p>
+														<p class="code">&#60;p class="format1 "&#62;&#160;&#60;/p&#62;</p>
+														<p class="code">&#60;p class="format6"&#62;of CO2e&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle2" type="radio" name="accordion" /><label for="toggle2"><p class="format2">Drop Area Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext"> 
+													<div class="text">
+														<p class="format2 tt_undisplay">Drop Area Module</p>											   
+														<p class="format1">Displays an editable dropdown area.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">elements</span> inside an <span class="boldtext">editmodule with a class of dropwrapper</span></p>
+														<p></p>
+														<p><span class="boldtext">label</span>  [ with class=dropwrapper and for=dropwrapper[0+] ] REQUIRED</p>
+														<p><span class="boldtext">input</span> [ with id dropwrapper[0+] ] REQUIRED</p>
+														<p><span class="boldtext">span</span>  [ with class dropwrappericon[0+] ]</p>
+														<p></p>
+														<p class="format3">Drop Area:</p>
+														<p class="code">&#60;ul class="area editablearea topdivinfoarea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="edittext "&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;p class="format3"&#62;Intelligent Paper Solutions&#60;span class="grey"&#62;&#160;&#124;&#160;&#60;/span&#62;&#60;a class="tt_display"&#62;info@denmaur.com&#60;/a&#62;&#60;span class="grey tt_display"&#62;&#160;&#124;&#160;&#60;/span&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;li class="column tt_dropwrapper"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule dropwrapper"&#62;</p>
+														<p class="code">&#60;label for="dropwrapper0" class="nonselect" title="view Contacts"&#62;CONTACT US&#60;span class="dropwrapper0icon"&#62;&#60;/span&#62;&#60;/label&#62;</p>
+														<p class="code">&#60;input id="dropwrapper0" type="checkbox" /&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;table border="0" cellpadding="0"&#62;</p>
+														<p class="code">&#60;tr&#62;</p>
+														<p class="code">&#60;td&#62;St Albans:&#60;/td&#62;</p>
+														<p class="code">&#60;td&#62;01727 738750&#60;/td&#62;</p>
+														<p class="code">&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;</p>
+														<p class="code">&#60;td&#62;Sittingbourne:&#60;/td&#62;</p>
+														<p class="code">&#60;td&#62;01795 426775&#60;/td&#62;</p>
+														<p class="code">&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;</p>
+														<p class="code">&#60;td&#62;Credit Control:&#60;/td&#62;</p>
+														<p class="code">&#60;td&#62;01795 432230&#60;/td&#62;</p>
+														<p class="code">&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;</p>
+														<p class="code">&#60;td&#62;Purchase Ledger:&#60;/td&#62;</p>
+														<p class="code">&#60;td&#62;01795 432220&#60;/td&#62;</p>
+														<p class="code">&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;</p>
+														<p class="code">&#60;td&#62;Finance:&#60;/td&#62;</p>
+														<p class="code">&#60;td&#62;01795 432210&#60;/td&#62;</p>
+														<p class="code">&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;</p>
+														<p class="code">&#60;td&#62;Group Resources:&#60;/td&#62;</p>
+														<p class="code">&#60;td&#62;01795 426775&#60;/td&#62;</p>
+														<p class="code">&#60;/tr&#62;</p>
+														<p class="code">&#60;/table&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle3" type="radio" name="accordion" /><label for="toggle3"><p class="format2">Form Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Form Module</p>
+														<p class="format1">Displays a Form.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p></p>
+														<p><span class="boldtext">form id</span> = cgi_form_(0+) where 0+ is the number of the Forms on the page when it is first created</p>
+														<p><span class="boldtext">form response target</span> = the first page element with id="cgi_form_X_result"</span> will become the target of the Form result otherwise the form will target itself</p>
+														<p>Adding <span class="boldtext">opt_</span> = before the field name means it is optional</p>
+														<p>Adding <span class="boldtext">pre_</span> = before the field name means it is required</p>
+														<p><span class="boldtext">_(0+)</span> = should be added to the end of all field names and ids in form 0+ ie: the number of that Form on the page</p>
+														<p>Adding a class of <span class="boldtext">tt_focus</span> to a field will empty that field on focus then restore the field's value if empty on blur</p>
+														<p></p>
+														<p>Add the following <span class="boldtext">hidden fields</span> to a <span class="boldtext">Form inside an editmodule with a class of "form"</span></p>
+														<p></p>
+														<p><span class="boldtext">cgireturn</span> = if present and has value adds its contents to the server's response</p>
+														<p><span class="boldtext">cgiurl</span> = if present, with value 0 or 1 or 2, it will post the form's data directly to the Form's action url and <span class="boldtext">does not return a response to the Page</span> - (0 with validation on names starting with 'pre_', 1 removes validation, 2 enforces validation on all ) </p> 
+														<p><span class="boldtext">copytype</span> = if present and has value sends a copy of the email to the Form email field address</p>
+														<p><span class="boldtext">destination</span> = if present and has value uses the Form's action url as the cgi destination but unlike using <span class="boldtext">cgiurl</span> returns the AJAX response to the Page as usual.</p> 
+														<p><span class="boldtext">formtype</span> = becomes the Form subject (the default is "Email Enquiry"). This is used in defs.pl to configure aspects of the Form eg: defining a group to copy an email to = $COPY{'Email Enquiry'}.See_defs.pl)</p> 
+														<p><span class="boldtext">html</span> = if present and has value REMOVES html format from email ie (default is htm; formatting)</p>
+														<p><span class="boldtext">locate</span> = Used in conjunction with <span class="boldtext">cgiurl</span> will define a page/document href to forward to after Form submission.</p>
+														<p><span class="boldtext">local_js</span> = if present Form will fire local javascript functions: (see below, G.forms[name of Form] and <span class="boldtext">tt_local</span> class)
+														<p><span class="boldtext">recipients</span> = if present and has value sends copies to recipients in named group (see definitions in cgi-bin/defs.pl) </p>
+														<p><span class="boldtext">A button with class of 'tt_back'</span> will also submit form to url if the Form field input[id^=destination_] (for 'back' action)</p>
+														<p></p>
+														<p></p>
+														<p>Spam</p>
+														<p>If any field within a li with a class of <span class="boldtext">manifest</span> contains a value (entered by bot), the Form submission will fail. The input name must end in '-manifest' eg: address-manifest_0</p>
+														<p></p>
+														<p></p>
+														<p>Toggle Field View</p>
+														<p><span class="boldtext">Add view_[id]</span> to an option_value/input and it will toggle visibility of the target ul or li element with id view_[id] if it exists in the Form. NB: slashes in values turn to dashes in ids.</p>
+														<p></p>
+														<p></p>
+														<p>Local Javascript</p>
+														<p>An input with <span class="boldtext">name="opt_local_js1" id="local_js1"</span> will send it's value to a local function at G.forms[name_of_this_Form]</p>
+														<p>If javascript is disabled, the Form uses cgi to send to next Form (returns a new static page) with all fields added as hidden inputs on next Form.</p>
+														<p>Elements with <span class="boldtext">data-$fieldname / url(data-$fieldname)</span> will be replaced on the next returned Form.</p>
+														<p></p>
+														<p class="format3">Form:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule form"&#62;</p>		
+														<p class="code">&#60;div class="form email"&#62;</p>
+														<p class="code">&#60;form id="cgi_form_0" method="post" accept-charset="UTF-8" action="//panacea.pecreative.co.uk/cgi-bin/email.pl"&#62;&#60;fieldset&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62; </p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="message_0"&#62;Your question&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;textarea rows="15" cols="30" name="pre_message_0" id="message_0"&#62;&#60;/textarea&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="name_0"&#62;Name&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_name_0" id="name_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli manifest"&#62;&#60;label for="address_0" tabindex="-1"&#62;Address&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_address-manifest_0" id="address_0" type="text" tabindex="-1" /&#62;&#60;/li&#62; </p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="email_0"&#62;Email&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_email_0" id="email_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="spamcheck_0"&#62;10+1=? (to prevent spam) &#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_spamcheck_0" id="spamcheck_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;</p>
+														<p class="code">&#60;input class="sub-s" value="Send &#187;" name="submit_0" type="submit" /&#62;</p>
+														<p class="code">&#60;input value="Contact Enquiry" name="opt_formtype_0" id="formtype_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="" name="opt_cgiurl_0" id="cgiurl_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="" name="opt_destination_0" id="destination_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="" name="opt_recipients_0" id="recipients_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="" name="opt_locate_0" id="locate_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="" name="opt_copytype_0" id="copytype_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="11" name="opt_spamresult_0" id="spamresult_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;	</p>								
+														<p class="code">&#60;/fieldset&#62;&#60;/form&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format3">Search:</p>
+														<p class="code">&#60;div class="searcharea"&#62;</p>
+														<p class="code">&#60;input id="searchbox0" class="searcher" type="checkbox" /&#62;</p>
+														<p class="code">&#60;div class="editmodule search css-move5"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a href="../cgi-bin/search.pl" title="Search"&#62;Site Search &#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;label for="searchbox0" class="searchbutton nonselect" title="Site Search"&#62;&#160;&#60;span class="searchboxicon"&#62;&#60;/span&#62;&#60;/label&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format3">Target:</p>
+														<p class="code">&#60;div id="cgi_form_2_result" class="text"&#62;Search Result Target for Form cgi_form2&#60;/div&#62;</p>
+														<p></p>
+														<p class="format3">Toggle Field View:</p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;</p>
+														<p class="code">&#60;select name="pre_extra-thing_0" id="extra-thing_0"&#62;</p>
+														<p class="code">&#60;option value="none" selected="selected"&#62;Add Extra Thing..&#60;/option&#62;</p>
+														<p class="code">&#60;option value="view_extra-address_0"&#62;extra address&#60;/option&#62;</p>
+														<p class="code">&#60;option value="view_other-stuff_0"&#62;other stuff&#60;/option&#62;</p>
+														<p class="code">&#60;option value="view_other-stuff_0"&#62;the same other stuff&#60;/option&#62;</p>
+														<p class="code">&#60;/select&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;li id="v_other-stuff_0" class="tt_undisplay fli"&#62;&#60;label for="view_other-stuff_0"&#62;Other Stuff&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_view_other-stuff_0" id="view_other-stuff_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code"></p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="address1_0"&#62;Address 1&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_address1_0" id="address1_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="address2_0"&#62;Address 2&#60;/label&#62;&#60;input type="text" name="opt_address2_0" id="address2_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="town-city_0"&#62;Town/City&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_town-city_0" id="town-city_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="postcode_0"&#62;Postcode&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_postcode_0" id="postcode_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="view_add-stuff_0"&#62;Add Stuff&#60;/label&#62;&#60;input type="checkbox" name="opt_view_add-stuff_0" id="view_add-stuff_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="reason_wedding-brochure_0"&#62;Request a wedding brochure&#60;/label&#62;&#60;input id="reason_wedding-brochure_0" type="radio" value="wedding-brochure" name="pre_reason_0"&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="reason_private-dining_0"&#62;Private Dining&#60;/label&#62;&#60;input id="reason_private-dining_0" type="radio" value="private-dining" name="pre_reason_0"&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code"></p>
+														<p class="code">&#60;ul id="v_extra-address_0" class="tt_undisplay ful righter"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="extra-address1_0"&#62;Extra Address 1&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_extra-address1_0" id="extra-address1_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="extra-address2_0"&#62;Extra Address 2&#60;/label&#62;&#60;input type="text" name="opt_extra-address2_0" id="extra-address2_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="extra-town-city_0"&#62;Extra Town/City&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_extra-town-city_0" id="extra-town-city_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="view_more-extra-stuff_0"&#62;More Extra Stuff&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="opt_view_more-extra-stuff_0" id="view_more-extra-stuff_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code"></p>
+														<p class="code">&#60;ul id="v_more-extra-stuff_0" class="tt_undisplay ful righter"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="e-address1_0"&#62;E Address 1&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_e-address1_0" id="e-address1_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="e-address2_0"&#62;E Address 2&#60;/label&#62;&#60;input type="text" name="opt_e-address2_0" id="e-address2_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="e-town-city_0"&#62;E Town/City&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_e-town-city_0" id="e-town-city_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code"></p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li id="v_add-stuff2_0" class="tt_undisplay fli"&#62;&#60;label for="view_add-stuff2_0"&#62;Add Stuff2&#60;span&#62;&#42;&#60;/span&#62;&#60;/label&#62;&#60;input type="text" name="pre_view_add-stuff2_0" id="view_add-stuff2_0" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p></p>
+														<p class="format3">Local:</p>
+														<p class="code">&#60;form id="cgi_form_js1" method="post" accept-charset="UTF-8" action="http://slimpet.parkhouse-evans.co.uk/cgi-bin/slimpet/js.pl"&#62;&#60;fieldset&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li class="fli lefter"&#62;&#60;label for="petcat_js1"&#62;CAT:&#60;/label&#62;&#60;input type="radio" value="cat" name="pre_pettype_js1" id="petcat_js1" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli righter"&#62;&#60;label for="petdog_js1"&#62;DOG:&#60;/label&#62;&#60;input type="radio" value="dog" name="pre_pettype_js1" id="petdog_js1" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli lefter"&#62;&#60;label for="petname_js1"&#62;Name:&#60;/label&#62;&#60;input type="text" name="pre_petname_js1" id="petname_js1" class="border-radius2" /&#62;&#60;/li&#62;	</p>		 
+														<p class="code">&#60;li class="fli pettype-cat clicker lefter border-radius6"&#62;&#60;input type="radio" value="cat" name="pre_pettype_js1" id="petcat_js1" /&#62;&#60;label for="petcat_js1" class=" head2 purple"&#62;CAT&#60;/label&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli pettype-dog clicker righter border-radius6"&#62;&#60;input  type="radio" value="dog" name="pre_pettype_js1" id="petdog_js1" /&#62;&#60;label for="petdog_js1" class=" head2 purple" &#62;DOG&#60;/label&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli righter"&#62;</p>
+														<p class="code">&#60;input class="sub-s" value="GO" name="submit_js1" type="submit" /&#62;</p>
+														<p class="code">&#60;input value="Content-Page-02.html" name="opt_destination_js1" id="destination_js1" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="pet,cat,dog" name="opt_local_js1" id="local_js1" type="hidden" /&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/fieldset&#62;&#60;/form&#62;</p>
+														<p></p>
+													</div>
+												</div>
+	
+											</div>
+											<input id="toggle4" type="radio" name="accordion" /><label for="toggle4"><p class="format2">Google Map Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Google Map Module</p>
+														<p class="format1">Displays a Google Map.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p id="GoogleMap Module">Add the following <span class="boldtext">data-attributes</span> to an <span class="boldtext">editmodule with a class of googlemap</span></p>
+														<p>You will also need a screen shot for the initial link for each Map (take it from the Google 'view larger map' iframe link) to display if Javascript is disabled.</p>
+														<p></p>
+														<p class="info"><span class="boldtext">data-icon</span> = 'documents/Images/icons/media_mapicon.png': [ sets a custom icon and directs its source to the supplied url  ] (the default is no custom icon)</p>
+														<p class="info"><span class="boldtext">data-latitude</span> = '52.315597': [ sets the map latitude ] REQUIRED</p>
+														<p class="info"><span class="boldtext">data-longitude</span> = '-2.066477': [ sets the map longitude ] REQUIRED</p>
+														<p class="info"><span class="boldtext">data-zoom</span> = '16': [ sets the map zoom level] (the default is 15)</p>
+														<p></p>
+														<p class="format3">Googlemap:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule googlemap"&#62;</p> 
+														<p class="code">&#60;div class="text" data-zoom="17" data-icon="documents/Images/icons/map-thatsthat-icon.png" data-latitude="52.918627" data-longitude="-1.478389">&#60;a href="https://www.google.com/maps/place/Parkhouse+Evans+Ltd/@52.918627,-1.478389,17z/data=!4m5!3m4!1s0x0:0x5da005a45465240e!8m2!3d52.9186273!4d-1.4783888?hl=en-GB" title="thatsthat" class="popup button" style="background-image:url(documents/Images/elements/map-googlemap.png);"&#62; &#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle5" type="radio" name="accordion" /><label for="toggle5"><p class="format2">Library Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Library Module</p>
+														<p class="format1">Displays documents from the site's Digital Library.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>	
+														<p>Add class <span class="boldtext">libraryarea</span> to an <span class="boldtext">ul containing an editmodule with a class of library</span></p>
+														<p></p>											  
+														<p>Add the following <span class="boldtext">data-attributes</span> to the <span class="boldtext">link</span> inside: <span class="code">&#60;div class="text"&#62;&#60;a&#62;&#60;/a&#62;&#60;/div&#62;</span> or pass them using using <span class="boldtext">view</span> eg: data-pass="sort:21,title:Resources"</p>
+														<p></p>
+														<p><span class="boldtext">data-amount</span> = '0': [ switches on the mins heights in mobile view ] (the default is auto heights in mobile view)</p>
+														<p><span class="boldtext">data-basefolder</span> = 'documents/Partner-Portal' [ sets the defined Documents folder as the Library Source ] (the default is defined in <span class="aref">G.library</span> in <span class="afile">config.js</span> )</p>
+														<p><span class="boldtext">data-depth</span> = '1': [ defines a depth level to display folders as open in accordion ] (the default is '0' which is none open)</p>
+														<p><span class="boldtext">data-form</span> = 'on': [ enables a required email download form (manually add form as below if required) ] (the default is no form required)</p>
+														<p><span class="boldtext">data-id</span> = 'paginate': [ switches on pagination for the data response format if applicable ] (the default is no pagination)</p>
+														<p><span class="boldtext">data-names</span> = 'editarea,editfocus': [ defines tags on which to filter results (separate multiples with a comma) ]</p>
+														<p><span class="boldtext">data-onlyarea</span> = 'me' [ will only show matching 'area' tag results if present ]</p>
+														<p><span class="boldtext">data-onlyfocus</span> = 'me': [ will only show matching 'focus' tag results if present ]</p>
+														<p><span class="boldtext">data-sort</span> = '21': [ defines sort order of response data: alpha:AZ or reverse alpha:ZA or date:'12' or reverse date:'21' ] (the default is 21: reverse date)</p>
+														<p><span class="boldtext">data-title</span> = '': [ includes this field as a title to the returned Library html ] (the default is no title)</p>
+														<p><span class="boldtext">data-values</span> = 'security,z system': [ defines tag values (should match data-names) by which to filter results ( separate multiples with a comma) ]</p>
+														<p></p>
+														<p>To use Dropbox as the Library Source, <span class="boldtext">change the action of the form from 'email.pl' to 'dropbox.pl'</span> and configure the following settings as appropriate in <span class="aref">G.library</span> in <span class="afile">config.js</span></p>
+														<p>dropbox: { url:'dropbox.pl',appname:'thatsthat_library',id:'list',sname:'Online Derby',thumbfolder:'documents/Dropbox/' }</p>
+														<p></p>
+														<p>To add a <span class="boldtext">data-code</span> attribute to a <span class="aref">libraryblock</span> element add <span class="boldtext">[etc]</span> to the filename eg:<span class="boldtext"> new-leaflet[A4].pdf</span> then configure the css as appropriate in <span class="afile">library.css</span></p>
+														<p>To display any added <span class="boldtext">[data-code]</span> text in a file display name eg:<span class="boldtext">new leaflet[A4]</span> set <span class="boldtext">nocode</span> to <span class="boldtext">null</span> in <span class="aref">G.library.nocode</span> in <span class="afile">config.js</span></p>
+														<p></p>
+														<p class="format3">Library:</p>
+														<p class="code">&#60;div class="threefourgrid"&#62;</p>
+														<p class="code">&#60;ul class="area editablearea libraryarea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule library"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a href="//panacea.pecreative.co.uk/documents/Digital/" title="view digital resource" target="_blank"&#62;View our Digital Resource Library &#62;&#62;&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="onefourgrid"&#62;</p>
+														<p class="code">&#60;ul class="area editablearea libraryformarea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule form"&#62;	</p>	
+														<p class="code">&#60;div class="form email"&#62;</p>
+														<p class="code">&#60;form id="cgi_form_0" method="post" accept-charset="UTF-8" action="../cgi-bin/email.pl"&#62;&#60;fieldset&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62; </p>
+														<p class="code">&#60;li class="fli title"&#62;Select the Library files you wish to download, then complete the following form:&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="name_0"&#62;Name&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_name_0" id="name_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli manifest"&#62;&#60;label for="address_0" tabindex="-1"&#62;Address&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_address-manifest_0" id="address_0" type="text" tabindex="-1" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="email_0"&#62;Email&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_email_0" id="email_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="spamcheck_0"&#62;10+1=? (to prevent spam) &#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_spamcheck_0" id="spamcheck_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli title inline"&#62;I agree to RSM Partners emailing me with product and services updates going forwards.&#60;span class="required"&#62;&#60;/span&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli inline"&#62;&#60;input class="css-check" name="pre_agree_0" id="agree_0" type="checkbox" /&#62;&#60;label class="css-check" for="agree_0"&#62;&#160;&#60;/label&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;</p>
+														<p class="code">&#60;input class="sub-s" value="Send &#187;" name="submit_0" type="submit" /&#62;</p>
+														<p class="code">&#60;input value="2" name="opt_cgiurl_0" id="cgiurl_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="Library Download" name="opt_formtype_0" id="formtype_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="11" name="opt_spamresult_0" id="spamresult_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="" name="pre_library_0" id="library_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/fieldset&#62;&#60;/form&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="format3">Manual Form Download Configuration for Non-Library Downloads:</p>
+														<p class="code">&#60;div class="editmodule form"&#62;	</p>	
+														<p class="code">&#60;div class="form email"&#62;</p>
+														<p class="code">&#60;form id="cgi_form_0" method="post" accept-charset="UTF-8" action="../cgi-bin/email.pl"&#62;&#60;fieldset&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62; </p>
+														<p class="code">&#60;li class="fli title"&#62;Complete the following form to download <b>Name Of Download</b> and <b>Another File</b> (4Mb pdf files):&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="name_0"&#62;Name&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_name_0" id="name_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli manifest"&#62;&#60;label for="address_0" tabindex="-1"&#62;Address&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_address-manifest_0" id="address_0" type="text" tabindex="-1" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="email_0"&#62;Email&#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_email_0" id="email_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;&#60;label for="spamcheck_0"&#62;10+1=? (to prevent spam) &#60;span class="required"&#62;&#60;/span&#62;&#60;/label&#62;&#60;input name="pre_spamcheck_0" id="spamcheck_0" type="text" /&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli title inline"&#62;I agree to RSM Partners emailing me with product and services updates going forwards.&#60;span class="required"&#62;&#60;/span&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;li class="fli inline"&#62;&#60;input class="css-check" name="pre_agree_0" id="agree_0" type="checkbox" /&#62;&#60;label class="css-check" for="agree_0"&#62;&#160;&#60;/label&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62;</p>
+														<p class="code">&#60;li class="fli"&#62;</p>
+														<p class="code">&#60;input class="sub-s" value="Send &#187;" name="submit_0" type="submit" /&#62;</p>
+														<p class="code">&#60;input value="2" name="opt_cgiurl_0" id="cgiurl_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="Library Download" name="opt_formtype_0" id="formtype_0" type="hidden" /&#62;</p>
+														<p class="code">&#60;input value="11" name="opt_spamresult_0" id="spamresult_0" type="hidden" /&#62;</p>
+														<p class="code"><b>&#60;input value="Digital/Some-Folder/Name-Of-Download.pdf||Digital/Some-Folder/Another-File.pdf" name="pre_library_0" id="library_0" type="hidden" /&#62;</b></p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/fieldset&#62;&#60;/form&#62;</p>
+														<p></p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle6" type="radio" name="accordion" /><label for="toggle6"><p class="format2">Minheights Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Minheights Module</p>
+														<p class="format1">Assigns a minimum height to a range of Columns.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>												  
+														<p>Add class <span class="boldtext">minheightsarea</span> to an <span class="boldtext">ul with a class of area</span></p>
+														<p></p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to an <span class="boldtext">ul with a class of area</span></p>
+														<p></p>
+														<p><span class="boldtext">data-mobile</span> = 'on': [ switches on the mins heights in mobile view ] (the default is auto heights in mobile view)</p>
+														<p></p>
+														<p class="format3">Minheights:</p>
+														<p class="code">&#60;ul class="area editablearea minheightsarea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle7" type="radio" name="accordion" /><label for="toggle7"><p class="format2">Overlay Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Overlay Module</p>
+														<p class="format1">Creates a keyed overlay diagram from an Accordion.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>	
+														<p></p>											  
+														<p>Add class <span class="boldtext">overlayarea</span> to an <span class="boldtext">ul with a class of area</span></p>
+														<p></p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to a <span class="boldtext">li with a class of tt_accordion</span></p>
+														<p></p>
+														<p><span class="boldtext">data-id</span> = '0': [ sets the classname as 'tt_overlay0' ] (the default is 0);</p>
+														<p></p>
+														<p class="format3">Overlay:</p>
+														<p class="code">&#60;ul class="area editablearea overlayarea"&#62;</p>
+														<p class="code">&#60;li class="column tt_accordion"&#62;</p>
+
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+													</div>
+												</div>
+			
+											</div>
+											<input id="toggle8" type="radio" name="accordion" /><label for="toggle8"><p class="format2">Quotebox Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext"> 
+													<div class="text">
+														<p class="format2 tt_undisplay">Quotebox Module</p>											   
+														<p class="format1">Displays a second element when selecting a first.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to an <span class="boldtext">editmodule with a class of quotebox</span></p>
+														<p></p>
+														<p><span class="boldtext">data-type</span> = 'rollover' or 'modal' or 'target': [ sets the Quotebox style ] (the default is rollover)</p>
+														<p><span class="boldtext">data-element</span> = 'quotebox-target': [ sets the target element ] (the default is no target)</p>
+														<p></p>
+														<p class="format3">Quotebox:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule quotebox"&#62;</p> 
+														<p class="code">&#60;div class="text" data-type="rollover"&#62;&#60;p&#62;Rollover me for hidden quote&#60;/p&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;p&#62;Hi I'm the hidden rollover replacement quote!&#60;/p&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule quotebox"&#62;</p> 
+														<p class="code">&#60;div class="text" data-type="modal"&#62;&#60;p&#62;Rollover me for Modal populated by quotebox-target element&#60;/p&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;p&#62;Hi I'm the hidden modal replacement quote!&#60;/p&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule quotebox"&#62;</p> 
+														<p class="code">&#60;div class="text" data-type="target" data-element="id-of-element"&#62;&#60;p&#62;Rollover me to populate #id-of-element with hidden quote&#60;/p&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;p&#62;Hi I'm the hidden #id-of-element replacement quote!&#60;/p&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+													</div>
+												</div>
+			
+											</div>
+											<input id="toggle9" type="radio" name="accordion" /><label for="toggle9"><p class="format2">Social Media Feed Module (RSS)</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext"> 
+													<div class="text">
+														<p class="format2 tt_undisplay">Social Media Feed Module (RSS)</p>											   
+														<p class="format1">Displays an RSS Feed within a Page.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p id="RSS Module">Add the following <span class="boldtext">data-attributes</span> to an <span class="aref">a</span> link inside a <span class="aref">div</span> with a class of <span class="aref">text</span> inside an <span class="boldtext">editmodule with a class of rss</span></p>
+														<p></p>
+														<p class="info"><span class="boldtext">data-characters</span> = '200': sets number of characters to show NB: if data-characters == 0 and data-html == 'off', then only entry titles are shown ] (default is in <span class="aref">G.rss.limit</span> in <span class="afile">config.js</span>)</p>
+														<p class="info"><span class="boldtext">data-full</span> = 'on': [ overrides data-character limit ] used to include all hidden images from received Blogger data (default is off)</p>
+														<p class="info"><span class="boldtext">data-html</span> = 'on': [ include html ] (default is on)</p>
+														<p class="info"><span class="boldtext">data-posts</span> = '3': [ sets number of posts to show ] (default is in <span class="aref">G.rss.posts</span> in <span class="afile">config.js</span>)</p>
+														<p class="info"><span class="boldtext">data-rules</span> = 'off': [ adds rules between posts ] (default is off)</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+														<p>If not working on client's server Twitter and Facebook scripts can be configured to relay from <span class="afile">thatsthat.uk</span> by setting <span class="aref">G.server</span> to '<spab class="boldtext">pe</span>' in <span class="afile">config.js</span></p>
+														<p>Configure the display styles in <span class="aref">G.rss</span> in <span class="afile">config.js</span>. Use this to switch icon or byline display off etc.</p>
+														<p>Setting a character limit will not affect text within any html tags.</p>
+														<p>Remember to use <span class="aref">&#38;amp;</span>in  the href urls!</p>
+														<p>Spaces in blogger labels should be '%20' = <span class="aref">http://karlsonuk.blogspot.com/feeds/posts/default/-/News%202013"</span></p>
+														<p></p>
+														<p class="format3">RSS:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule rss"&#62;</p>
+														<p class="code">&#60;div class="text&#62;</p>
+														<p class="code">&#60;a data-posts="5" data-characters="50" href="<b>http://rsmzspecialists.blogspot.co.uk/</b>"  title="read our latest feedback on Blogger"&#62;read our feedback on Blogger!&#60;/a&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p> 
+														<hr />
+														<p class="code1">
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule rss&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;a data-posts="3" data-rules="on" href="<b>https://www.facebook.com/1448003105427010</b>"  title="read our latest news on Facebook"&#62;Read our latest news on Facebook!&#60;/a&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>						 
+														<hr />
+														<p class="code1">
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule rss"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;a href="<b>http://twitter.com/INTASAVE</b>" title="read our latest posts on Twitter"&#62;Follow us on Twitter!&#60;/a&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+													</div> 
+												</div>
+			
+											</div>
+											<input id="toggle10" type="radio" name="accordion" /><label for="toggle10"><p class="format2">Scroll Animation Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Scroll Animation Module</p>
+														<p class="format1">Animates elements using CSS Transforms when scrolled into view.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">base class</span> to a block element: <span class="boldtext">tt_animate</span></p>
+														<p></p>
+														<p>Then add an <span class="boldtext">animation class</span> from the list below:</p>
+														<p><span class="boldtext">tt_slideleft</span> ( animates into view from left )</p>
+														<p><span class="boldtext">tt_slideup</span> ( animates into view from bottom )</p>
+														<p><span class="boldtext">tt_slidedown</span> ( animates into view from top )</p>
+														<p><span class="boldtext">tt_slideright</span> ( animates into view from right )</p>
+														<p><span class="boldtext">tt_slidescale</span> ( animates scale )</p>
+														<p><span class="boldtext">tt_slideappear</span> ( fades into view )</p>
+														<p><span class="boldtext">tt_slideappear1s</span> ( fades into view after 1 second )</p>
+														<p><span class="boldtext">tt_slideappear2s</span> ( fades into view after 2 seconds )</p>
+														<p><span class="boldtext">tt_slideappear3s</span> ( fades into view after 3 seconds )</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+														<p>The classes are defined in the <span class="array">G.css.t</span> array in <span class="afile">config.js</span>.</p>
+														<p>ADMIN: add class <span class="boldtext">tt_onview</span> to manually show element without scroll script.</p>
+														<p></p>
+														<p class="format3">Scroll Animation:</p>
+														<p class="code">&#60;li class="column tt_animate tt_slideup"&#62;</p> 
+														<p class="code">&#60;div class="row editblock"&#62;</p>			  
+														<p class="code">&#60;div class="edittext"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;p>2 Garantier provides score to the auto insurance industry to help offer the best rates to drivers based on their attitude, actual driving style and online engagement.&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>				  
+														<p class="code">&#60;/div&#62; </p>
+														<p class="code">&#60;/li&#62; </p>
+													</div>
+												</div>
+	
+											</div>
+											<input id="toggle11" type="radio" name="accordion" /><label for="toggle11"><p class="format2">Scroll Trigger Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Scroll Trigger Module</p>
+														<p class="format1">Add a class to an element triggered by scroll position.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">base class</span> to an element: <span class="boldtext">tt_animate</span></p>
+														<p></p>
+														<p>Then Add the following <span class="boldtext">data-attributes</span></p>
+														<p><span class="boldtext">data-scrolltrigger</span> = '350' or '#tt_tmp2' or 'li.pagetitle': [ defines trigger as pixels scrolled or element id or first element of that class ] </p>
+														<p><span class="boldtext">data-scrollclass</span> = 'topdivscroll': [ name of the class to be added when the scroll trigger is fired ]</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+														<p>Although the <span class="boldtext">tt_animate</span> class is used here, the Scroll Animation Module will not be fired even if the animation classes are added.</p>
+														<p></p>
+														<p class="format3">Scroll Trigger:</p>
+														<p class="code">&#60;div id="tt_topdiv" class="tmp tt_animate" data-scrolltrigger="200" data-scrollclass="topdivscroll"&#62;</p> 
+														<p class="code">&#60;div id="tt_topdiv" class="tmp tt_animate" data-scrolltrigger="#tt_tmp2" data-scrollclass="topdivscroll"&#62;</p> 
+														<p class="code">&#60;div id="tt_topdiv" class="tmp tt_animate" data-scrolltrigger="li.pagetitle" data-scrollclass="topdivscroll"&#62;</p> 
+													</div>
+												</div>
+	
+											</div>
+											<input id="toggle12" type="radio" name="accordion" /><label for="toggle12"><p class="format2">Search Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Search Module</p>
+														<p class="format1">Displays a Site Searchbar.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to an <span class="aref">a</span> inside a <span class="aref">div</span> with a class of <span class="aref">text</span> inside an <span class="boldtext">editmodule with a class of search</span></p>
+														<p></p>
+														<p><span class="boldtext">data-name</span> = 'Search': [ sets the name that appears as the placeholder of the Searchbar ] (the default is 'Search')</p>
+														<p><span class="boldtext">data-inputs</span> = 'none' or 'min' or 'library': [ controls what will appear: no new searchbox, include only new searchbox, include new searchbox and tag dropdowns  ] (the default is 'none')</p>
+														<p><span class="boldtext">data-boxpos</span> = 'before' or 'after': [ sets the position of any included inputs if included in search results ] (the default is 'after')</p>
+														<p><span class="boldtext">data-boxtype</span> = 'page' or 'topbar': [ sets the type of searchbox to display ] (the default is 'page')</p>
+														<p><span class="boldtext">data-html</span> = 'off' or 'on': [ controls the display of html tags in the search results ] (the default is 'off')</p>
+														<p><span class="boldtext">data-notword</span> = 'off' or 'on': [ will set search to include partial word matches if set to 'on' ie: 'test' will match in 'latest'] (the default is 'off')</p>
+														<p><span class="boldtext">data-pos</span> = 'top' or 'bottom': [ sets the position to inject the Searchbar within the target element ] (the default is 'top')</p>
+														<p><span class="boldtext">data-target</span> = 'off' or 'element id': [ sets the parent into which the Searchbar will be injected ] (the default is 'off' which is the Module itself)</p>
+														<p><span class="boldtext">data-type</span> = 'new' or 'shopsearch' or 'tags' or 'all' or 'documents' or 'digital' or 'pages': [ sets the type of results to display ] (the default is 'new')</p>
+														<p></p>
+														<p class="format3">Dynamic Search Box:</p>
+														<p class="code">&#60;ul class="area editablearea searcharea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule search"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-inputs="min" href="../cgi-bin/search.pl" title="Search"&#62;Site Search &#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="format3">Static Search Box:</p>
+														<p class="code">&#60;ul class="area editablearea content2area searcharea"&#62;</p>
+														<p class="code">&#60;li class="column datasearch"&#62;</p>
+														<p class="code">&#60;form accept-charset="UTF-8" id="cgi_form_datasearch" method="post" action="https://onlinederby.co.uk/cgi-bin/search.pl"&#62;&#60;fieldset&#62;</p>
+														<p class="code">&#60;ul class="ful"&#62;</p>													
+														<p class="code">&#60;li class="fli searchright"&#62;&#60;input name="opt_js_1" value="1" type="hidden"&#62;</p>
+														<p class="code">&#60;label for="tooltipbox9" class="tooltipbutton tt_unselect" title="Site Search"&#62;&#160;&#60;span class="searchboxicon"&#62;&#60;/span&#62;&#60;/label&#62;</p>
+														<p class="code">&#60;input class="form-sg " name="pre_datasearch_1" id="datasearch_1" placeholder="Search:" value="" type="text"&#62;</p>
+														<p class="code">&#60;input name="submit_1" value="" class="sub-i" type="submit"&#62;</p>
+														<p class="code">&#60;input id="tooltipbox9" class="tooltipper" type="checkbox"&#62;</p>
+														<p class="code">&#60;div class="edittext tooltip css-move5"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a href="../cgi-bin/search.pl" title="Tooltip"&#62;Search is not case-sensitive - Separate multiple terms with '+'&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+														<p class="code">&#60;/fieldset&#62;&#60;/form&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle13" type="radio" name="accordion" /><label for="toggle13"><p class="format2">Slider Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Slider Module</p>
+														<p class="format1">Animates an element within a parent element using CSS Transforms.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to a <span class="aref">div</span> with a class of <span class="aref">text</span> inside an <span class="boldtext">editmodule with a class of slider</span></p>
+														<p></p>
+														<p><span class="boldtext">data-effect</span> = 'slideleft': [ sets slide animation using CSS Transforms (see Scroll Animation Module) ] (the default is 'slideup')</p>
+														<p><span class="boldtext">data-parent</span> = 'ul.area': [ sets CSS to identify the parent of the element to slide ] (the default is 'li.column')</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+														<p>The transition classes are defined in the <span class="array">G.css.t</span> array in <span class="afile">config.js</span>.</p>
+														<p></p>
+														<p class="format3">Scroll Animation:</p>
+														<p class="code">&#60;ul class="area editablearea strategyarea"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editimage"&#62;</p>
+														<p class="code">&#60;div class="text" style="background-image:url(documents/Sandbox/pete/strategy/strategy-1.jpg);"&#62;</p>
+														<p class="code">&#60;p&#62;&#60;a class="edittextlink" href="Strategy_The-Hook.html" title="view The Hook page"&#62;&#160;&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="editmodule slider"&#62;</p>	
+														<p class="code">&#60;div class="text" data-effect="slideup" data-parent="li.column"&#62;</p>
+														<p class="code">&#60;p class="format1"&#62;THE HOOK&#60;/p&#62;</p>
+														<p class="code">&#60;p class="format3"&#62;Website &#47; Powerpoint Deck &#47; eShots&#60;/p&#62;</p>
+														<p class="code">&#60;p&#62;&#60;a class="edittextlink" title="learn more about The Hook" href="Strategy_The-Hook.html"&#62;LEARN MORE&#60;/a&#62;&#60;p&#62;	</p>															
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;	</p>							
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+													</div>
+												</div>
+			
+											</div>
+											<input id="toggle14" type="radio" name="accordion" /><label for="toggle14"><p class="format2">Slideshow Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Slideshow Module</p>
+														<p class="format1">Animates local or remote elements using CSS Transforms. Cross-domain compatible.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data attributes</span> to an <span class="boldtext">ul.area</span> or pass them in a <span class="boldtext">view module</span> using <span class="boldtext">view</span> eg: data-pass="controller:on,transition:fadein"</p>	   
+														<p></p>
+														<p>Area Attributes</p>
+														<p><span class="boldtext">data-auto</span> = 'on': [ enables autostart ] (the default is off)</p>
+														<p><span class="boldtext">data-controller</span> = 'on': [ controls whether controller and pause button is visible and overrides any autostart. ] The default is off.</p>
+														<p><span class="boldtext">data-start</span> = '0': [ defines which Slide to display at start ] (the default is Slide 0)</p> 
+														<p><span class="boldtext">data-delay</span> = '3000': [ specifies the default Slide transition delay in milliseconds ] (the default is 3000ms)</p>
+														<p><span class="boldtext">data-interval</span> = '1500': [ specifies the default Slide transition duration in milliseconds ] (the default is 1000ms via a class of 'css-1s')</p>
+														<p><span class="boldtext">data-startdelay</span> = '3000': [ controls a one-time delay before the first Slide transition starts in milliseconds ] this is useful when an initial slideholder is used (the default is no delay)</p>
+														<p><span class="boldtext">data-transition</span> = 'none': [ defines a global Slide CSS3 transition from <span class="afile">desktop.js</span> ] (the default is no transition)</p>
+														<p><span class="boldtext">data-showholder</span> = 'on': [ defines whether to display the inital slideholder and defer loading the first slide ] (the default is off - slideholder only appears if no javascript or unsupported browser)</p>
+														<p><span class="boldtext">data-keepholder</span> = 'on': [ defines whether to delete or preserve any initial slideholder after the first Slide is displayed ] (the default is off)</p>
+														<p><span class="boldtext">data-key</span> = 'on': [ adds keys to a controller (if present) derived from adding a 'data-slidekey' attribute to a slide ] (the default is off)</p>
+														<p></p>
+														<p>Slide Attributes</p>
+														<p><span class="boldtext">data-delay</span> = '3000': [ controls the delay before the next sibling Slide transition will start in milliseconds ] (the default is the global delay)</p>
+														<p><span class="boldtext">data-hold</span> = '6000': [ defines an optional additional transitional delay in milliseconds which is added to any data-delay ] (the default is none)</p>
+														<p><span class="boldtext">data-interval</span> = '1000': [ specifies a Slide's transition duration in milliseconds, set from classes in <span class="aref">G.slideshow.kf</span> in <span class="afile">config.js</span> ] (the default is the global interval)</p>
+														<p><span class="boldtext">data-transition</span> = 'none': [ defines a Slide's CSS3 transition from <span class="aref">G.slideshow.trans</span> in <span class="afile">config.js</span> ] (the default is the global transition)</p>
+														<p><span class="boldtext">data-slidekey</span> = 'Slide 2': [ defines a key for the Slide to be added in the controller ] (the default is 'Slide X' if keys are enabled or blank if not)</p>
+														<p></p>					
+														<p>Element Attributes</p>
+														<p><span class="boldtext">data-delay</span> = '3000': [ controls the delay before an Element's transition starts in milliseconds ] A negative number will run the animation from that number in instead of at 0. Set this to the negative of the element's interval for instant animation. (the default is the parent Slide delay)</p>
+														<p><span class="boldtext">data-hold</span> = '6000': [ defines an optional additional transitional delay in milliseconds which is added to any next data-delay ] (the default is none)</p>
+														<p><span class="boldtext">data-interval</span> = '1000': [ specifies a Slide's transition duration in milliseconds, set from classes in <span class="aref">G.slideshow.kf</span> in <span class="afile">config.js</span> ] (the default is the parent Slide interval)</p>
+														<p><span class="boldtext">data-transition</span> = 'none': [ defines a Slide's CSS3 transition from <span class="aref">G.slideshow.trans</span> in <span class="afile">config.js</span> ] (the default is the parent Slide transition)</p>
+														<p><span class="boldtext">data-hide</span> = '1000': [ defines how long to wait in milliseconds before hiding an element after its transition ] (the default is not to hide)</p>
+														<p><span class="boldtext">data-slide</span> = 'slideup' or 'slidedown' or 'slideleft' or 'slideright': [ activates a Slider Module to any '.edittext' element on hover using the supplied CSS class ] (the default is no Slider) </p>	
+														<p></p>					
+														<p class="format3">Usage:</p>
+														<p>Add an inital style of <span class="aref">opacity:1</span> to any slideshow slides or elements that need to be visible if <span class="aref">CSS3</span> is not supported but invisible if it is (as all style attributes are removed during slideshow setup).</p>
+														<p>Depending on your slide transitions, you might need to add a first holding slide with a class of 'slideholder' which is deleted after the first proper slide is displayed.</p>
+														<p>Controller bar styles are in Slideshow css in <span class="afile">desktop.css</span></p>
+														<p>Transitions for <span class="aref">data-transition</span> are in <span class="afile">desktop.js</span></p>
+														<p><span class="boldtext">none</span></p>								
+														<p><span class="boldtext">fadeout</span></p>
+														<p><span class="boldtext">fadein</span></p>
+														<p><span class="boldtext">slidedown</span></p>
+														<p><span class="boldtext">slideleft</span></p>
+														<p><span class="boldtext">slideright</span></p>
+														<p><span class="boldtext">slideup</span></p>
+														<p><span class="boldtext">slidewall</span></p>
+														<p><span class="boldtext">slidefullright</span></p>
+														<p><span class="boldtext">slidefullleft</span></p>
+														<p><span class="boldtext">slidefullup</span></p>
+														<p><span class="boldtext">slidefulldown</span></p>
+														<p><span class="boldtext">slideswing</span></p>
+														<p></p>
+														<p>- The Module will add <span class="boldtext">data-list="s0+"</span> attributes to each Slide and Element (counting upwards) if not already present in the html page.</p>
+														<p>- Images will require a '_mobile' version which is swapped out if the viewport is mobile-sized and the Slideshow is the result of a pulled View.</p>
+														<p>HINT: To easily position an inner element for transition add css position/padding that are OPPOSITE to its css class eg: <span class="boldtext">bottom:10px; left:10%; padding-bottom:400px;</span> for a class of <span class="boldtext">css-slideup</span>. The padding makes the element taller or wider which in turn makes the elements 100% XY transition greater.</p>
+														<p>HINT: If a sliding transition element seems to simply appear without sliding, try increasing its transition time (data-interval) to give the element more display time on screen.</p>
+														<p>HINT: If required use 'data-hold' to delay the next slide - this is particularly useful when delaying the reappearance of the first slide after the last slide.</p>
+														<p></p>
+														<p class="format3">Slideshow:</p>
+														<p class="code">&#60;ul class="area editablearea slideshowarea testarea" data-interval="1000" data-delay="4000" data-controller="on" &#62;</p>
+														<p class="code">&#60;li class="column slideholder"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editimage"&#62;</p>
+														<p class="code">&#60;div class="text" style="background-image:url(documents/Images/slideshow/demo-slideholder.jpg);"&#62;&#160;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;li class="column tt_slideshow-inner tt_undisplay" data-list="s0" data-transition="slideright"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editimage"&#62;</p>
+														<p class="code">&#60;div class="text" style="background-image:url(documents/Images/slideshow/demo-slide-01.jpg);"&#62;&#160;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="row editblock tt_slideshow-el tt_undisplay" data-list="s1" data-transition="slideup" data-interval="1000" data-delay="1000"&#62;</p>
+														<p class="code">&#60;div class="edittext"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;p class="format1"&#62;&#60;a class="editlinkinline" href="Media.html" title="click to go to our Media Site"&#62;LINK TO MEDIA SITE LINK 0&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="row editblock tt_slideshow-el tt_undisplay" data-list="s2" data-transition="slideright" data-interval="1000" data-delay="1000"&#62;</p>
+														<p class="code">&#60;div class="edittext"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;p class="format1"&#62;&#60;a class="editlinkinline" href="Paper.html" title="click to go to our Paper Site"&#62;LINK TO PAPER SITE LINK 0&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+													</div>
+												</div>
+			
+											</div>
+											<input id="toggle15" type="radio" name="accordion" /><label for="toggle15"><p class="format2">Stacker Module</p></label>					  
+											<div class="row editblock">
+	 
+											   <div class="edittext">
+													<div class="text">
+														<p class="format2">Stacker Module</p>
+														<p class="format1">Displays local or remote elements to fit page width.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to an <span class="boldtext">ul.area</span> or pass them in a <span class="boldtext">view module</span> using <span class="boldtext">view</span> eg: data-pass="columns:4"</p>
+														<p></p> 
+														<p><span class="boldtext">data-min</span> = '300': [ gives the minimum width of item in px before deleting an element from each row and recalculating widths ] (the default is 300px) NB: will override <span class="boldtext">data-columns</span> if set too high for the width</p>
+														<p><span class="boldtext">data-max</span> = '500': [ gives the maximum width of item in px before adding an element to each row and recalculating widths ] (the default is 500px) NB: will override <span class="boldtext">data-columns</span> if set too low for the width</p>
+														<p><span class="boldtext">data-columns</span> = '3': [ sets the starting number of item columns ] (the default is 3)</p>
+														<p><span class="boldtext">data-mobile</span> = '1': [ sets the default number of columns that will appear on mobile view ] (the default is 1)</p>
+														<p><span class="boldtext">data-position</span> = 'lower': [ sets the position of the '.editmore' link in a pulled stacker block (such as a News index) ] (the default is none, which is before the block)</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+														<p>The classes are defined in the <span class="array">G.css.t</span> array in <span class="afile">config.js</span></p>
+														<p></p>
+														<p class="format3">Stacker:</p>
+														<p class="code">&#60;ul class="area editablearea stackerarea"&#62;</p>
+														<p class="code">&#60;li class="column tt_stacked"&#62;&#60;div class="row editblock"&#62;&#60;div class="edittext"&#62;&#60;div class="text"&#62;&#60;p&#62;Area 0&#60;/p&#62;&#60;/div&#62;&#60;/div&#62;&#60;/div&#62;&#60;/li&#62;</p>
+														<p class="code"> &#60;li class="column tt_stacked"&#62;&#60;div class="row editblock"&#62;&#60;div class="edittext"&#62;&#60;div class="text"&#62;&#60;p&#62;Area 1&#60;/p&#62;&#60;/div&#62;&#60;/div&#62;&#60;/div&#62;&#60;/li&#62;</p>
+														<p class="code">&#60;/ul&#62;</p>
+													</div>
+												</div>
+	
+											</div>
+											<input id="toggle16" type="radio" name="accordion" /><label for="toggle16"><p class="format2">Swiper Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Swiper Module</p>
+														<p class="format1">Swipable element lists using CSS transforms.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p>Add the following <span class="boldtext">data-attributes</span> to an <span class="boldtext">ul.swiperarea</span> or pass them in a <span class="boldtext">view module</span> using <span class="boldtext">view</span> eg: data-pass="autoplay:on,nav:on"</p>
+														<p>Uses <span class="boldtext">zSlider</span> from <a href="https://github.com/creeperyang/zSlider" title="link to zSlider on github" target="_blank">https://github.com/creeperyang/zSlider</a></p>
+														<p></p>             
+														<p><span class="boldtext">data-current</span> = 1 [ sets the starting slide number ] (the default is 1)
+														<p><span class="boldtext">data-duration</span> =  0.8: [ sets the slide transition speed in seconds ] (the default is 0.8)
+             										<p><span class="boldtext">data-link</span> = 'on': [ allows any href links to work when when clicked ] (the default is off)</p>
+														<p><span class="boldtext">data-minpercent</span> = 0.2 [ sets the % to decide to swipe in seconds ] (the default is 0)
+														<p><span class="boldtext">data-autoplay</span> = 'on': [ enables the autoplay function ] (the default is on)
+														<p><span class="boldtext">data-direction</span> = 'left': [ sets the slide movement direction left or right ] (the default is left) 
+														<p><span class="boldtext">data-interval</span> = 5: [ sets the slide waiting time in seconds ] (the default is 5)</p>
+             										<p><span class="boldtext">data-nav</span> = 'on': [ displays navigation ] (the default is off)</p>
+														<p><span class="boldtext">data-id</span> = 'softwareswiper': [ adds a class of this name to the parent <span class="boldtext">.swiperarea</span> element ] (the default is no added class)</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+              										<p>Each slide is a <span class="boldtext">li element</span></p>
+														<p>The CSS classes are defined in <span class="array">desktop.css</span>.</p>
+														<p></p>
+														<p class="format3">Swiper:</p>
+														<p class="code">&#60;ul class="area editablearea swiperarea" data-id="softwareswiper"&#62;</p>
+														<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editimage"&#62;</p>
+														<p class="code">&#60;div class="text" style="background-image:url(documents/Images/elements/Breakglass-logo-79h.png);"&#62;&#160;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="edittext"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;p&#62;Emergency access control made easy&#60;/p&#62;</p>
+														<p class="code">&#60;p&#62;&#60;a href="Mainframe-Security_Software-Solutions_Breakglass.html" class="edittextlink" target="_blank" title="click to learn more">LEARN MORE &#62;&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>						
+														<p class="code">&#60;/div&#62;</p>
+             										<p class="code">&#60;/li&#62;</p>
+              										<p class="code">&#60;li class="column"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>					
+														<p class="code">&#60;div class="editimage"&#62;</p>
+														<p class="code">&#60;div class="text" style="background-image:url(documents/Images/elements/racfGUI-logo-79h.png);"&#62;&#160;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="edittext"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;p&#62;Simplifying Help Desk basic RACF admin&#60;/p&#62;</p>
+														<p class="code">&#60;p&#62;&#60;a href="Mainframe-Security_Software-Solutions_racfGUI.html" class="edittextlink" target="_blank" title="click to learn more">LEARN MORE &#62;&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+              										<p class="code">&#60;/li&#62;</p>
+              										<p class="code">&#60;li class="column"&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle17" type="radio" name="accordion" /><label for="toggle17"><p class="format2">Table Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Table Module</p>
+														<p class="format1">Convert text paragraphs into a html table (and back again in edit view).</p>
+														<p></p>
+														<p class="format3">Configuration:</p>												  
+														<p>Add table elements listed below to a <span class="boldtext">div with a class of text</span> inside a <span class="boldtext">div with a class of edittext</span></p>
+														<p>One single line thead element header and one single line tfooter element footer are allowed if required.</p>
+														<p></p>
+														<p class="format3">Table:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="edittext"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;</p>
+														<p class="code">&#60;table&#62;</p>
+														<p class="code">&#60;thead&#62;&#60;tr&#62;&#60;td colspan="2"&#62;Table Header&#60;/td&#62;&#60;/tr&#62;&#60;/thead&#62;</p>
+														<p class="code">&#60;tbody&#62;</p>
+														<p class="code">&#60;tr&#62;&#60;td&#62;St Albans:&#60;/td&#62;&#60;td&#62;01727 738750&#60;/td&#62;&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;&#60;td&#62;Sittingbourne:&#60;/td&#62;&#60;td&#62;01795 426775&#60;/td&#62;&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;&#60;td&#62;Credit Control:&#60;/td&#62;&#60;td&#62;01795 432230&#60;/td&#62;&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;&#60;td&#62;Purchase Ledger:&#60;/td&#62;&#60;td&#62;01795 432220&#60;/td&#62;&#60;/tr&#62</p>;
+														<p class="code">&#60;tr&#62;&#60;td&#62;Finance:&#60;/td&#62;&#60;td&#62;01795 432210&#60;/td&#62;&#60;/tr&#62;</p>
+														<p class="code">&#60;tr&#62;&#60;td&#62;Group Resources:&#60;/td&#62;&#60;td&#62;01795 426775&#60;/td&#62;&#60;/tr&#62;</p>
+														<p class="code">&#60;/tbody&#62;</p>
+														<p class="code">&#60;/table&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;	</p>											
+														<p class="code">&#60;/div&#62;</p>
+													</div>
+												</div>
+
+											</div>
+											<input id="toggle18" type="radio" name="accordion" /><label for="toggle18"><p class="format2">Video Module</p></label>
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">Video Module</p>
+														<p class="format1">Display HTML Video in Panel or Iframe</p>
+														<p></p>
+														<p class="format3">Videopanel Configuration:</p>												  
+														<p>Add the three <span class="boldtext">div</span> elements listed below into an <span class="boldtext">editmodule with a class of videopanel</span></p>
+														<p>Configure the links to the appropriate sources and API eg: vimeo, youtube etc.</p>
+														<p></p>
+														<p class="format3">Videopanel Video:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule videopanel"&#62;</p>
+														<p class="code">&#60;div class="video-banner banner1" data-video-banner="https://player.vimeo.com/external/232830853.hd.mp4?s=917915a20e91670341b4d249bde9481bff3b8a96&#38;profile_id=174" data-video-banner-poster="documents/Images/videos/videopanel-default.jpg"&#62;</p>
+														<p class="code">&#60;div class="responsive-video"&#62;&#60;video poster="documents/Images/videos/videopanel-default.jpg" autoplay="" loop=""&#62;&#60;source type="video/mp4" src="https://player.vimeo.com/external/232830853.hd.mp4?s=917915a20e91670341b4d249bde9481bff3b8a96&#38;profile_id=174"&#62;&#60;/video&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;div class="video-content"&#62;&#60;div class="video-content_inner"&#62;&#60;div class="video-content_inner_inner"&#62;&#60;h1&#62;Helping you make the most of your mainframe environment&#60;/h1&#62;&#60;/div&#62;&#60;/div&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format3">Iframe Configuration:</p>												  
+														<p>Add an <span class="boldtext">iframe with a class of youtubeiframe, vimeoiframe etc</span> inside an <span class="boldtext">editmodule with a class of youtube-video, vimeo-video etc</span></p>
+														<p>Configure the links to the appropriate sources and API eg: vimeo, youtube etc.</p>
+														<p></p>
+														<p class="format3">Iframe Video:</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule youtube-video r16-9"&#62;</p>
+														<p class="code">&#60;iframe id="youtube1" class="youtubeiframe" type="text/html" src="//www.youtube.com/embed/H9KpC5E8pdc?origin=//rsmpartners.com&#38;showinfo=0&#38;modestbranding=1&#38;rel=0&#38;autoplay=0" frameborder="0" allowfullscreen&#62;&#60;/iframe&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+													</div>
+												</div>
+		
+											</div>  
+											<input id="toggle19" type="radio" name="accordion" /><label for="toggle19"><p class="format2">View Module</p></label>		
+											<div class="row editblock">
+			
+												<div class="edittext">
+													<div class="text">
+														<p class="format2 tt_undisplay">View Module</p>
+														<p class="format1">Inserts elements from editable Pages within a Page. Cross-domain compatible.</p>
+														<p></p>
+														<p class="format3">Configuration:</p>
+														<p></p>
+														<p id="View Module">Add the following <span class="boldtext">data-attributes</span> to the <span class="boldtext">link</span> inside: <span class="code">&#60;div class="text"&#62;&#60;a&#62;&#60;/a&#62;&#60;/div&#62;</span></p>
+														<p></p>
+														<p class="info"><span class="boldtext">data-amount</span> = '1': [ defines number of results to show and paginate if data-id is 'index' (the default is 0 to show all)  ]</p>
+														<p class="info"><span class="boldtext">data-delay</span> = 'on': [ if present will defer loading so that an external link can be used to activate ] (the default is load on page load)</p>
+														<p class="info"><span class="boldtext">data-empty</span> = 'a message': [ if data-id is filelist, this message will display if no documents are returned ] (the default is no message)</p>
+														<p class="info"><span class="boldtext">data-exclude</span> = 'me': [ will remove requesting page from results if present ]</p>
+														<p class="info"><span class="boldtext">data-filter</span> = 'editarchive': [ defines filter tag of results to show and paginate if data-id is 'archive' (the default is to show all)  ]</p>
+														<p class="info"><span class="boldtext">data-format</span> = 'stacker': [ will format elements as a Stacker module ] or 'swiper': [ will format elements as a Swiper module ] or 'slideshow': [ will format elements as a Slideshow module ] or 'library' [ will format elements as a Library module ] or 'lightbox' [ will format elements as a Lightbox module ] (the default is no format) NB: use <span class="boldtext">data-pass</span> to specify any attributes to be applied to the final module</p>
+														<p class="info"><span class="boldtext">data-full</span> = '1': [ defines the number of elements included within a pulled block ] (the default is 1 ie: the first editimage element and the first edittext element)</p>
+														<p class="info"><span class="boldtext">data-id</span> = 'index': [ show paginated page list from linked Index page ] or 'list': [ show page list from linked Index page ] or 'menu': [ show Menu listing from linked page (for sitemap use 'Site-Map.html' / for site menu use 'index.html') ] or 'images': [ show images from linked page or folder ] or 'blocks': [ show Editblock areas from linked page ] or 'area': [ show Area from linked page ] or 'archive': [ shows menu from ARCHIVE folder ] or 'filelist': [ shows list of files from linked folder ] REQUIRED</p>
+														<p class="info"><span class="boldtext">data-link</span> = on': [ will disable links on pulled images ] (the default is 'on' to enable links)</p>
+														<p class="info"><span class="boldtext">data-names</span> = 'editarea,editfocus': [ defines tags on which to filter results (separate multiples with a comma) ] use 'classname' if ul.area classname is required (eg slideshowarea)</p>
+														<p class="info"><span class="boldtext">data-onlyarea</span> = 'me' [ will only show matching 'area' tag pages from results if present ]</p>
+														<p class="info"><span class="boldtext">data-onlyfocus</span> = 'me': [ will only show matching 'focus' tag pages from results if present ]</p>
+														<p class="info"><span class="boldtext">data-pass</span> = 'columns:3,autoplay:on' [ will pass on the included data attributes if a module is specified in <span class="boldtext">data-format</span> ]</p>
+														<p class="info"><span class="boldtext">data-scroll</span> = 'on': [ if enabled will scroll down to any pulled Stacker ] ( the default is no scroll )</p>
+														<p class="info"><span class="boldtext">data-sort</span> = 'unrank' [ display by descending menu rank ] or  'rank' [ display by ascending menu rank ] or '21': [ display latest (pages by editdate tag or page mod date / files by date tag or file creation date) first ] or '12': [ display earliest first ] or 'az': [ display alphanumeric ] or 'za': [ display reverse alphanumeric ] (the default is by menu rank)</p>
+														<p class="info"><span class="boldtext">data-start</span> = 'random': [ will randomise return order if present ]</p>
+														<p class="info"><span class="boldtext">data-submenu</span> = 'on': [ will allow hidden subpages to be visible in a menu listing ] (the default is not to list hidden subpages)</p>
+														<p class="info"><span class="boldtext">data-values</span> = 'security,z system': [ defines tag values (should match data-names) or ul.area classname (eg: 'slideshowarea') by which to filter results (separate multiples with a comma) ]</p>
+														<p class="info"><span class="boldtext">data-wrap</span> = 'none': [ doesn't wrap returned data ] or 'list': [ wraps returned non-menu data in 'li' elements ] or 'pull': [ wraps returned non-menu data in 'div' elements ] (the default is no wrap)</p>
+														<p></p>
+														<p class="format3">Usage:</p>
+														<p>To allow for non-Javascript users, <span class="boldtext">non-folder</span> urls must be specified as follows: <span class="aref">[full cgi path]/view.pl?url=[page]</span> eg: ../cgi-bin/view.pl?url=News.html&#38;id=menu ( add '&#38;format=fullmenu' to force a full menu listing when required )</p>
+														<p># ADMIN - updates Page html menus without hidden: <span class="afunc">view.pl?id=menu&#38;url=index.html&#38;js=1&#38;format=updatemenu</span></p>
+														<p># ADMIN - updates Page html menus with hidden: <span class="afunc">view.pl?id=menu&#38;url=Site-Map.html&#38;js=1&#38;format=updatemenu</span></p>
+														<p></p>
+														<p class="format3">View:</p>
+														<p class="format4">Get Paginated List from an Index Page:</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="index" data-format="stacker" amount="6" data-names="editarea" data-values="security" href="../cgi-bin/view.pl?url=News.html" title="view latest news"&#62;latest news&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get List from an Index Page:</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="list" data-amount="1" data-exclude="me" href="../cgi-bin/view.pl?url=News.html" title="view latest news"&#62;latest news&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get full Site Map (includes hidden Pages):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="menu" data-amount="0" href="../cgi-bin/view.pl?url=Site-Map.html" title="view Site Map"&#62;Site Map&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p> 
+														<p></p>  
+														<p class="format4">Get full Site Menu (excludes hidden Pages):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="menu" data-amount="0" href="../cgi-bin/view.pl?url=index.html" title="view Site Menu"&#62;Site Menu&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62; </p> 
+														<p></p>
+														<p class="format4">Get Menu from a Page:</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="menu" data-amount="0" href="../cgi-bin/view.pl?url=Layout-Modules.html" title="view Layout Modules"&#62;Layout Modules&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Editblocks from a Page</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="blocks" href="../cgi-bin/view.pl?url=Sandbox_3-Rings.html" title="view 3 Rings"&#62;3 Rings&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get an Area from a Page</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="area" data-names="classname" data-values="presentationarea" href="../cgi-bin/view.pl?url=index.html" title="view slideshow"&#62; &#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get All Editable Areas from a Page</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="area" data-names="classname" href="../cgi-bin/view.pl?url=index.html" title="view areas"&#62; &#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Slideshow Area from a Page</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="area" data-format="slideshow" data-names="classname" data-values="slideshowarea" data-pass="startdelay:1000,delay:200,interval:500,hover:on,controller:on,auto:on" href="../cgi-bin/view.pl?url=index.html" title="view slideshow"&#62; &#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Images from a Folder as Swiper</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="images" data-format="lightbox" href="../Sandbox/westfield-house/" title="view gallery"&#62;image gallery&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Use Link to Get Images from a Folder as Swiper</p>
+														<p class="code"><p class="code">&#60;li class="column"&#62;</p>
+														<p class="code"><p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code"><p class="code">&#60;div class="editimage"&#62;</p>
+														<p class="code"><p class="code">&#60;div class="text" style="background-image:url(documents/Sandbox/pete/strategy/strategy-2.jpg);"&#62;</p>
+														<p class="code"><p class="code">&#60;p&#62; &#60;/p&#62;</p>
+														<p class="code"><p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;div class="editmodule slider"&#62;</p>
+														<p class="code">&#60;div class="text" data-effect="slideup" data-parent="li.column"&#62;</p>
+														<p class="code">&#60;p class="format1"&#62;THE HOOK&#60;/p&#62;</p>
+														<p class="code">&#60;p class="format3"&#62;Website / Powerpoint Deck / eShots&#60;/p&#62;</p>
+														<p class="code">&#60;p&#62;&#60;a class="edittextlink" title="learn more about The Hook" href="Strategy_2.html"&#62;LEARN MORE&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;p&#62;&#60;a class="edittextlink" data-modulelink="on" data-target="view-grid" href="documents/Sandbox/presentation/westfield-house/" title="view gallery"&#62;image gallery&#60;/a&#62;&#60;/p&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p class="code">&#60;li class="column tt_pullgrid" data-moduletarget="view-grid"&#62;</p>
+														<p class="code">&#60;div class="row editblock"&#62;</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="images" data-delay="on" data-format="lightbox" href="documents/Sandbox/presentation/westfield-house/" title="view gallery"&#62;image gallery&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/li&#62;</p>
+														<p></p>
+														<p class="format4">Get Images from a Folder as Imagebox</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="images" data-format="lightbox" data-pass="id:cncimagebox,type:imagebox,links:off" href="documents/Images/elements/cnc-pics/" title="view gallery"&#62;image gallery&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Images from a Folder as a List</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="images" data-link="off" href="documents/Images/elements/cnc-pics/" title="view gallery"&#62;image gallery&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Filelist from a Folder</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="filelist" data-empty="Documents available soon." href="documents/Policies/" title="view Policies" target="_blank"&#62;view Policies&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p>..which should return a list in the following format:</p>
+														<p class="code">&#60;a class="filelistitem filelistpdf" href="documents/PDF/Policies/Terms-of-Business/POL50-Demo-Test-2.pdf" title="download file" target="_blank" data-size="1562k" data-type="PDF" data-published="26/02/2018"&#62;&#60;span&#62;Pol50 Demo Test 2&#60;/span&#62;&#60;/a&#62;</p>
+														<p>..or display the <span class="boldtext">data-empty</span> attribute if no documents are returned.</p>
+														<p></p>
+														<p class="format3">ARCHIVE</p>
+														<p class="format4">Get List of Filters from Pages (All Months):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="menu" data-amount="0" data-filter="editarchive" href="../cgi-bin/view.pl?url=Group-News.html/" title="link to Group News"&#62;view Group News&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get List of Base Folder and Subfolders from Archive (All Years):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="archive" data-filter="editarchive" href="../cgi-bin/view.pl?url=Archive/Group-News/" title="link to News Archive"&#62;view News Archive&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get List of Subfolders from Archive (All Years):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="archive" data-filter="editarchive" data-exclude="me" href="../cgi-bin/view.pl?url=Archive/Group-News/" title="link to News Archive"&#62;view News Archive&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Archive Subfolder Folders List (Specified Year and Months):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="archive" data-filter="editarchive" href="../cgi-bin/view.pl?url=Archive/Group-News/2017/" title="link to 2017 Archive"&#62;view 2017 Archive&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Archive Subfolder Pages Paginated List (All Months):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="index" data-amount="9" data-format="stacker" data-position="lower" data-filter="editarchive" href="../cgi-bin/view.pl?url=Archive/Group-News/2017/index.html" title="link to 2017 Archive"&#62;view 2017 Archive&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get filtered Archive Subfolder Pages Paginated List (Specified Month):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="index" data-amount="9" data-format="stacker" data-values="May" data-filter="editarchive" href="../cgi-bin/view.pl?url=Archive/Group-News/2017/" title="link to May 2017 Archive"&#62;view May 2017 Archive&#60;/a&#62;&#60;/div&#62;</p>
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get full Archive Subfolder Menu (All Months):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="menu" data-filter="editarchive" href="../cgi-bin/view.pl?url=Archive/Group-News/2017/index.html" title="view 2017 News"&#62;2017&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+														<p class="format4">Get Filtered Archive Subfolder Menu (Specified Month):</p>
+														<p class="code">&#60;div class="editmodule view"&#62;</p>				   
+														<p class="code">&#60;div class="text"&#62;&#60;a data-id="menu" data-filter="editarchive" data-values="June" href="../cgi-bin/view.pl?url=Archive/Group-News/2017/" title="link to June 2017 News"&#62;view June 2017 Archive&#60;/a&#62;&#60;/div&#62;</p> 
+														<p class="code">&#60;/div&#62;</p>
+														<p></p>
+													</div>
+												</div>
+			
+											</div>
+										</li>
+									</ul>
+								   <ul class="area configarea">
+										<li class="column">
+											<div class="row editblock">
+			
+												<div class="edittitle">
+													<div class="text"><p class="format1">Configuration Variables</p></div>
+												</div>
+												<div class="edittext">
+													<div class="text"><p><span class="boldtext">E.scrolladj</span> will adjust the height of the autoscroll when an Accordion is opened. Alter in <span class="afile">config.js</span> (the default is 0)</p></div>
+												</div>
+												<div class="edittext">
+													<div class="text"><p><span class="boldtext">$dositemap</span> switches on auto updating of the sitemap.xml file when set to '1'. Alter in <span class="afile">defs.pl</span> (the default is 'undef')</p></div>
+												</div>	
+												<div class="edittext">
+													<div class="text"><p><span class="boldtext">%headers => analytics_gref</span> if required sets the Google Code on new Pages when formatted as 'analytics_gref' => [ "name","content","UA-XXXXXXXX-1","Google Code" ]'. Alter in <span class="afile">defs.pl</span> (the default is no code)</p></div>
+												</div>	
+												<div class="edittext">
+													<div class="text"><p><span class="boldtext">%headers => analytics_lref</span> if required sets the Lead Forensics Code on new Pages when formatted as 'analytics_lref' => [ "name","content","domainname.co.uk","Lead Forensics Code" ]'. Alter in <span class="afile">defs.pl</span> (the default is no code)</p></div>
+												</div>		
+												<div class="edittext">
+													<div class="text"><p><span class="boldtext">%headers => analytics_wref</span> if required sets the WOW Code on new Pages when formatted as 'analytics_wref' => [ "name","content","49accf29-f990-4afc-8cb3-d248d186edf7","WOW Code" ]'. Alter in <span class="afile">defs.pl</span> (the default is no code)</p></div>
+												</div>		
+
+											</div>
+										</li>
+									</ul>
+									<ul class="area footerarea">
+										<li class="column">
+											<div class="row">
+								
+												<div class="text small lefter">
+												   <p class="sitename">&#160;</p>
+												</div>
+												<div class="text small righter">
+													<p>&#169; thatsthat 2019</p>
+												</div>
+							   
+											</div>
+										</li>
+									</ul>
+								</form>
+
+							</div>
+						</div>
+	
+					</div>	
+				</div>
+	
+			</div>
+			<div class="tt_editref"></div>
+		</div>
+
+	</div>
+	<div id="tt_modal"><div class="modal-container"><div class="modal-wrapper"><div class="m-header"><p></p></div><div class="m-inner"><p></p></div></div></div><a id="m-close" href="#">&times;</a></div>
+
+</body>	
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<base href="../" />
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<link rel="stylesheet" type="text/css" media="screen" href="admin/admin.css" />
+
+<script charset="utf-8" src="admin/min.js" type="application/javascript"></script>
+<script charset="utf-8" src="admin/minsu.js" type="application/javascript"></script>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+<meta content="Content: Copyright (c) That's That Ltd 2019" name="copyright" />
+<meta content="Dave Pilbeam" name="author" />
+<meta content="thatsthat" name="application-name" />
+
+<title>Search Folders - Admin</title>
+</head>
+<body id="body0" class="searchfolders tt_nopointer tt_notouch tt_nocss3 tt_uncookied tt_unjs">
+
+	<div class="m-container tmp">
+		<input id="m-toggle-top" type="checkbox" class="m-toggle">
+		<label class="m-toggle-label tt_hidden" for="m-toggle-top">
+			<span class="m-toggle-icon sitemapbutton"></span>
+		</label> 
+		<label class="m-overlay" for="m-toggle-top"></label>
+
+		<div class="tmp m-drawer">
+			<div class="tmp m-nav">
+
+			</div>
+		</div>	
+		<div class="m-pusher-container css-move tmp">
+			<div id="tt_alldiv" class="tmp">
+				
+				<div id="tt_topbar" class="tmp"></div>
+				<div id="tt_topdiv" class="tt_fixhead tmp">					
+					
+					<div class="topbar">
+						<a class="navblock nav-tt" target="_blank" href="index.html"  title="Back to Live Site">&#160;</a><a class="navblock nav-home" href="../cgi-bin/admin/libraryadmin.pl?type=viewall" title="back to Admin home">&#160;</a><h1 class="tt_hide"><a class="navtext" href="../cgi-bin/admin/libraryadmin.pl?type=viewall" title="back to home">Home</a></h1><a class="navblock nav-search" href="../cgi-bin/admin/libraryadmin.pl?type=searchfolders" title="site search">&#160;</a><a class="navblock nav-help" target="_blank" href="admin/help.html" title="Admin help">&#160;</a><a class="navblock nav-backup" href="../cgi-bin/admin/libraryadmin.pl?type=downloadfolders" title="site backup and restore">&#160;</a><a class="navblock nav-alert" href="../cgi-bin/admin/libraryadmin.pl?type=alertfolders" title="site alerts">&#160;</a>
+					</div>
+				
+				</div>
+
+				<div id="tt_mobdiv" class="tmp">
+					<div id="tt_scrolldiv" class="tmp">
+
+						<div id="tt_tmp1" class="tmp">
+							<div class="tt_tmp1inner tmp">
+
+								<form id="cgi_form_0" class="sendable" method="post" accept-charset="UTF-8" action="../cgi-bin/admin/libraryadmin.pl">
+			
+									<div class="area setheaderarea"></div>
+									<div class="area navarea">
+										<div class="column">			  
+											<div class="row">
+			
+												<div class="text nav-box">
+													<h3>Enter terms to <b class="ititle">Search</b> or <b class="ititle">Search and Replace</b>:</h3>
+													<div class="inputline unsearch">
+														<label for="find_0">Find:</label><input type="text" id="find_0" name="pre_find_0" tabindex="1" value="" /><input type="checkbox" id="regexp_0" class="tt_submitted" name="opt_regexp_0" tabindex="-1" value="1" /><label class="code css-check" for="regexp_0">RegEx</label>
+													</div>
+													<div class="inputline unsearch replacearea">
+														<label for="replace_0">Replace:</label><input type="text" id="replace_0" class="tt_submitted" name="opt_replace_0" tabindex="2" value="" /><input id="code_0" class="tt_submitted" name="opt_code_0" tabindex="-1" value="1" type="checkbox"><label class="code css-check" for="code_0">All Code</label>
+													</div>
+													<input id="url_0" name="opt_url_0" value="documents" type="hidden" />
+													<input id="type_0" name="opt_type_0" value="changesearchfolders" type="hidden" />
+												</div>
+					   
+											</div>
+											<div class="row nav-controls">
+					
+												<div class="text"><a class="navblock nav-return" href="../cgi-bin/admin/libraryadmin.pl?type=viewall" title="back to previous">&#160;</a></div>
+												<div class="text infotext">		
+													<h4>Search or Search/Replace:</h4>
+													<p>If you only want to search without altering any files, leave the Replace box empty.</p>
+													<p>Separate multiple search terms with commas.</p>
+													<p class="code">Admin Users: The search will be treated as a <a class="blank" href="http://perldoc.perl.org/perlrequick.html" title="link to Regular Expressions guide">Regular Expression</a> if the <span class="darkred">RegEx</span> box is checked.</p>	
+													<p class="code">Admin Users: The search will look in all page content, including scripts and HTML if the <span class="darkred">All Code</span> box is checked.</p>	
+												</div>							
+												<div class="text navsubmit"><input type="submit" name="submit_0" class="directresponse sub-s navblock nav-save" title="Search" value="" /></div>								
+
+											</div>
+											<div class="row">
+
+												<div class="text response_target"></div>
+
+											</div>
+										</div>
+									</div>
+									<div class="area mainarea">
+										<div class="column">			  
+											<div class="row">
+					
+												<div class="text"></div>
+								
+											</div>
+										</div>
+									</div>
+									<div class="area footerarea">
+										<div class="column">
+											<div class="row">
+							
+												<div class="text small lefter">
+												   <p class="sitename">&#160;</p>
+												</div>
+												<div class="text small righter">
+													<p>&#169; thatsthat 2019</p>
+												</div>
+						   
+											</div>
+										</div>
+									</div>
+
+								</form>
+
+							</div>
+						</div>
+	
+					</div>	
+				</div>
+	
+			</div>
+			<div class="tt_editref"></div>
+		</div>
+
+	</div>
+	<div id="tt_modal"><div class="modal-container"><div class="modal-wrapper"><div class="m-header"><p></p></div><div class="m-inner"><p></p></div></div></div><a id="m-close" href="#">&times;</a></div>
+
+</body>	
+</html>

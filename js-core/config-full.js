@@ -349,7 +349,7 @@ if( E.bm == 'ac' && E.ias < 4.5){ $('body0').getElements('.m-toggle-label,.m-ove
 G.gG('init');
 if( window.location.hash ){ $$('.tabarea,.tt_accordion,.optbar').fireEvent('hash',[ 'tt_'+window.location.hash.replace(/.*?\#/,'') ]); } 
 } }); 
-if(G.googlemap.init && G.googlemap.init.length > 0){ new Asset.javascript(G.googlemap.g+'.google.com/maps/api/js?v='+G.googlemap.v+'&key=AIzaSyAcMOZeIqC5k8rabJ880NCV_A4m1t_9Z_U&callback=G.googlemap.onF',{}); }
+if(G.googlemap.init && G.googlemap.init.length > 0){ new Asset.javascript(G.googlemap.g+'.google.com/maps/api/js?v='+G.googlemap.v+'&key=[KEY]&callback=G.googlemap.onF',{}); }
 if(!dd){dd = G.functions.imagemap}if(dd && typeOf(dd) == 'function'){dd();}
 G.inviewG( [['.tt_animate:not(.slider)',null,'init'],['.counter',null,null,'inview']] );
 G.inscrollG();G.scrollG(G.inviewG.pass([ [['.tt_animate:not(.tt_slider):not(.slider)','overflow'],['.counter',null,null,'inview']] ]));G.resizeG(G.refreshG);

@@ -1,2 +1,2 @@
 # editthis
-fast non-php flat-file cms
+fast flat-file cms in javascript and perl

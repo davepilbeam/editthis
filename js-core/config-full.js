@@ -32,7 +32,9 @@ usable:(document.all && !window.atob && document.addEventListener)?null:1,capabl
 bsr:(window.navigator.pointerEnabled || window.navigator.msPointerEnabled)?4:(!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)?3:('WebkitAppearance' in document.documentElement.style)?2:(document.all)?1:(window.InstallTrigger)?0:4,nm:'unknown',os:'windows',ias:0,ios:0,device:'pc',vs:'',c1:'animation-timing-function',c2:'transform-origin',c3:'background-position',css:['-moz-','-ms-','-webkit-','-o-',''], 
 cpu:(navigator.oscpu)?navigator.oscpu:(navigator.cpuClass)?navigator.cpuClass:'not detected',dev:'pc',display:'desktop',durl:document.URL.replace(/^http:\/\//,''),fsh:('ActiveXObject' in window)?1:(navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash'] != undefined )?1:null,bm:'',current:{funcs:{}},edtmr:null,gstr: 'abcdefghijklmnopqrstuvwxyz',modal:{},pd:'',pl:'',restore:'UPLOADS/RESTORE/',seq:function(e){var m = '';if(e.shift){m+= 'shift-';}if(e.control){m+= 'control-';}if(e.alt){m+= 'alt-';}if(e.meta){mod+= 'meta-';}return m+e.key;},tempuser:null,temppass:null,title:'',site:'',tmr:null,viewportG:function(){return {x:(document.documentElement.clientWidth && document.documentElement.clientWidth > 0)?document.documentElement.clientWidth:screen.width,y:(document.documentElement.clientHeight && document.documentElement.clientHeight > 0)?document.documentElement.clientHeight:screen.height};},vp:null,ura:[],urb:'',urc:'',uri:'', 
 e_tags: ['description','gref','keywords'], 
-width: 'desktop' 
+width: 'desktop' ,
+b64encode: function(a){return btoa(encodeURIComponent(a).replace(/%([0-9A-F]{2})/g,function(match,p1){return String.fromCharCode('0x'+p1);}));},
+b64decode: function(a){return decodeURIComponent(Array.prototype.map.call(atob(a), function(c){return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);}).join(''));}
 });
 Object.append(G,{ 
 functions:{ 
@@ -67,7 +69,7 @@ msg:{
 }
 },
 geo: { ip:'',country_code:'',country_name:'' },
-googlemap: { i: 'LIB/css/css_icon_map.png',init: [],g: ('https:' == document.location.protocol)?'https://maps-api-ssl':'http://maps',v: '3' },  
+googlemap: { g: ('https:' == document.location.protocol)?'https://maps-api-ssl':'http://maps',i: 'LIB/css/css_icon_map.png',init:[],k:E.b64decode('API_key_goes_here'),v:'3' },
 imagebox: {},
 intro: [30],//delays 
 library: { 
@@ -349,7 +351,7 @@ if( E.bm == 'ac' && E.ias < 4.5){ $('body0').getElements('.m-toggle-label,.m-ove
 G.gG('init');
 if( window.location.hash ){ $$('.tabarea,.tt_accordion,.optbar').fireEvent('hash',[ 'tt_'+window.location.hash.replace(/.*?\#/,'') ]); } 
 } }); 
-if(G.googlemap.init && G.googlemap.init.length > 0){ new Asset.javascript(G.googlemap.g+'.google.com/maps/api/js?v='+G.googlemap.v+'&key=[KEY]&callback=G.googlemap.onF',{}); }
+if(G.googlemap.init && G.googlemap.init.length > 0){ new Asset.javascript(G.googlemap.g+'.google.com/maps/api/js?v='+G.googlemap.v+'&key='+G.googlemap.k+'&callback=G.googlemap.onF',{}); }
 if(!dd){dd = G.functions.imagemap}if(dd && typeOf(dd) == 'function'){dd();}
 G.inviewG( [['.tt_animate:not(.slider)',null,'init'],['.counter',null,null,'inview']] );
 G.inscrollG();G.scrollG(G.inviewG.pass([ [['.tt_animate:not(.tt_slider):not(.slider)','overflow'],['.counter',null,null,'inview']] ]));G.resizeG(G.refreshG);

@@ -4116,8 +4116,8 @@ $n =~ s/\//$c{'repdash'}/g;
 $n =~ s/\+\+/$c{'repdash'}/g;
 $n =~ s/\&#38;/&/;
 $n =~ s/:/;/g;
-$n =~ s/\?/#/g;
-$n =~ s/'/^/g; #'
+$n =~ s/'/^/g
+$n =~ s/\?$/^^/
 return $n;
 }
 
@@ -4137,9 +4137,9 @@ $n =~ s/====/$c{'docspace'}/g;
 $n =~ s/($c{'repdash'})($c{'repdash'})/\+\+/g;
 $n =~ s/$c{'repdash'}/\//g;
 $n =~ s/\+\+/$c{'repdash'}/g;
-$n =~ s/#/?/g;
 $n =~ s/;/:/g;
-$n =~ s/\^/'/g; #'
+$n =~ s/\^\^$/?/;
+$n =~ s/\^/'/g;
 $n =~ s/\&/&#38;/g;
 return $n;
 }

@@ -762,7 +762,7 @@ $otxt =~ s/<meta(\s+content=".*?")* property="og:image"(\s+content=".*?")* \/>/<
 if( defined $up && $up =~ /rank/ ){  if( $otxt =~ /<meta\s+content="(.*?)"\s+name="editmenu"\s*\/>/ ){ $rr = $1;
 my $dot = $rr;$dot =~ s/\.(0|00)$//;if($dot =~ /\./){$un =~ s/\.//g;}
 if($rr =~ /^(.+)\.00$/){$rr = $1.$un.".00";} else {$rr.= $un;}$otxt =~ s/<meta\s+content=".*?"\s+name="editmenu"\s*\/>/<meta content="$rr" name="editmenu" \/>/; } } #<meta content="006.00" name="editmenu" /> 006.000.00
-$otxt =~ s/(<meta\s+content=".*?"\s+name="application-name"\s*\/>\s*)(<meta content=".*?" name="editmodified"\s*\/>\s*)*/$1<meta content="$mod" name="editmodified" \/>\n/;
+$otxt =~ s/<meta content="([0-9]+)" name="editmodified"\s*\/>/<meta content="$mod" name="editmodified" \/>/;
 if( defined $ntxt ){ $ntxt =~ s/\s*<div class="tt_editref"><\/div>\s*$//;$otxt =~ s/^(.+)(<div id="tt_alldiv".*?>.+<\/div>)(\s*<div class="tt_editref"><\/div>.+)$/$1$ntxt$3/ism; }
 ###sub_json_out({ 'check save_write 1' => "fu:$fu \nu:$u \nun:$un \nlok:$lok \nup:$up \nrr: $rr \n\n print otxt:\n$otxt \n\nntxt:\n$ntxt \n\n$err \n\n".$c{'debug'} },$c{'origin'},$c{'callback'});
 my $herr = sub_page_print($fu,$otxt);

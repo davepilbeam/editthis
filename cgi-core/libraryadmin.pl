@@ -119,6 +119,7 @@ our @seclist = ($docview.'Archive/',$templateview,$partnerview);
 
 our $menu_limit = $defs::menu_limit;
 our $version_limit = $defs::version_limit;
+our $page_limit = $defs::page_limit || 150;
 our $delete_limit = $defs::delete_limit;
 our $defupload = $docview."elements/";
 our $index_file = $defs::index_file;
@@ -396,6 +397,7 @@ my $dtmp = $fullurl;if( $type ne "login" && $type ne "viewall" && $type ne "view
 'origin' => $origin,
 'pages' => $pages,
 'pagefull' => undef,
+'pagelimit' => $page_limit,
 'pagesort' => $pagesort,
 'pagewrap' => $pagewrap,
 'partnerfolder' => $partnerfolder,
@@ -922,7 +924,7 @@ admin_display_form($type,$uu,$uptxt,"prev",\%exclude,undef,undef,undef,$nf);
 admin_json_out({ 'title' => $pdata{$pdata{'changed'}},'field' => $pdata{'changed'},'html' => admin_getpagefield( $pdata{'changed'},$pdata{$pdata{'changed'}},$pdata{'class'} ) },$origin,$callback);
 }
 } else { #child 
-close (STDOUT);
+close(STDOUT);close(STDIN);close(STDERR);
 my ($mlref,$cmref) = admin_reset_menus("resetmenupages","resetmenupages",$cc,{},"showall");
 ###admin_json_out({ 'check changeadddupepages 2' => "type:$type \nid:$id \nurl:$url \nfullurl:$fullurl \nnew:$new \n\ncm:\n\n [ @$cmref ] \n\n $debug" },$origin,$callback);
 exit(0);
@@ -943,7 +945,7 @@ if( defined $nferr ){
 $cho = "Delete ".(ucfirst $cht)."</h3><h3 class=\"updateinfo\">Warning: problem with deleting $cht $fullurl: nferr:$nferr = $debug ";
 } else {
 $cho = "Delete ".(ucfirst $cht)."</h3><h3 class=\"updateinfo\">".( ucfirst $cht )." <b>$cc<\/b> successfully deleted. ";
-if( $type =~ /pages/){ my ($mlref,$cmref) = admin_reset_menus("resetmenupages","resetmenupages",$cc,{},"showall","speed"); } else { my ($lerr,$m) = sub_libraryfile_update('editlibrary',$fullurl,\%config,'all');$cho.= $lerr if defined $lerr; }
+if( $type =~ /pages/){ my ($mlref,$cmref) = admin_reset_menus("resetmenupages","resetmenupages",$cc,{},"showall"); } else { my ($lerr,$m) = sub_libraryfile_update('editlibrary',$fullurl,\%config,'all');$cho.= $lerr if defined $lerr; }
 }
 $pre = "prev";
 #
@@ -1073,22 +1075,19 @@ $su = ".0"; # show show -> site=show/menu=hidden
 }
 ###admin_json_out({ 'check hideshowpages 2' => "type:$type \nsu:$su \nid:$id \nurl:$url \nfullurl:$fullurl \nnew:$new \n\ncm:\n\n $debug" },$origin,$callback);
 
-$| = 1;
-my $pid = fork;
-sub_log_out({ 'check hideshowpages fork' => "failed to fork: $!\n\n $debug" },$base) unless defined $pid;
-if ($pid == fork){ #parent end
 my $hclass = ( $su =~ /\.(0|00)$/ )?'mhide':'show';
 my $mclass = ( $su =~ /\.00$/ )?'mhide':'show';
 my $htclass = ($hclass eq "mhide")?'hidden':'shown';
 my $mtclass = ($mclass eq "mhide")?'hidden':'shown';
 my $hurl = $url;$hurl =~ s/^($baseview)//;
+my $hoh = admin_getpagemap( ($type =~ /folder/)?"folder":"page",$pdata{'speed'},$uri->encode($hurl),($hclass eq "mhide")?'show':'hide',($mclass eq "mhide")?'show':'hide',$htclass,$mtclass,"nowrap");
+
+my ($dref,$outref) = admin_display_reorder($base,{"$upf" => $su},$type);
+my @nmls = @{$dref};
+###admin_json_out({ 'check hideshowpages 3' => "type:$type \nupf:$upf \nfullurl:$fullurl \nnmls: \n\n".( join "\n",@nmls )."\n\n $debug" },$origin,$callback);
+my @cm = sub_admin_rankpages($type,$upf,(join "||",@nmls),\%config,{ 'outref' => $outref,'outlabel' => 'Page is '.( ucfirst($mtclass) ).' in Sitemap and '.( ucfirst($htclass) ).' in Menus','menu' => $su,'html' => $hoh }); 
+###admin_json_out({ 'check hideshowpages 4' => "type:$type \nid:$id \nupf:$upf \nnmls: \n\n".( join "\n",@nmls )."\n\n \ncm: \n\n".Data::Dumper->Dump([\@cm],["cm"])." \n\n $debug" },$origin,$callback);
 admin_json_out({ 'label' => 'Page is '.( ucfirst($mtclass) ).' in Sitemap and '.( ucfirst($htclass) ).' in Menus','menu' => $su,'html' => ( admin_getpagemap( ($type =~ /folder/)?"folder":"page",$pdata{'speed'},$uri->encode($hurl),($hclass eq "mhide")?'show':'hide',($mclass eq "mhide")?'show':'hide',$htclass,$mtclass,"nowrap") ) },$origin,$callback);
-} else { #child 
-close (STDOUT);
-my ($mlref,$cmref) = admin_reset_menus($type,$type,$upf,{ "$upf" => $su });
-###admin_json_out({ 'check hideshowpages 3' => "type:$type \nid:$id \nurl:$url \nfullurl:$fullurl \nnew:$new \n\ncm:\n\n [ @$cmref ] \n\n $debug" },$origin,$callback);
-exit(0);
-}
 
 } elsif( $type eq "listmenupages"  || $type eq "newlinkpages" || $type eq "newmenupages" || $type eq "newtitlepages" || $type eq "resetmenupages" ){
 #admin/libraryadmin.pl?type=listmenupages
@@ -1125,6 +1124,13 @@ exit;
 
 ################
 
+
+sub admin_countpages{
+my ($f) = @_;
+my $s = 0;
+if( -d $f ){ my @files = <$f*.$htmlext>;$s = scalar @files; }
+return $s;
+}
 
 sub admin_imagesize{
 my ($f) = @_; #/var/www/vhosts/pecreative.co.uk/revive.pecreative.co.uk/documents/Images/products/uncoated/
@@ -1235,7 +1241,7 @@ $uptxt =~ s/(<a class="navblock nav-return"\s*href=").*?(")/$1$upbackurl$2/g;
 
 if( $ins =~ /^rename/ ){ my $nn = ( $ins eq "renamefiles")?$nurl:$upf;$nn =~ s/\/$//;$nn =~ s/^.+\///;$uptxt =~ s/(name="pre_new_[0-9]+" value=").*?(")/$1$nn$2/;if( $ins eq "renamefiles" ){ $uptxt =~ s/(name="opt_old_[0-9]+" value=").*?(")/$1$nurl$2/; } }
 if( $ins =~ /^download/ ){ my $dd = admin_display_download($base.$upf);$uptxt =~ s/<div class="text setdownloadarea"><\/div>/$dd/;my $rr = admin_restore("list",[]);$uptxt =~ s/<div class="text setrestorearea">(.*?)<\/div>/$rr/; }
-if( $ins =~ /^reorder/ ){ my $dd = admin_display_reorder($base);$uptxt =~ s/<div class="text setreorderarea"><\/div>/$dd/; }
+if( $ins =~ /^reorder/ ){ my ($dd,$outref) = admin_display_reorder($base);$uptxt =~ s/<div class="text setreorderarea"><\/div>/$dd/; }
 
 if( $ins ne "uploadsite" && $uptxt =~ /<div class="tt_uploadsizer.*?"><\/div>/ ){
 my $sizer = admin_generate_sizes(\%imgsizes,$docview.$imagefolder.$upf);$sizer.= $inputinfo{'sizer'};
@@ -1316,7 +1322,14 @@ my @c = $tmp =~ /($qqdelim)/g;push @ps,[ ("-&#160;" x scalar @c).$ptmp->{'data'}
 
 $uph = admin_set_headers( $uph,$dlevel,1,$upf ,"pages",{} );
 
-$ntxt.= '<div class="infoline inputline">An asterisk ( <b class="red">*</b> ) indicates required fields.</div><div class="inputline"><label for="new-title_0"><span class="numeral">1</span> Page Title: <span class="red">*</span></label><textarea id="new-title_0" name="pre_new-title_0" tabindex="0" maxlength="150" placeholder="New Page Title"></textarea></div>'.$inputinfo{'title'}.'<div class="upperline inputline">&#160;</div>';
+$ntxt.= '<div class="infoline inputline">An asterisk ( <b class="red">*</b> ) indicates required fields.</div>';
+
+my $ps = admin_countpages($base);
+$ntxt.= '<div class="infoline"><h2>This site contains '.$ps.' Pages. <i>'.$page_limit.' is the maximum supported by the current interface.</i></h2></div>';
+
+if( $ps < $page_limit ){
+
+$ntxt.= '<div class="inputline"><label for="new-title_0"><span class="numeral">1</span> Page Title: <span class="red">*</span></label><textarea id="new-title_0" name="pre_new-title_0" tabindex="0" maxlength="150" placeholder="New Page Title"></textarea></div>'.$inputinfo{'title'}.'<div class="upperline inputline">&#160;</div>';
 $ntxt.= '<div class="inputline oneline"><label for="new-url_0"><span class="numeral">2</span> Page URL: </label><i class="ibefore'.( ($upf eq "")?' tt_undisplay':'' ).'">'.$par.'</i><i class="inewurl">New-Menu-Title</i><i class="iafter">.'.$htmlext.'</i></span></div>';
 $ntxt.= '<div class="inputline inewurl oneline"><label for="new-menuurl_0">Title Shown in Menus: <span class="red">*</span></label>'.( ($upf ne "")?'<input type="hidden" name="opt_new-parent_0" value="'.$par.'" />':'' ).'<input id="new-menuurl_0" class="filterselect" name="pre_new-menuurl_0" tabindex="0" maxlength="50" type="text" placeholder="New Menu Title" value="" /></div>'.$inputinfo{'menu'}.'<div class="lowerline inputline">&#160;</div>';
 $ntxt.= '<div class="inputline"><label for="new-name_0"><span class="numeral">3</span> Page Short Title: <span class="red">*</span></label><input id="new-shortname_0" name="pre_new-shortname_0" tabindex="0" maxlength="30" type="text" placeholder="Short Title" value="" /></div>'.$inputinfo{'short'}.'<div class="lowerline inputline">&#160;</div>';
@@ -1345,6 +1358,8 @@ $ntxt.= $inputinfo{'tags'}.'</h2></div>';
 $ntxt.= '<div class="inputline dropsub"><h2><input id="used3_0" name="used3_0" type="checkbox" /><label for="used3_0" class="tt_tabclick navblock nav-edit editalias" tabindex="0" title="edit external link">Make Page into an Alias</label><span class="dropspacer">&#160;</span>';
 $ntxt.= '<div class="inputline unurl"><label for="new-link_0">Alias Link: </label><input id="new-link_0" name="opt_new-link_0" tabindex="0" maxlength="120" type="text" value="" /></div>'.$inputinfo{'alias'};
 $ntxt.= '</h2></div><input id="case_0" name="opt_case_0" value="'.$ub.'" type="hidden">';
+
+}
 
 $uptxt =~ s/<div class="area setheaderarea"><\/div>/$uph/;
 $uptxt =~ s/(<b class="default-folder">).*?(<\/b>)/$1$upd$2/;
@@ -1450,7 +1465,14 @@ for my $i( sort keys %hs){ push @ps,$hs{$i}; }
 
 $uph = admin_set_headers( $uph,$dlevel,1,$upf ,"pages",{} );
 
-$ntxt.= '<div class="infoline inputline">An asterisk ( <b class="red">*</b> ) indicates required fields.</div><div class="inputline"><label for="old_0"><span class="numeral">1</span> Add Page beneath: <span class="red">*</span></label><select id="old_0" class="newparent" name="pre_old_0" tabindex="0">'.( join "",@s ).'</select></div><div class="lowerline inputline">&#160;</div>';
+$ntxt.= '<div class="infoline inputline">An asterisk ( <b class="red">*</b> ) indicates required fields.</div>';
+
+my $ps = admin_countpages($base);
+$ntxt.= '<div class="infoline"><h2>This site contains '.$ps.' Pages. <i>'.$page_limit.' is the maximum supported by the current interface.</i></h2></div>';
+
+if( $ps < $page_limit ){
+
+$ntxt.= '<div class="inputline"><label for="old_0"><span class="numeral">1</span> Add Page beneath: <span class="red">*</span></label><select id="old_0" class="newparent" name="pre_old_0" tabindex="0">'.( join "",@s ).'</select></div><div class="lowerline inputline">&#160;</div>';
 $ntxt.= '<div class="inputline"><label for="new-title_0"><span class="numeral">2</span> Page Title: <span class="red">*</span></label><textarea id="new-title_0" class="nonsave" name="opt_new-title_0" tabindex="0" maxlength="150">'.$edata{'title'}->[0].'</textarea></div>'.$inputinfo{'title'}.'<div class="upperline inputline">&#160;</div>';
 $ntxt.= '<div class="inputline oneline"><label for="new-url_0"><span class="numeral">3</span> Page URL: </label><i class="ibefore'.( ($upf eq "")?' tt_undisplay':'' ).'">'.$par.'</i><i class="inewurl">'.$edata{'url'}->[0].'</i><i class="iafter">.'.$htmlext.'</i></span></div>';
 $ntxt.= '<div class="inputline inewurl oneline"><label for="new-menuurl_0">Title Shown in Menus: <span class="red">*</span></label>'.( ($upf ne "")?'<input type="hidden" name="opt_new-parent_0" value="'.$par.'" />':'' ).'<input id="new-menuurl_0" class="filterselect" name="pre_new-menuurl_0" tabindex="0" maxlength="50" type="text" value="'.$edata{'menuname'}->[0].'" /></div>'.$inputinfo{'menu'}.'<div class="lowerline inputline">&#160;</div>';
@@ -1478,6 +1500,8 @@ $ntxt.= $inputinfo{'tags'}.'</h2></div>';
 $ntxt.= '<div class="inputline dropsub"><h2><input id="used3_0" name="used3_0" type="checkbox" /><label for="used3_0" class="tt_tabclick navblock nav-edit editalias" tabindex="0" title="edit external link">Make Page into an Alias</label><span class="dropspacer">&#160;</span>';
 $ntxt.= '<div class="inputline unurl"><label for="new-link_0">Alias Link: </label><input id="new-link_0" name="opt_new-link_0" tabindex="0" maxlength="120" type="text" value="" /></div>'.$inputinfo{'alias'};
 $ntxt.= '</h2></div><input id="case_0" name="opt_case_0" value="'.$ub.'" type="hidden">';
+
+}
 
 $uptxt =~ s/<div class="area setheaderarea"><\/div>/$uph/;
 $uptxt =~ s/(<b class="default-folder">).*?(<\/b>)/$1$upd$2/;
@@ -1628,14 +1652,14 @@ my ($u,$updref,$ty,$showall) = @_;
 my @s = ();
 my $probs = (defined $ty)?$ty:undef;
 my $err = undef;
-my ($eerr,$eref) = sub_page_return("viewpages",[$u,$partnerbase],\%config,undef,undef,undef,undef,undef,undef,undef,undef,$showall);
+my ($eerr,$eref,$nref) = sub_page_return("viewpages",[$u,$partnerview],\%config,undef,undef,undef,undef,undef,undef,undef,undef,$showall);
 admin_json_out({ 'error' => "display reorder: ".$eerr },$origin,$callback) if defined $eerr;
 my @ptmp = @{$eref};
-my @nw = @ptmp;
-###admin_json_out({ 'check display_reorder' => "u:$u \nupdref: $updref \n\n ".Data::Dumper->Dump([\@nw],["nw"])." \n\n $debug" },$origin,$callback);
-@s = admin_drill_reorder($ty,\@nw,\@s,'_0',undef,$updref,$probs);
+my @nw = @{$nref};
+###admin_json_out({ 'check display_reorder' => "u:$u \n\n ".Data::Dumper->Dump([\@ptmp],["ptmp"])." \n\n ".Data::Dumper->Dump([\@nw],["nw"])." \n\n $debug" },$origin,$callback); #  
+@s = admin_drill_reorder($ty,\@ptmp,\@s,'_0',undef,$updref,$probs);
 ###admin_json_out({ 'check display_reorder 1' => "u:$u \n\n ".Data::Dumper->Dump([\@s],["s"])." \n\n $debug" },$origin,$callback);
-if( defined $updref ){ return @s; } else { return join "\n",@s; }
+if( defined $updref ){ return (\@s,\@nw); } else { return (join "\n",@s,\@nw); }
 }
 
 sub admin_drill_pagelist{
@@ -2201,7 +2225,7 @@ my $mu = $uname;$uname =~ s/\.($htmlext)$//;
 my $archive = ( $uname =~ /($docview)archive/i )?1:undef;
 if( $ltype =~ /^view/ && $ltype ne "viewpages" ){ $ldest = $base.$adminbase."view.".$htmlext; }
 my ($cterr,$ctref) = sub_get_all($fu,$ltype,\%config);
-admin_json_out({ 'error' => "alert: no useable data retrievable by server: $cterr $debug" },$origin,$callback) unless defined $ctref && !defined $cterr;
+admin_json_out({ 'error' => "admin_list alert: no useable data retrievable by server: \n\ncterr:$cterr \n".Data::Dumper->Dump([$ctref],["ctref"])." \n\n$debug" },$origin,$callback) unless defined $ctref && !defined $cterr;
 my %m = %{ $ctref };
 my %folders = ();
 my %files = ();
@@ -2405,11 +2429,12 @@ admin_html_out($lstxt);
 }
 
 sub admin_reset_menus{
-my ($ty,$wty,$u,$mref,$show,$speed) = @_;
-my @nmls = admin_display_reorder($base,$mref,$ty,$show);
+my ($ty,$wty,$u,$mref,$show) = @_;
+my ($dref,$outref) = admin_display_reorder($base,$mref,$ty,$show);
+my @nmls = @{$dref};
 my @cm = ();
-###admin_json_out({ 'check resetmenus 1' => "type:$ty \nwty:$wty \nspeed:$speed \nu:$u \nfullurl:$fullurl \nnmls: \n\n".( join "\n",@nmls )."\n\n $debug" },$origin,$callback);
-@cm = sub_admin_rankpages($wty,$u,(join "||",@nmls),\%config,$speed); 
+###admin_json_out({ 'check resetmenus 1' => "type:$ty \nwty:$wty \nu:$u \nfullurl:$fullurl \nnmls: \n\n".( join "\n",@nmls )."\n\n $debug" },$origin,$callback);
+@cm = sub_admin_rankpages($wty,$u,(join "||",@nmls),\%config); 
 ###admin_json_out({ 'check resetmenus 2' => "type:$ty \nwty:$wty \nu:$u \nnmls: \n\n".( join "\n",@nmls )."\n\n \ncm: \n\n".Data::Dumper->Dump([\@cm],["cm"])." \n\n $debug" },$origin,$callback);
 return (\@nmls,\@cm);
 }

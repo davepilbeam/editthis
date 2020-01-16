@@ -207,6 +207,7 @@ our $menu_limit = 3;
 our $adminbase = "admin/";
 our $backupbase = "admin/BACKUP/";
 our $versionbase = "VERSIONS/";
+our $page_limit = 250;
 our $version_limit = 3;
 our $delete_limit = 10;
 our $repdash = "~";

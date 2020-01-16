@@ -1654,12 +1654,10 @@ my $probs = (defined $ty)?$ty:undef;
 my $err = undef;
 my ($eerr,$eref,$nref) = sub_page_return("viewpages",[$u,$partnerview],\%config,undef,undef,undef,undef,undef,undef,undef,undef,$showall);
 admin_json_out({ 'error' => "display reorder: ".$eerr },$origin,$callback) if defined $eerr;
-my @ptmp = @{$eref};
-my @nw = @{$nref};
-###admin_json_out({ 'check display_reorder' => "u:$u \n\n ".Data::Dumper->Dump([\@ptmp],["ptmp"])." \n\n ".Data::Dumper->Dump([\@nw],["nw"])." \n\n $debug" },$origin,$callback); #  
-@s = admin_drill_reorder($ty,\@ptmp,\@s,'_0',undef,$updref,$probs);
+###admin_json_out({ 'check display_reorder' => "u:$u \n\n ".Data::Dumper->Dump([$eref],["eref"])." \n\n ".Data::Dumper->Dump([$updref],["updref"])." \n\n $debug" },$origin,$callback); #  
+@s = admin_drill_reorder($ty,$eref,\@s,'_0',undef,$updref,$probs);
 ###admin_json_out({ 'check display_reorder 1' => "u:$u \n\n ".Data::Dumper->Dump([\@s],["s"])." \n\n $debug" },$origin,$callback);
-if( defined $updref ){ return (\@s,\@nw); } else { return (join "\n",@s,\@nw); }
+if( defined $updref ){ return (\@s,$updref); } else { return (join "\n",@s); }
 }
 
 sub admin_drill_pagelist{
@@ -1685,7 +1683,7 @@ my $c = 0;
 for my $i(0..$#ptmp){ 
 my $d = @{ $ptmp[$i]->{'url'} }[0];my $tmp = $d;$tmp =~ s/\.($htmlext)$//;my @dd = $tmp =~ /($qqdelim)/g; ##==pilbeam
 if( defined $updref ){ foreach my $k( keys %upd ){ my $dm = $k;$dm =~ s/\.($htmlext)$//;my $qm = '^'.quotemeta($dm);$dbug.= "in: $dm ";if( $d =~ $qm ){ my $old = @{ $ptmp[$i]->{'menu'} }[0];@{ $ptmp[$i]->{'menu'} }[0] =~ s/\.(0|00)$//;@{ $ptmp[$i]->{'menu'} }[0].= $upd{$k};$dbug.= "old:$old replace with ".@{ $ptmp[$i]->{'menu'} }[0]."\n"; } } }
-###if( $d eq 'Digital.html' ){
+###if( $d eq 'Delipac.html' ){
 ###admin_json_out({ 'check drill_reorder 1' => "\nty:$ty \nd:$d \n\n dbug:$dbug \n\n $d is in upd = ".( defined $upd{$d} )."\n\nptmp[$i] = ".@{ $ptmp[$i]->{'menu'} }[0]." \n\n".Data::Dumper->Dump([\%upd],["upd"]) },$origin,$callback);
 ###}
 my $inm = '<a class="navblock nav-inmenu'.( ( $i > 0 && $i < $#ptmp-1 && defined $ptmp[($i+1)]->{'pages'})?'':' tt_undisplay' ).'" tabindex="0" title="move into next Folder">&#160;</a>';
@@ -1704,6 +1702,7 @@ push @s,$ptmp[$i]->{'url'}[0].'|'.$ptmp[$i]->{'menu'}[0].'|'.(1+scalar @dd).$pr;
 }
 $c++;
 }
+###admin_json_out({ 'check drill_reorder 2' => "\nty:$ty \n\n dbug:$dbug \n\n".Data::Dumper->Dump([\@s],["s"])."\n\n".Data::Dumper->Dump([\%upd],["upd"]) },$origin,$callback);
 return @s;
 }
 

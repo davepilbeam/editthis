@@ -32,7 +32,7 @@ usable:(document.all && !window.atob && document.addEventListener)?null:1,capabl
 bsr:(window.navigator.pointerEnabled || window.navigator.msPointerEnabled)?4:(!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)?3:('WebkitAppearance' in document.documentElement.style)?2:(document.all)?1:(window.InstallTrigger)?0:4,nm:'unknown',os:'windows',ias:0,ios:0,device:'pc',vs:'',c1:'animation-timing-function',c2:'transform-origin',c3:'background-position',css:['-moz-','-ms-','-webkit-','-o-',''], 
 cpu:(navigator.oscpu)?navigator.oscpu:(navigator.cpuClass)?navigator.cpuClass:'not detected',dev:'pc',display:'desktop',durl:document.URL.replace(/^http:\/\//,''),fsh:('ActiveXObject' in window)?1:(navigator.mimeTypes && navigator.mimeTypes['application/x-shockwave-flash'] != undefined )?1:null,bm:'',current:{funcs:{}},edtmr:null,gstr: 'abcdefghijklmnopqrstuvwxyz',modal:{},pd:'',pl:'',restore:'UPLOADS/RESTORE/',seq:function(e){var m = '';if(e.shift){m+= 'shift-';}if(e.control){m+= 'control-';}if(e.alt){m+= 'alt-';}if(e.meta){mod+= 'meta-';}return m+e.key;},tempuser:null,temppass:null,title:'',site:'',tmr:null,viewportG:function(){return {x:(document.documentElement.clientWidth && document.documentElement.clientWidth > 0)?document.documentElement.clientWidth:screen.width,y:(document.documentElement.clientHeight && document.documentElement.clientHeight > 0)?document.documentElement.clientHeight:screen.height};},vp:null,ura:[],urb:'',urc:'',uri:'', 
 e_tags: ['description','gref','keywords'], 
-width: 'desktop' ,
+width: 'desktop',
 b64encode: function(a){return btoa(encodeURIComponent(a).replace(/%([0-9A-F]{2})/g,function(match,p1){return String.fromCharCode('0x'+p1);}));},
 b64decode: function(a){return decodeURIComponent(Array.prototype.map.call(atob(a), function(c){return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);}).join(''));}
 });
@@ -69,7 +69,7 @@ msg:{
 }
 },
 geo: { ip:'',country_code:'',country_name:'' },
-googlemap: { g: ('https:' == document.location.protocol)?'https://maps-api-ssl':'http://maps',i: 'LIB/css/css_icon_map.png',init:[],k:E.b64decode('API_key_goes_here'),v:'3' },
+googlemap: { g: ('https:' == document.location.protocol)?'https://maps-api-ssl':'http://maps',i: 'LIB/css/css_icon_map.png',init:[],k:E.b64decode('QUl6YVN5RGJMdEh0UzliNzMwZElKWnBsdXlkY2pEVWdKZm5WOGkw'),v:'3' },
 imagebox: {},
 intro: [30],//delays 
 library: { 
@@ -373,7 +373,7 @@ if( (eb >= w) && (et <= wb) ){ z.fireEvent(''+e,['on']); } else if( (eb < w) && 
 } else if(d){
 if(wb < (100+et)){ z.addClass('tt_active'); }
 } else {
-if(u.scrollclass){ m = z.retrieve('scrolltrigger');if(m){ if( m < w ){ z.addClass(u.scrollclass); } else { if( z.hasClass(u.scrollclass) ){z.removeClass(u.scrollclass);} } } } else { if( ww >= 640 ){ if( c && z.getParent() && !z.getParent().hasClass('tt_unoverflow') ){z.getParent().addClass('tt_unoverflow');}if( (eb >= w) && (et <= wb) ){ z.addClass('tt_inview'); } else if( (eb < w) && (et <= wb) ){ z.addClass('tt_inview'); } else { z.removeClass('tt_inview'); } } }
+if(u.scrollclass){ m = z.retrieve('scrolltrigger');if(m){ if( m < w ){ z.addClass(u.scrollclass);$('body0').addClass('scrolled'); } else { if( z.hasClass(u.scrollclass) ){z.removeClass(u.scrollclass);$('body0').removeClass('scrolled');} } } } else { if( ww >= 640 ){ if( c && z.getParent() && !z.getParent().hasClass('tt_unoverflow') ){z.getParent().addClass('tt_unoverflow');}if( (eb >= w) && (et <= wb) ){ z.addClass('tt_inview'); } else if( (eb < w) && (et <= wb) ){ z.addClass('tt_inview'); } else { z.removeClass('tt_inview'); } } }
 } 
 }); } }},
 

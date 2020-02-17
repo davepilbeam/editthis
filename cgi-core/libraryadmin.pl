@@ -92,7 +92,7 @@ our $backupbase = $defs::backupbase;
 our $versionbase = $defs::versionbase;
 
 our $docview = $defs::docview;
-our $partnerview = $defs::partnerview || "partners";
+our $partnerview = $defs::partnerview;
 our $imagefolder = $defs::imagefolder;
 our $imageview = $docview.$imagefolder."/";
 our $templatefolder = $defs::templatefolder;
@@ -111,8 +111,8 @@ our @structure =  ( $base.'FONTS',$base.'hticons',$base.'VERSIONS' );
 our @libtags = (defined $defs::libtags)?split /\s/,$defs::libtags." ".$defs::droptags:();
 our $host = $http."//".$ENV{'HTTP_HOST'}."/";
 our $pl = $host.$cgipath.$cgix."?";
-our $configjs = "<script type=\"application\/javascript\" src=\"".$subdir."config.js\" charset=\"utf-8\"></script>\n";
-our $addjs = "<script type=\"application\/javascript\" src=\"".$subdir."admin/minsu.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"".$subdir."admin/su.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"".$subdir."admin/contenteditable.js\" charset=\"utf-8\"></script>\n";
+our $configjs = "<script type=\"application\/javascript\" src=\"config.js\" charset=\"utf-8\"></script>\n";
+our $addjs = "<script type=\"application\/javascript\" src=\"admin/minsu.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"admin/su.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"admin/contenteditable.js\" charset=\"utf-8\"></script>\n";
 our $type = 'login';
 our $deftemp = 'Default-Page-Template.html';
 our @seclist = ($docview.'Archive/',$templateview,$partnerview);
@@ -214,6 +214,7 @@ local *sub_page_update = \&subs::sub_page_update;
 local *sub_parse_tags = \&subs::sub_parse_tags;
 local *sub_search_aux = \&subs::sub_search_aux;
 local *sub_search_file = \&subs::sub_search_file;
+local *sub_title_deslash = \&subs::sub_title_deslash;
 local *sub_title_out = \&subs::sub_title_out;
 local *sub_title_undate = \&subs::sub_title_undate;
 local *sub_zip_out = \&subs::sub_zip_out;
@@ -284,7 +285,7 @@ if( $k eq 'code' ){ $code = $pdata{'code'};$outstr{'code'} = $code; }
 if( $k eq 'replace' ){ $replace = sub_clean_name($pdata{'replace'},$htmlext);$replace = Encode::decode('utf8',$replace);$outstr{'replace'} = $replace; } #replace1+replace2
 if( $k eq 'type' ){ $type = Encode::decode('utf8',$pdata{'type'});if( $type eq "alertfolders" ){ $hidealert = 1;$type = "viewalert"; } } 
 # addfolders addpages alertfolders archivepages changeaddfolders changeaddpages changearchivepages changedeletefiles changedeletefolders changedeletepages changedistribute changedeploysite changedownloadfolders changedupepages changelibrarypages changelockpages changeunlockpages changeimagepages changerenamefiles changerenamefolders changerankpages changerestorepages changesavepages changesearchfolders changesectionpages changesubpages changetitlepages changeuploadfolders changeuploadsite compressfiles deletefiles deletepages deploysite distribute downloadfolders dupepages editblocks editlibrary editpages getfiles getimages getedittextclips getgridclips getsectionclips getguides hidemappages hidefolderpages hidepages  viewconfigpages listmenupages newlinkpages newmenupages renamefiles renamefolders reorderpages restoredelete restoreprotect restoresite searchfolders showpages showmappages uncompressfiles uploadfolders usedfiles viewalert viewall viewfix viewfolders viewpages viewsharefix viewversionpages
-if( $k eq 'url' ){ $url = Encode::decode('utf8',$pdata{'url'});$url = sub_clean_name($url,$htmlext);$sitepage = $url; } #documents/Publications/Presentations-and-Brochures/CARIBSAVE-Stakeholder-Workshop-2009/.library.txt
+if( $k eq 'url' ){ $pdata{'url'} = Encode::decode('utf8',$pdata{'url'});$pdata{'url'} = sub_title_deslash($pdata{'url'},[$templateview,$partnerview]);$url = sub_clean_name($pdata{'url'},$htmlext);$sitepage = $url; } #documents/Publications/Presentations-and-Brochures/CARIBSAVE-Stakeholder-Workshop-2009/.library.txt
 if( $k eq 'old' ){ $old = sub_clean_name($pdata{'old'},$htmlext);$old = Encode::decode('utf8',$old);$outstr{'old'} = $old; } # documents/Templates-and-Guides/Default-Page-Template.html | html | grid_15683655665644
 foreach my $j(keys %defsections){ my $n = lc $j;$n =~ s/\s+/-/g;if($k eq $n){ $gsections{$j} = $defsections{$j}->[1];$debug.= "gsection: $k = $n from $j \n"; } }
 }
@@ -333,7 +334,7 @@ if( !defined $dest ){ $dest = $type.".".$htmlext; }
 admin_json_out({ 'error' => "(alert: no data received by server: $debug.)" },$origin,$callback) unless $url ne "";
 
 #/var/www/vhosts/pecreative.co.uk/rsmpartners.com/newest/documents/
-$fullurl = sub_get_target($url,$base,$subdir,$nwurl,$nwbase);$debug.= "\n\ntype:$type \n$outstr{'url'} \nbecame \nurl:$url \nfullurl:$fullurl \nenvpath:$envpath \nbase:$base \ndocview:$docview \nbaseview:$baseview \ndocuments:$documents \npages:$pages \ncgipath:$cgipath \ncgix:$cgix \npl:$pl \n";
+$fullurl = sub_get_target($url,$base,$subdir,$nwurl,$nwbase);$debug.= "\n\ntype:$type \n$outstr{'url'} \nbecame \nurl:$url \nfullurl:$fullurl \nsitepage:$sitepage \nenvpath:$envpath \nbase:$base \ndocview:$docview \nbaseview:$baseview \ndocuments:$documents \npages:$pages \ncgipath:$cgipath \ncgix:$cgix \npl:$pl \n";
 my $dtmp = $fullurl;if( $type ne "login" && $type ne "viewall" && $type ne "viewalert" && $type ne "viewfix" && $type ne "viewsharefix" ){ if( defined $pages ){ $dtmp =~ s/^($base|$baseview)//;$dtmp =~ s/\.($htmlext)$//;$dlevel = scalar split /$qqdelim/,$dtmp;$dlevel++; } else { $dtmp =~ s/^($base|$baseview)//;$dtmp =~ s/\.(.*?)$//;$dlevel = scalar split /\//,$dtmp; } } ##==pilbeam
 ###admin_json_out({ 'check urls' => " new:$new \nurl:$url = $outstr{'url'} = $sitepage\nposition: $position \n\nsitemap:$sitemap \nfullurl: $fullurl \ndlevel: $dlevel \ndtmp = $dtmp \n\n$debug" },$origin,$callback);
 
@@ -696,7 +697,7 @@ if( $type =~ /pages$/ ){ my ($subref,$smsg) = sub_get_subnumber($upf,\%config);@
 if( $type =~ /^(download|reorder|search)/ ){ $exclude{'undownload'} = 1; }
 if( $type =~ /^(delete|rename)/ ){ 
 ###admin_json_out({ 'check '.$type.'' => "fullurl:$fullurl \nurl:$url \nupf:$upf \nsubs:".(scalar @subs)." \nals:".(scalar @als)." \n\n".Data::Dumper->Dump([\@warn],["warn"])." \n\n $debug" },$origin,$callback);
-if( -e $fullurl ){ @warn = sub_get_changed("all","used",$base,\%config,$upf); } else { $warn[0] = ( "Warning:","the server cannot locate file $upf: $!" ); }
+if( -e $fullurl ){ @warn = sub_get_changed("all","used",[$base,$templateview,$partnerview],\%config,$upf); } else { $warn[0] = ( "Warning:","the server cannot locate file $upf: $!" ); }
 ###admin_json_out({ 'check '.$type.' 1' => "fullurl:$fullurl \nurl:$url \nsubs:".(scalar @subs)." \nals:".(scalar @als)." \n\n".Data::Dumper->Dump([\@warn],["warn"])." \n\n $debug" },$origin,$callback);
 }
 admin_display_form($type,$url,$uptxt,"prev",\%exclude,\@warn,((scalar @subs > 1)?(scalar @subs-1):undef),((scalar @als > 0)?scalar @als:undef),$nurl);
@@ -915,7 +916,7 @@ $cho = "Updated Page</h3><h3 class=\"updateinfo\">".( ucfirst $cht )." <b>$nf<\/
 if($type =~ /pages/){
 my ($mlref,$cmref) = admin_reset_menus("resetmenupages","resetmenupages",$cc,{},"showall","dofork");
 ###admin_json_out({ 'check changeadddupepages 2' => "type:$type \nid:$id \nurl:$url \nfullurl:$fullurl \nnew:$new \n\ncm:\n\n [ @$cmref ] \n\n $debug" },$origin,$callback);
-if($pdata{'speed'} eq "html"){
+if( $pdata{'speed'} eq "html"){
 $uptxt =~ s/(<div class="text nav-box">\s*<a class=".*?">.*?<\/a>\s*<h3>).*?(<\/h3>\s*<\/div>)/$1$cho$2/;
 admin_display_form($type,$uu,$uptxt,"prev",\%exclude,undef,undef,undef,$nf);
 } else {
@@ -1071,7 +1072,7 @@ my $htclass = ($hclass eq "mhide")?'hidden':'shown';
 my $mtclass = ($mclass eq "mhide")?'hidden':'shown';
 my $hurl = $url;$hurl =~ s/^($baseview)//;
 my $hoh = admin_getpagemap( ($type =~ /folder/)?"folder":"page",$pdata{'speed'},$uri->encode($hurl),($hclass eq "mhide")?'show':'hide',($mclass eq "mhide")?'show':'hide',$htclass,$mtclass,"nowrap");
-my ($rref,$cmref) = admin_reset_menus($type,$type,$upf,{"$upf" => $su},undef,"dofork");
+my ($rref,$cmref) = admin_reset_menus("resetmenupages",$type,$upf,{"$upf" => $su},undef,"dofork");
 ###admin_json_out({ 'check hideshowpages 3' => "type:$type \nid:$id \nupf:$upf \nnmls: \n\n".( join "\n",@{$rref} )."\n\n \ncm: \n\n".Data::Dumper->Dump([$cmref],["cm"])." \n\n $debug" },$origin,$callback);
 admin_json_out({ 'label' => 'Page is '.( ucfirst($mtclass) ).' in Sitemap and '.( ucfirst($htclass) ).' in Menus','menu' => $su,'html' => ( admin_getpagemap( ($type =~ /folder/)?"folder":"page",$pdata{'speed'},$uri->encode($hurl),($hclass eq "mhide")?'show':'hide',($mclass eq "mhide")?'show':'hide',$htclass,$mtclass,"nowrap") ) },$origin,$callback);
 
@@ -1115,16 +1116,6 @@ sub admin_countpages{
 my ($f) = @_;
 my $s = 0;
 if( -d $f ){ my @files = <$f*.$htmlext>;$s = scalar @files; }
-return $s;
-}
-
-sub admin_imagesize{
-my ($f) = @_; #/var/www/vhosts/pecreative.co.uk/revive.pecreative.co.uk/documents/Images/products/uncoated/
-my $s = undef;
-foreach my $k( sort keys %imgsizes){
-my @v = @{ $imgsizes{$k} };
-if( defined $v[0] && defined $v[1] && $f =~ /^($base)($v[0])/ ){ $s = $v[1]; } #'Product Image' => ["documents/Images/products/","Product Image,_product,300,300"],
-}
 return $s;
 }
 
@@ -1318,7 +1309,7 @@ if( $ps < $page_limit ){
 $ntxt.= '<div class="inputline"><label for="new-title_0"><span class="numeral">1</span> Page Title: <span class="red">*</span></label><textarea id="new-title_0" name="pre_new-title_0" tabindex="0" maxlength="150" placeholder="New Page Title"></textarea></div>'.$inputinfo{'title'}.'<div class="upperline inputline">&#160;</div>';
 $ntxt.= '<div class="inputline oneline"><label for="new-url_0"><span class="numeral">2</span> Page URL: </label><i class="ibefore'.( ($upf eq "")?' tt_undisplay':'' ).'">'.$par.'</i><i class="inewurl">New-Menu-Title</i><i class="iafter">.'.$htmlext.'</i></span></div>';
 $ntxt.= '<div class="inputline inewurl oneline"><label for="new-menuurl_0">Title Shown in Menus: <span class="red">*</span></label>'.( ($upf ne "")?'<input type="hidden" name="opt_new-parent_0" value="'.$par.'" />':'' ).'<input id="new-menuurl_0" class="filterselect" name="pre_new-menuurl_0" tabindex="0" maxlength="50" type="text" placeholder="New Menu Title" value="" /></div>'.$inputinfo{'menu'}.'<div class="lowerline inputline">&#160;</div>';
-$ntxt.= '<div class="inputline"><label for="new-name_0"><span class="numeral">3</span> Page Short Title: <span class="red">*</span></label><input id="new-shortname_0" name="pre_new-shortname_0" tabindex="0" maxlength="30" type="text" placeholder="Short Title" value="" /></div>'.$inputinfo{'short'}.'<div class="lowerline inputline">&#160;</div>';
+$ntxt.= '<div class="inputline"><label for="new-shortname_0"><span class="numeral">3</span> Page Short Title: <span class="red">*</span></label><input id="new-shortname_0" name="pre_new-shortname_0" tabindex="0" maxlength="30" type="text" placeholder="Short Title" value="" /></div>'.$inputinfo{'short'}.'<div class="lowerline inputline">&#160;</div>';
 
 $ntxt.= '<div class="titleline inputline">Optional Configuration</div><div class="inputline"><label for="old_0">Base Page'.$pty.' on:</label><select class="filtersource tt_unchange" id="old_0" name="opt_old_0" tabindex="0">'.( join "",@s ).'</select></div>';
 
@@ -1430,22 +1421,25 @@ my %edata = %{ $etmp[0]{'data'} };
 my $mpar = "";
 my $par = "";
 my $tmp = $edata{'url'}->[0];$tmp =~ s/^($base|$baseview)//;$tmp =~ s/\.($htmlext)$//;if( $tmp =~ /($qqdelim)/ ){ $par = $tmp;$par =~ s/^(.+)$qqdelim(.*?)$/$1/;$mpar = $par.".$htmlext";$par.= $delim; } ##==pilbeam
+my $ok = undef;
+push @ps,[ '_select_group_','Sections:' ];
+if( $par ne "" && $par ne " " && $par ne "\n" ){ push @ps,[ $mpar,$par ]; } else { push @ps,[ "Main Navigation","" ];$ok = 1; }
 #upf: Modules.Counter-Module.html 
 #par: Modules (ibefore) 
 #inewurl: 002.001 (inewurl)
-###admin_json_out({ 'check pagedupe' => " s: [ @s ] \n\nu: $u \nupf: $upf \npar: $par (ibefore) \ninewurl: ".$edata{'menu'}->[0]." (inewurl)\n\n ".Data::Dumper->Dump([\@etmp],["etmp"])." \n\n $debug" },$origin,$callback);
 
-push @ps,[ '_select_group_','Sections:' ];
-push @ps,[ $mpar,$par ];
 my @htm = sub_get_html($base,\%config);
 my %hs = ();
-foreach my $pz( @htm){ 
-if( -f $pz ){ my $nz = undef;$pz =~ s/^($base)//i;$pz =~ s/^\///;if( $pz !~ /^($par)/ ){ $nz = $pz;
-my $tmp = $pz;$tmp =~ s/\.($htmlext)$//; ##==pilbeam
-#if( $tmp =~ /^(.+)($qqdelim)/ ){ my $tc = ($tmp =~ tr/$qqdelim//);if($tc < $menulimit){ $hs{$1."$delim"} = [ $1.".$htmlext",$1."$delim" ]; } } 
-if( $tmp =~ /^(.+)($qqdelim)/ ){ my $fc = $1;my @tc = $tmp =~ /$qqdelim/g;if(scalar @tc <= $menu_limit){ $hs{$fc."$delim"} = [ $fc.".$htmlext",$fc."$delim" ]; } } # ( scalar @tc )." <= $menu_limit"
-} }
+foreach my $pz( sort @htm){ 
+if( -f $pz ){ 
+my $nz = undef;$pz =~ s/^($base)//i;$pz =~ s/^\///;
+if( defined $ok || $pz !~ /^($par)/ ){ 
+$nz = $pz;my $tmp = $pz;$tmp =~ s/\.($htmlext)$//;if( $tmp =~ /^(.+)($qqdelim)/ ){ my $fc = $1;my @tc = $tmp =~ /$qqdelim/g;if(scalar @tc <= $menu_limit){ $hs{$fc."$delim"} = [ $fc.".$htmlext",$fc."$delim" ]; } }
 }
+}
+}
+###admin_json_out({ 'check pagedupe' => " s: [ @s ] \n\nu: $u \nupf: $upf \npar: $par (ibefore) \ninewurl: ".$edata{'menu'}->[0]." (inewurl)\n\nhtm: [ @htm ] \n\n ".Data::Dumper->Dump([\%hs],["hs"])." \n\n\n\n ".Data::Dumper->Dump([\@etmp],["etmp"])." \n\n $debug" },$origin,$callback);
+
 for my $i( sort keys %hs){ push @ps,$hs{$i}; }
 @s = sub_admin_chooser($u,\%config,\@ps);
 
@@ -1458,11 +1452,11 @@ $ntxt.= '<div class="infoline"><h2>This site contains '.$ps.' Pages. <i>'.$page_
 
 if( $ps < $page_limit ){
 
-$ntxt.= '<div class="inputline"><label for="old_0"><span class="numeral">1</span> Add Page beneath: <span class="red">*</span></label><select id="old_0" class="newparent" name="pre_old_0" tabindex="0">'.( join "",@s ).'</select></div><div class="lowerline inputline">&#160;</div>';
-$ntxt.= '<div class="inputline"><label for="new-title_0"><span class="numeral">2</span> Page Title: <span class="red">*</span></label><textarea id="new-title_0" class="nonsave" name="opt_new-title_0" tabindex="0" maxlength="150">'.$edata{'title'}->[0].'</textarea></div>'.$inputinfo{'title'}.'<div class="upperline inputline">&#160;</div>';
+$ntxt.= '<div class="inputline"><label for="old_0"><span class="numeral">1</span> Add Page beneath: <span class="red">*</span></label><select id="old_0" class="newparent nonsave" name="opt_old_0" tabindex="0">'.( join "",@s ).'</select></div><div class="lowerline inputline">&#160;</div>';
+$ntxt.= '<div class="inputline"><label for="new-title_0"><span class="numeral">2</span> Page Title: <span class="red">*</span></label><textarea id="new-title_0" name="opt_new-title_0" tabindex="0" maxlength="150">'.$edata{'title'}->[0].'</textarea></div>'.$inputinfo{'title'}.'<div class="upperline inputline">&#160;</div>';
 $ntxt.= '<div class="inputline oneline"><label for="new-url_0"><span class="numeral">3</span> Page URL: </label><i class="ibefore'.( ($upf eq "")?' tt_undisplay':'' ).'">'.$par.'</i><i class="inewurl">'.$edata{'url'}->[0].'</i><i class="iafter">.'.$htmlext.'</i></span></div>';
 $ntxt.= '<div class="inputline inewurl oneline"><label for="new-menuurl_0">Title Shown in Menus: <span class="red">*</span></label>'.( ($upf ne "")?'<input type="hidden" name="opt_new-parent_0" value="'.$par.'" />':'' ).'<input id="new-menuurl_0" class="filterselect" name="pre_new-menuurl_0" tabindex="0" maxlength="50" type="text" value="'.$edata{'menuname'}->[0].'" /></div>'.$inputinfo{'menu'}.'<div class="lowerline inputline">&#160;</div>';
-$ntxt.= '<div class="inputline"><label for="new-name_0"><span class="numeral">4</span> Page Short Title: <span class="red">*</span></label><input id="new-shortname_0" class="nonsave" name="pre_new-shortname_0" tabindex="0" maxlength="30" type="text" value="'.$edata{'shortname'}->[0].'" /></div>'.$inputinfo{'short'}.'<div class="lowerline inputline">&#160;</div>';
+$ntxt.= '<div class="inputline"><label for="new-shortname_0"><span class="numeral">4</span> Page Short Title: <span class="red">*</span></label><input id="new-shortname_0" class="nonsave" name="pre_new-shortname_0" tabindex="0" maxlength="30" type="text" value="'.$edata{'shortname'}->[0].'" /></div>'.$inputinfo{'short'}.'<div class="lowerline inputline">&#160;</div>';
 
 $ntxt.= '<div class="titleline inputline">Optional Configuration</div><div class="inputline dropsub"><h2><input id="used1_0" name="used1_0" type="checkbox" /><label for="used1_0" class="tt_tabclick navblock nav-edit editseo" tabindex="0" title="edit Page SEO Data">Page SEO Data</label><span class="dropspacer">&#160;</span>';
 foreach my $hr( sort keys %headers ){
@@ -1501,7 +1495,7 @@ admin_html_out($uptxt);
 
 sub admin_display_pageedit{
 my($u,$fu,$etxt,$lev,$eu,$href) = @_;
-my $n = $u;$n =~ s/^($obase|$baseview)//;
+my $n = $u;$n =~ s/^($baseview)//;
 my $clink = $n;$clink =~ s/^($base)//;
 $n =~ s/\.($htmlext)$//;
 my %h = %{ $href };
@@ -1533,7 +1527,7 @@ my @ted = ();
 foreach my $ar( sort keys %editareas ){ if( $editareas{$ar} > 1 && defined $h{$ar} && defined $h{$ar}[0] ){ push @ted,(ucfirst $ar).":".$h{$ar}[0] } }
 if(scalar @ted > 0){ $tdd = ' data-tagged="'.( join ' / ',@ted ).'"'; } #'Date: 24/07/18 / Group:July
 my $r = "";
-###admin_json_out({ 'check pageedit' => "n: $n \nu: $u \nclink:$clink \nisfolder:$isfolder \nishid: $ishid \npages: $pages \ndlevel: $dlevel \ndeep:$deep <> menulimit:$menu_limit \n".Data::Dumper->Dump([\%h],["h"]) },$origin,$callback);
+###admin_json_out({ 'check pageedit' => "n: $n \nu: $u \nclink:$clink \nisfolder:$isfolder \nishid: $ishid \nispartner:$ispartner \npages: $pages \ndlevel: $dlevel \ndeep:$deep <> menulimit:$menu_limit \n".Data::Dumper->Dump([\%h],["h"]) },$origin,$callback);
 
 if( defined $isshare ){
 $r.= '<div class="text nonmenufolder pages sharealert"><div class="tt_progress"><span class="bar"></span></div><h2><a class="navblock tt_directupdate nav-autofix" href="'.$pl.'type=viewsharefix&amp;url='.$eclink.'" title="fix share links">&#160;</a><a class="navtext tt_directupdate" href="'.$pl.'type=viewsharefix&amp;url='.$eclink.'" title="fix share links">This Page\'s Share Links are incorrect: '.$eclink.' == '.$h{'sharename'}[0].' - <b>click to fix</b></a></h2></div>';
@@ -1560,7 +1554,8 @@ $r.= '<div class="text nonmenufolder pages"><div class="tt_progress"><span class
 $r.= '<span class="inputline oneline"><label>New Page URL: </label><i class="ibefore'.( ($clink eq "" || $par eq "html")?' tt_undisplay':'' ).'">'.$par.'</i><i class="inewurl">'.$nm.'</i><i class="iafter">.'.$htmlext.'</i></span>';
 $r.= '<span class="inputline oneline inewurl"><label for="new-menuurl_0">Title of this Page in Menus: </label>'.( ($clink ne "")?'<input type="hidden" id="new-parent_0" name="opt_new-parent_0" value="'.$par.'" />':'' ).'<input id="new-menuurl_0" class="url filterselect" name="pre_new-menuurl_0"  tabindex="0" maxlength="50" type="text" value="'.( sub_title_out($nm,\%config) ).'" /><a class="mlist-submit" id="mlist-new-menuurl_0">change</a></span>'.$inputinfo{'menu'};
 $r.= '</h2><input class="filtersource" type="hidden" id="filter_0" name="opt_filter_0" value="'.( join "|",@pgs ).'" disabled /></div>';
-$r.= '<div class="text nonmenufolder pages"><div class="tt_progress"><span class="bar"></span></div><h2><input id="used5_0" name="used5_0" type="checkbox" /><label data-mref="'.$eclink.'" for="used5_0" class="tt_tabclick navblock nav-edit nav-rename" tabindex="0" title="edit Page Short Title">Edit Page Short Title</label><span class="dropspacer">&#160;</span><span class="inputline"><label for="new-shortname_0">Change Short Title: </label><input class="shortname" id="new-shortname_0" name="pre_new-shortname_0" tabindex="0" type="text" maxlength="30" value="'.$h{'shortname'}[0].'" /><a class="mlist-submit" id="mlist-new-shortname_0">change</a></span>'.$inputinfo{'short'}.'</h2></div>'; 
+$r.= '<div class="text nonmenufolder pages"><div class="tt_progress"><span class="bar"></span></div><h2><input id="used5_0" name="used5_0" type="checkbox" /><label data-mref="'.$eclink.'" for="used5_0" class="tt_tabclick navblock nav-edit nav-rename" tabindex="0" title="edit Page Short Title">Edit Page Short Title</label><span class="dropspacer">&#160;</span>';
+$r.= '<span class="inputline"><label for="new-shortname_0">Change Short Title: </label><input class="shortname" id="new-shortname_0" name="pre_new-shortname_0" tabindex="0" type="text" maxlength="30" value="'.$h{'shortname'}[0].'" /><a class="mlist-submit" id="mlist-new-shortname_0">change</a></span>'.$inputinfo{'short'}.'</h2></div>'; 
 }
 
 $r.= '<div class="text nonmenufolder pages"><div class="tt_progress"><span class="bar"></span></div><h2><input id="used1_0" name="used1_0" type="checkbox" /><label data-mref="'.$eclink.'" for="used1_0" class="tt_tabclick navblock nav-edit editseo" tabindex="0" title="edit Page SEO">Edit Page SEO Data</label><span class="dropspacer">&#160;</span>';
@@ -1630,11 +1625,13 @@ sub admin_display_reorder{
 my ($u,$updref,$ty,$showall) = @_;
 my @s = ();
 my $probs = (defined $ty)?$ty:undef;
+my $dbug = "";
 my $err = undef;
 my ($eerr,$eref,$nref) = sub_page_return("viewpages",[$u,$partnerview],\%config,undef,undef,undef,undef,undef,undef,undef,undef,$showall);
 admin_json_out({ 'error' => "display reorder: ".$eerr },$origin,$callback) if defined $eerr;
 ###admin_json_out({ 'check display_reorder' => "u:$u \n\n ".Data::Dumper->Dump([$eref],["eref"])."\n\n ".Data::Dumper->Dump([$nref],["nref"])." \n\n ".Data::Dumper->Dump([$updref],["updref"])." \n\n $debug" },$origin,$callback); #  
-@s = admin_drill_reorder($ty,$eref,\@s,'_0',undef,$updref,$probs);
+my ($msg,$sref) = admin_drill_reorder($ty,$eref,\@s,'_0',undef,$updref,$probs);
+$debug.= $msg;@s = @{$sref};
 ###admin_json_out({ 'check display_reorder 1' => "u:$u \n\n ".Data::Dumper->Dump([\@s],["s"])." \n\n \n\n ".Data::Dumper->Dump([$updref],["updref"])." \n\n $debug" },$origin,$callback);
 if( defined $updref ){ return (\@s,$updref); } else { return (join "\n",@s); }
 }
@@ -1656,13 +1653,14 @@ my %upd = (defined $updref)?%{$updref}:();
 my @ptmp = @{$pref};
 my $offclass = "";
 my $dbug = "";
-if( defined $sr && defined $defsort{$sr} ){ $offclass = " tt_undisplay";@ptmp = sort { $b->{'epoch'}[0] <=> $a->{'epoch'}[0] || lc $a->{'title'}[0] cmp lc $b->{'title'}[0] } @ptmp; } ###admin_json_out({ 'check drill_reorder' => "sr: $sr \n".Data::Dumper->Dump([\@ptmp],["ptmp"]) },$origin,$callback);
+if( defined $sr && defined $defsort{$sr} ){ $offclass = " tt_undisplay";@ptmp = sort { $b->{'epoch'}[0] <=> $a->{'epoch'}[0] || lc $a->{'title'}[0] cmp lc $b->{'title'}[0] } @ptmp; } 
+###admin_json_out({ 'check drill_reorder' => "sr: $sr \n".Data::Dumper->Dump([\@ptmp],["ptmp"]) },$origin,$callback);
 my @s = @{$sref};
 my $c = 0;
 for my $i(0..$#ptmp){ 
-my $d = @{ $ptmp[$i]->{'url'} }[0];my $tmp = $d;$tmp =~ s/\.($htmlext)$//;my @dd = $tmp =~ /($qqdelim)/g; ##==pilbeam
+my $d = @{ $ptmp[$i]->{'url'} }[0];my $tmp = $d;$tmp =~ s/\.($htmlext)$//;my @dd = $tmp =~ /($qqdelim)/g; 
 if( defined $updref ){ foreach my $k( keys %upd ){ my $dm = $k;$dm =~ s/\.($htmlext)$//;my $qm = '^'.quotemeta($dm);$dbug.= "in: $dm ";if( $d =~ $qm ){ my $old = @{ $ptmp[$i]->{'menu'} }[0];@{ $ptmp[$i]->{'menu'} }[0] =~ s/\.(0|00)$//;@{ $ptmp[$i]->{'menu'} }[0].= $upd{$k};$dbug.= "old:$old replace with ".@{ $ptmp[$i]->{'menu'} }[0]."\n"; } } }
-###if( $d eq 'Delipac.html' ){
+###if( $d =~ /Members.html/ ){
 ###admin_json_out({ 'check drill_reorder 1' => "\nty:$ty \nd:$d \n\n dbug:$dbug \n\n $d is in upd = ".( defined $upd{$d} )."\n\nptmp[$i] = ".@{ $ptmp[$i]->{'menu'} }[0]." \n\n".Data::Dumper->Dump([\%upd],["upd"]) },$origin,$callback);
 ###}
 my $inm = '<a class="navblock nav-inmenu'.( ( $i > 0 && $i < $#ptmp-1 && defined $ptmp[($i+1)]->{'pages'})?'':' tt_undisplay' ).'" tabindex="0" title="move into next Folder">&#160;</a>';
@@ -1670,8 +1668,11 @@ my $outm = '<a class="navblock nav-outmenu'.( (defined $inside)?'':' tt_undispla
 my $addm = '<a class="navblock nav-addmenu'.$offclass.( (defined $ptmp[$i]->{'pages'})?' nav-removemenu':'' ).'" tabindex="0" title="'.( (defined $ptmp[$i]->{'pages'})?'delete all ':'add' ).' Subpages beneath this Page">&#160;</a>';
 my $mvis = ( @{ $ptmp[$i]->{'menu'} }[0] =~ /\.(0|00)$/ )?' mhidepage':'';
 if( defined $ptmp[$i]->{'pages'} ){
+$dbug.= "$i = $ptmp[$i]->{'url'}[0] has pages \n";
 if( defined $updref ){ push @s,$ptmp[$i]->{'url'}[0].'|'.$ptmp[$i]->{'menu'}[0].'|'.(1+scalar @dd); } else { push @s,'<div class="text menufolder orderline pages'.$mvis.'" data-title="'.@{ $ptmp[$i]->{'url'} }[0].'" data-menu="'.@{ $ptmp[$i]->{'menu'} }[0].'"><input type="hidden" id="checkfile'.$ptmp[$i]->{'menu'}[0].'" name="opt_checkfile'.$ptmp[$i]->{'menu'}[0].'_0" value="'.$ptmp[$i]->{'url'}[0].'|'.$ptmp[$i]->{'menu'}[0].'" disabled /><h2><input id="used'.$i.$ci.'" name="used'.$i.$ci.'" type="checkbox" /><a class="navblock nav-downmenu" tabindex="0" title="move down">&#160;</a><a class="navblock nav-upmenu" tabindex="0" title="move up">&#160;</a>'.$inm.$outm.$addm.'<label for="used'.$i.$ci.'" class="tt_tabclick navblock nav-edit editopen" tabindex="0" title="view Subpages">'.$ptmp[$i]->{'title'}[0].'</label><span class="dropspacer">&#160;</span><div class="reorderparent">'; }
-if( $ty ne "showpages" || !defined $upd{$d} ){ @s = admin_drill_reorder($ty,$ptmp[$i]->{'pages'},\@s,$delim.$i.$ci,"inside",$updref,$probs,@{ $ptmp[$i]->{'url'} }[0]); }
+$dbug.= "$i = $ptmp[$i]->{'url'}[0] ty:$ty ".( (defined $upd{$d})?'yes':'no' )." pages: ".( scalar @{$ptmp[$i]->{'pages'}} )."\n";
+if( $ty ne "showpages" || !defined $upd{$d} ){ 
+my ($dbref,$sref) = admin_drill_reorder($ty,$ptmp[$i]->{'pages'},\@s,$delim.$i.$ci,"inside",$updref,$probs,@{ $ptmp[$i]->{'url'} }[0]);$dbug.= $dbref;@s = @{$sref}; }
 if( !defined $updref ){push @s,'</div></h2></div>';}
 } else {
 if( defined $ptmp[$i]->{'menu'}[0] && $ptmp[$i]->{'menu'}[0] !~ /^000/ && $ptmp[$i]->{'menu'}[0] =~ /(\.*000)/ ){ $ptmp[$i]->{'menu'}[0] =~ s/(\.*000)//; }
@@ -1682,7 +1683,7 @@ push @s,$ptmp[$i]->{'url'}[0].'|'.$ptmp[$i]->{'menu'}[0].'|'.(1+scalar @dd).$pr;
 $c++;
 }
 ###admin_json_out({ 'check drill_reorder 2' => "\nty:$ty \n\n dbug:$dbug \n\n".Data::Dumper->Dump([\@s],["s"])."\n\n".Data::Dumper->Dump([\%upd],["upd"]) },$origin,$callback);
-return @s;
+return ($dbug,\@s);
 }
 
 sub admin_drill_submenu{
@@ -2130,6 +2131,16 @@ print $t;
 exit;
 }
 
+sub admin_imagesize{
+my ($f) = @_; #/var/www/vhosts/pecreative.co.uk/revive.pecreative.co.uk/documents/Images/products/uncoated/
+my $s = undef;
+foreach my $k( sort keys %imgsizes){
+my @v = @{ $imgsizes{$k} };
+if( defined $v[0] && defined $v[1] && $f =~ /^($base)($v[0])/ ){ $s = $v[1]; } #'Product Image' => ["documents/Images/products/","Product Image,_product,300,300"],
+}
+return $s;
+}
+
 sub admin_json_out{
 my ($jref,$orig,$call) = @_;
 my $type = (ref $jref eq ref {}) || (ref $jref eq 'ARRAY') || undef;
@@ -2208,11 +2219,11 @@ sub admin_list{
 # { 'link' => ['News.html'],'shortname' => ['News'],'epoch' => [1479479458],'blocks' => [], 'date' => ['05/10/16'],'menu' => ['001'],'menuname' => ['News'],'size' => ['22k'],'published' => ['18/11/2016'],'url' => ['News.html'],'title' => ['News'],'pages' => [ { 'link' => ['News_RSM-assists-government-agency-zCloud-transition.html'],'shortname' => ['Government zCloud Transition'],'epoch' => [1479479458],'blocks' => ['<div class=\"row editblock pulled\">\n <div class=\"edittitle\"> <div class=\"text\"><span>RSM assists government agency zCloud transition</span></div></div></div>'] } ] }
 # ]
 my ($u,$fu,$ltype,$ldest,$resp) = @_;
-my $uname = $u;$uname =~ s/^($obase|$baseview)//;
+my $uname = $u;$uname =~ s/^($baseview)//;
 my $mu = $uname;$uname =~ s/\.($htmlext)$//;
 my $archive = ( $uname =~ /($docview)archive/i )?1:undef;
 if( $ltype =~ /^view/ && $ltype ne "viewpages" ){ $ldest = $base.$adminbase."view.".$htmlext; }
-my ($cterr,$ctref) = sub_get_all($fu,$ltype,\%config);
+my ($cterr,$ctref) = sub_get_all($fu,$ltype,\%config,[$partnerview]);
 admin_json_out({ 'error' => "admin_list alert: no useable data retrievable by server: \n\ncterr:$cterr \n".Data::Dumper->Dump([$ctref],["ctref"])." \n\n$debug" },$origin,$callback) unless defined $ctref && !defined $cterr;
 my %m = %{ $ctref };
 my %folders = ();

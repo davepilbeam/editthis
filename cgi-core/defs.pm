@@ -48,6 +48,7 @@ our %COPY = (
 'Ring Back Enquiry' => "Your details have successfully been sent and you will receive a response shortly.",
 'Dropbox Download' => "Partner Portal file download has been requested:",
 'Library Download' => "Literature download confirmations.",
+'Members Login' => "Login successful.",
 'Downloads' => "Thank you. Your download has been emailed to the address provided.",
 'White Paper' => "Thank you for requesting access to our White Papers and Reports.",
 'Registration Request' => "Thank you for registering; we will be contacting you shortly.",
@@ -66,7 +67,7 @@ our $efoot = <<_MSG_FOOT;
 <br />
 <strong><a style="color:#c00" href="$http//domain.com">domain.com</a></strong><br />
 <br />
-<b>Domain Name (c) 2019</b><br />
+<b>Domain Name (c) 2020</b><br />
 <br />
 This message is for the designated recipient only and may contain confidential, privileged, proprietary, or otherwise private information. If you have received it in error, please notify the sender immediately and delete the original. Any other use of this email by you is prohibited.<br /> 
 <br />
@@ -88,6 +89,7 @@ our $mobpic = "_mobile";
 our %imgsizes = ( 
 'Document Thumbnail' => ["documents/Digital/","Document Thumbnail,_thumb,202,150"],
 'Content Picture' => ["documents/Images/elements/","Content Image","_content,900,600"],
+'Events Header Image' => ["documents/Images/events/","Events Header Image,_header,900,400+Mobile Version,_header_mobile,480,250"],
 'News Header Image' => ["documents/Images/news/","News Header Image,_header,900,400+Mobile Version,_header_mobile,480,250"],
 'Product Image' => ["documents/Images/products/","Product Image,_product,300,300"],
 'Product Logo' => ["documents/Images/logos/","Product Logo,_logo,300,300"],
@@ -120,11 +122,13 @@ our %editareas = (
 our $libtags = "Url Image Title Created";
 our $droptags = "Archive Area Author Focus Group Tags Text";
 our %defsort = (
-'News.html' => '21'
+'News.html' => '21',
+'Events.html' => '21'
 );
 our %headers = (
 'analytics_gref' => [ "name","content","UA-00000000-1","Google Code" ],
 #'analytics_lref' => [ "name","content","domain.com","Lead Forensics Code" ],
+#'analytics_esref' => [ "name","content","i7j0","Es Mail Code" ],
 #'analytics_wref' => [ "name","content","00aaaa00-a000-0aaa-0aa0-a000a000aaa0","WOW Code" ],
 'copyright' => [ "name","content","Copyright (c) Dave Pilbeam 2019" ],
 'author' => [ "name","content","Domain Name" ],
@@ -135,6 +139,18 @@ our %headers = (
 our %defheaders = (
 'application-name' => 'thatsthat',
 'viewport' => 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+);
+our %signinfields = (
+'newalert' => "New Member Sign-Up Details",
+'usermsg' => "Congratulations, you are now a member of Our Club",
+'useremail' => "Your New Sign-up Details",
+'loginfile' => "Sign-In.html",
+'masteruser' => "member",
+'masterpass' => "OurClubPassword",
+'dest' => "members/index.html",
+'titleform' => '<ul class="area editablearea signtitlearea">.*?<\/ul>',
+'inform' => '<div class="form signin">\s*<form.*?>\s*<fieldset>.*?<\/fieldset>\s*<\/form>\s*<\/div>',
+'upform' => '<div class="form signup">\s*<form.*?>\s*<fieldset>.*?<\/fieldset>\s*<\/form>\s*<\/div>'
 );
 our %inputinfo = (
 'title' => '<span class="inputinfo">The <b>Page Title</b> (150 characters maximum) will become the title displayed on the page itself in a H1 tag.</span>',
@@ -207,7 +223,7 @@ our $menu_limit = 3;
 our $adminbase = "admin/";
 our $backupbase = "admin/BACKUP/";
 our $versionbase = "VERSIONS/";
-our $page_limit = 250;
+our $page_limit = 180;
 our $version_limit = 3;
 our $delete_limit = 10;
 our $repdash = "~";

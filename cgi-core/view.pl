@@ -4,7 +4,6 @@
 
 use strict;
 #use warnings;
-#use cPanelUserConfig;
 
 use CGI qw/:standard/;
 use CGI::Carp qw(fatalsToBrowser);

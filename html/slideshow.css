@@ -1,0 +1,39 @@
+/*#editthis version:8.2.2 EDGE inline*/
+/*SLIDESHOW*/ 
+.slideshowarea { width:100%; height:100%; min-height:70vh; background:transparent; margin:0; cursor:pointer; }
+.slideshowarea .tt_slideshow-inner,.slideshowarea .slideholder { position:absolute; top:0; bottom:0; width:100%; height:100%; background:transparent none no-repeat center; }
+.slideshowarea .tt_slideshow-inner.css-active { z-index:10; }
+.slideshowarea .tt_slideshow-inner.css-prev { z-index:5; }
+.slideshowarea .tt_slideshow-inner .editblock { position:absolute; min-height:16px; background:transparent; }
+.slideshowarea .editimage > .text { height:100%; padding:0; }
+.slideshowarea .tt_slideshow-el  { height:auto; padding:20px; }
+.slideshowarea .editblock:not(.tt_slideshow-el) { position:absolute; top:0; bottom:0;	left:0; right:0;}
+.slideshowarea .editblock .editimage { width:100%; height:100%; }.slideshowarea a { color:#fff; } 
+.slideshowarea a.editlinkinline { display:block; text-decoration:none; }
+.slideshowarea a.editlinkinline:hover { text-decoration:underline; }
+.slideshowarea li.controller { position:absolute; bottom:10px; left:0; right:0; height:16px; background:transparent; border:none; opacity:0.8; z-index:10;  } 
+.slideshowarea .controlwrapper { width:100px; height:100%; margin:0 auto; }
+.slideshowarea li.controller span.slidecontrol { display:block; width:16px; height:16px; border-radius:8px; background:#ccc; margin-right:4px; clear:none; float:left;  } 
+.slideshowarea li.controller span.slidecontrol:last-child { border-right:none; } 
+.slideshowarea li.controller span.slidecontrol.active,.slideshowarea li.controller span.slidecontrol:hover { background:#23b9d6; }.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideleft { opacity:1; -webkit-transform:translate3d(-90px,0,0); transform:translate3d(-90px,0,0); } 
+.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideup { opacity:1; -webkit-transform:translate3d(0,90px,0); transform:translate3d(0,90px,0); } 
+.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slidedown { opacity:1; -webkit-transform:translate3d(0,-90px,0); transform:translate3d(0,-90px,0); } 
+.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideright { opacity:1; -webkit-transform:translate3d(90px,0,0); transform:translate3d(90px,0,0); } 
+.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideleft.tt_inview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideup.tt_inview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slidedown.tt_inview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideright.tt_inview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideleft.tt_onview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideup.tt_onview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slidedown.tt_onview,.slideshowarea[data-target] .slider.tt_animate.tt_active.tt_slideright.tt_onview { opacity:1;-webkit-transform:translate3d(0,0,0); transform:translate3d(0,0,0); }
+.slideshowarea li.controller.paused .slidecontrol { background:#dee655; opacity:0.7; }
+/*pulled*/
+.slideshowarea .editblock.pulled { height:100%; background-color:transparent; }
+.slideshowarea .editblock.pulled .editlink,.slideshowarea .editblock.pulled .editlink,.stackerarea .editblock.pulled .editlink { display:block; position:absolute; top:0; right:0; bottom:0; left:0; color:#fff; background:transparent; }
+.slideshowarea .editblock.pulled .edittitle { display:none; }
+.slideshowarea .editblock.pulled .editimage > .text { height:400px; background-color:transparent; }
+.slideshowarea .editblock.pulled .edittext { position:absolute; bottom:0; left:0; height:140px; background:transparent url(documents/Images/backgrounds/background-sliderbar.png); font-size:120%; line-height:120%; padding:10px 10px 10px 20px; }
+.slideshowarea .editblock.pulled .slidertitle { height:36px; font-size:120%; line-height:100%; padding:5px 150px 0 0; }
+.slideshowarea .editblock.pulled .edittext .text > p { padding:10px 26px 20px; }
+.slideshowarea .editblock.pulled .editmore { position:absolute; top:3px; right:20px; display:block; width:120px; color:#393634; background-color:#efefef; font-size:100%; line-height:140%; text-align:center; margin:10px 0 30px; border-radius:6px; border:2px solid #ccc; float:right; }
+.slideshowarea .editblock.pulled .editmore:hover { background:#00aae0; }
+.slideshowarea .editblock.pulled .editmore:hover::after { color:#fff; }
+
+@media only screen and (max-width:480px) {
+.slideshowarea > li.controller { bottom:6px; right:0; }
+.slideshowarea .editimage > .text { background-size:auto 400px; }
+}

@@ -38,6 +38,7 @@ our $time = time;
 our ($lsec,$lmin,$lhour,$lmday,$lmon,$lyear,$lwday,$lyday,$lisdst) = gmtime($time);
 our $updated = "&#169; thatsthat ".(1900+$lyear);
 our $adminuser = $ENV{'REMOTE_USER'}; #rsmadmin rsmeditor
+our $debug = "";
 
 our $sitemapclass = "navtext sitemap";
 our $addcss = "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"admin/editthis.css\" />";
@@ -92,6 +93,7 @@ our $backupbase = $defs::backupbase;
 our $versionbase = $defs::versionbase;
 
 our $docview = $defs::docview;
+our @addsubs = @defs::addsubfolders;
 our $partnerview = $defs::partnerview;
 our $imagefolder = $defs::imagefolder;
 our $imageview = $docview.$imagefolder."/";
@@ -115,7 +117,8 @@ our $configjs = "<script type=\"application\/javascript\" src=\"config.js\" char
 our $addjs = "<script type=\"application\/javascript\" src=\"admin/minsu.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"admin/su.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"admin/contenteditable.js\" charset=\"utf-8\"></script>\n";
 our $type = 'login';
 our $deftemp = 'Default-Page-Template.html';
-our @seclist = ($docview.'Archive/',$templateview,$partnerview);
+our @secsubs = ();if( scalar @addsubs > 0){ for my $i(0..$#addsubs){ if( -d $base.$addsubs[$i] ){push @secsubs,$addsubs[$i];} } }if( -d $base.$partnerview ){ push @secsubs,$partnerview; }
+our @seclist = ($templateview,$docview.'Archive/');push @seclist,@secsubs;$debug.= "secsubs = [ @secsubs ] \nseclist = [ @seclist ]\n";
 
 our $menu_limit = $defs::menu_limit;
 our $version_limit = $defs::version_limit;
@@ -222,7 +225,6 @@ local *sub_zip_out = \&subs::sub_zip_out;
 our %outstr = ();
 our %config = ();
 our %gsections = ();
-our $debug = "";
 our $callback = "";
 our $attri = "";
 our $old = "";
@@ -285,7 +287,7 @@ if( $k eq 'code' ){ $code = $pdata{'code'};$outstr{'code'} = $code; }
 if( $k eq 'replace' ){ $replace = sub_clean_name($pdata{'replace'},$htmlext);$replace = Encode::decode('utf8',$replace);$outstr{'replace'} = $replace; } #replace1+replace2
 if( $k eq 'type' ){ $type = Encode::decode('utf8',$pdata{'type'});if( $type eq "alertfolders" ){ $hidealert = 1;$type = "viewalert"; } } 
 # addfolders addpages alertfolders archivepages changeaddfolders changeaddpages changearchivepages changedeletefiles changedeletefolders changedeletepages changedistribute changedeploysite changedownloadfolders changedupepages changelibrarypages changelockpages changeunlockpages changeimagepages changerenamefiles changerenamefolders changerankpages changerestorepages changesavepages changesearchfolders changesectionpages changesubpages changetitlepages changeuploadfolders changeuploadsite compressfiles deletefiles deletepages deploysite distribute downloadfolders dupepages editblocks editlibrary editpages getfiles getimages getedittextclips getgridclips getsectionclips getguides hidemappages hidefolderpages hidepages  viewconfigpages listmenupages newlinkpages newmenupages renamefiles renamefolders reorderpages restoredelete restoreprotect restoresite searchfolders showpages showmappages uncompressfiles uploadfolders usedfiles viewalert viewall viewfix viewfolders viewpages viewsharefix viewversionpages
-if( $k eq 'url' ){ $pdata{'url'} = Encode::decode('utf8',$pdata{'url'});$pdata{'url'} = sub_title_deslash($pdata{'url'},[$templateview,$partnerview]);$url = sub_clean_name($pdata{'url'},$htmlext);$sitepage = $url; } #documents/Publications/Presentations-and-Brochures/CARIBSAVE-Stakeholder-Workshop-2009/.library.txt
+if( $k eq 'url' ){ $pdata{'url'} = Encode::decode('utf8',$pdata{'url'});$pdata{'url'} = sub_title_deslash($pdata{'url'},\@seclist);$url = sub_clean_name($pdata{'url'},$htmlext);$sitepage = $url; } #documents/Publications/Presentations-and-Brochures/CARIBSAVE-Stakeholder-Workshop-2009/.library.txt
 if( $k eq 'old' ){ $old = sub_clean_name($pdata{'old'},$htmlext);$old = Encode::decode('utf8',$old);$outstr{'old'} = $old; } # documents/Templates-and-Guides/Default-Page-Template.html | html | grid_15683655665644
 foreach my $j(keys %defsections){ my $n = lc $j;$n =~ s/\s+/-/g;if($k eq $n){ $gsections{$j} = $defsections{$j}->[1];$debug.= "gsection: $k = $n from $j \n"; } }
 }
@@ -316,7 +318,7 @@ if( $type =~ /view(alert|all|fix)$/ || $type eq "login" || $type eq "getimages" 
 # tt: 0
 #origin:
 
-if( $type !~ /^(changesearch|changerestorepages|changeaddpages|changedupepages|changelibrarypages|changesectionpages|changedeploysite|changedistribute|changeuploadsite|getguides)/ ){
+if( $type !~ /^(changesearch|changerestorepages|changeaddpages|changedupepages|changelibrarypages|changesectionpages|changedeploysite|changedistribute|changeuploadsite|getguides|listmenupages)/ ){
 if( $type =~ /view(alert|all|fix)$/ || $type eq "login" || $type eq "getimages" || $type eq "getfiles" ){
 $url = "";
 } elsif( $type =~ /restore/){
@@ -412,6 +414,8 @@ my $dtmp = $fullurl;if( $type ne "login" && $type ne "viewall" && $type ne "view
 'resourcefolder' => $resourcefolder,
 'restorebase' => $restorebase,
 'sharelist' => \%sharelist,
+'seclist' => \@seclist,
+'secsubs' => \@secsubs,
 'site_file' => $site_file,
 'sitepage' => $sitepage,
 'subdir' => $subdir,
@@ -697,7 +701,7 @@ if( $type =~ /pages$/ ){ my ($subref,$smsg) = sub_get_subnumber($upf,\%config);@
 if( $type =~ /^(download|reorder|search)/ ){ $exclude{'undownload'} = 1; }
 if( $type =~ /^(delete|rename)/ ){ 
 ###admin_json_out({ 'check '.$type.'' => "fullurl:$fullurl \nurl:$url \nupf:$upf \nsubs:".(scalar @subs)." \nals:".(scalar @als)." \n\n".Data::Dumper->Dump([\@warn],["warn"])." \n\n $debug" },$origin,$callback);
-if( -e $fullurl ){ @warn = sub_get_changed("all","used",[$base,$templateview,$partnerview],\%config,$upf); } else { $warn[0] = ( "Warning:","the server cannot locate file $upf: $!" ); }
+if( -e $fullurl ){ @warn = sub_get_changed("all","used",\@seclist,\%config,$upf); } else { $warn[0] = ( "Warning:","the server cannot locate file $upf: $!" ); }
 ###admin_json_out({ 'check '.$type.' 1' => "fullurl:$fullurl \nurl:$url \nsubs:".(scalar @subs)." \nals:".(scalar @als)." \n\n".Data::Dumper->Dump([\@warn],["warn"])." \n\n $debug" },$origin,$callback);
 }
 admin_display_form($type,$url,$uptxt,"prev",\%exclude,\@warn,((scalar @subs > 1)?(scalar @subs-1):undef),((scalar @als > 0)?scalar @als:undef),$nurl);
@@ -1627,7 +1631,8 @@ my @s = ();
 my $probs = (defined $ty)?$ty:undef;
 my $dbug = "";
 my $err = undef;
-my ($eerr,$eref,$nref) = sub_page_return("viewpages",[$u,$partnerview],\%config,undef,undef,undef,undef,undef,undef,undef,undef,$showall);
+my @subs = ($u);push @subs,@secsubs;
+my ($eerr,$eref,$nref) = sub_page_return("viewpages",\@subs,\%config,undef,undef,undef,undef,undef,undef,undef,undef,$showall);
 admin_json_out({ 'error' => "display reorder: ".$eerr },$origin,$callback) if defined $eerr;
 ###admin_json_out({ 'check display_reorder' => "u:$u \n\n ".Data::Dumper->Dump([$eref],["eref"])."\n\n ".Data::Dumper->Dump([$nref],["nref"])." \n\n ".Data::Dumper->Dump([$updref],["updref"])." \n\n $debug" },$origin,$callback); #  
 my ($msg,$sref) = admin_drill_reorder($ty,$eref,\@s,'_0',undef,$updref,$probs);
@@ -1660,9 +1665,11 @@ my $c = 0;
 for my $i(0..$#ptmp){ 
 my $d = @{ $ptmp[$i]->{'url'} }[0];my $tmp = $d;$tmp =~ s/\.($htmlext)$//;my @dd = $tmp =~ /($qqdelim)/g; 
 if( defined $updref ){ foreach my $k( keys %upd ){ my $dm = $k;$dm =~ s/\.($htmlext)$//;my $qm = '^'.quotemeta($dm);$dbug.= "in: $dm ";if( $d =~ $qm ){ my $old = @{ $ptmp[$i]->{'menu'} }[0];@{ $ptmp[$i]->{'menu'} }[0] =~ s/\.(0|00)$//;@{ $ptmp[$i]->{'menu'} }[0].= $upd{$k};$dbug.= "old:$old replace with ".@{ $ptmp[$i]->{'menu'} }[0]."\n"; } } }
-###if( $d =~ /Members.html/ ){
+###
+if( $d =~ /test\// ){
 ###admin_json_out({ 'check drill_reorder 1' => "\nty:$ty \nd:$d \n\n dbug:$dbug \n\n $d is in upd = ".( defined $upd{$d} )."\n\nptmp[$i] = ".@{ $ptmp[$i]->{'menu'} }[0]." \n\n".Data::Dumper->Dump([\%upd],["upd"]) },$origin,$callback);
-###}
+###
+}
 my $inm = '<a class="navblock nav-inmenu'.( ( $i > 0 && $i < $#ptmp-1 && defined $ptmp[($i+1)]->{'pages'})?'':' tt_undisplay' ).'" tabindex="0" title="move into next Folder">&#160;</a>';
 my $outm = '<a class="navblock nav-outmenu'.( (defined $inside)?'':' tt_undisplay' ).'" tabindex="0" title="move out of this Folder">&#160;</a>';
 my $addm = '<a class="navblock nav-addmenu'.$offclass.( (defined $ptmp[$i]->{'pages'})?' nav-removemenu':'' ).'" tabindex="0" title="'.( (defined $ptmp[$i]->{'pages'})?'delete all ':'add' ).' Subpages beneath this Page">&#160;</a>';
@@ -1816,7 +1823,7 @@ my @addsubjects = ();foreach my $k(sort keys %SUBJECTS){ my $t = $SUBJECTS{$k};$
 my @defmods = ();foreach my $k(sort keys %DEFMODS){ push @defmods,"'".$k."':'".$DEFMODS{$k}."'"; }
 my @sc = ();foreach my $k(sort keys %defsections){ push @sc,"'".$k."':'".$defsections{$k}->[0]."'"; }
 #my $sizer = admin_generate_sizes(\%imgsizes,$upfolder);
-my $ajs = "<script type=\"application/javascript\" src=\"config.js\" charset=\"utf-8\"></script><script type=\"application\/javascript\" src=\"".$subdir."admin/minsu.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"".$subdir."admin/su.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"".$subdir."admin/contenteditable.js\" charset=\"utf-8\"></script>\n";
+my $ajs = "<script type=\"application/javascript\" src=\"config.js\" charset=\"utf-8\"></script><script type=\"application\/javascript\" src=\"admin/minsu.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"admin/su.js\" charset=\"utf-8\"></script>\n<script type=\"application/javascript\" src=\"admin/contenteditable.js\" charset=\"utf-8\"></script>\n";
 my $xjs = "<script type=\"application\/javascript\">Object.append(E,{ 'cfg':{ 'eclips':{'edittexts':".$eclips{'edittexts'}.",'grids':".$eclips{'grids'}.",'sections':".$eclips{'sections'}."},'RECEIVERS':{ ".(join ",",@addreceivers)." },'SUBJECTS':{ ".(join ",",@addsubjects)." },'MODULES':{ ".(join ",",@defmods)." },'defsections':{ ".(join ",",@sc)." },'e_pulltags':".$edstr.",'docfolder':'".$docview."','imgfolder':'".$imagefolder."/','upfolder':'".$upfolder."','modified':'".$mod."' } });</script>\n"; 
 
 #','e_sizes':'".$sizer."
@@ -2223,7 +2230,8 @@ my $uname = $u;$uname =~ s/^($baseview)//;
 my $mu = $uname;$uname =~ s/\.($htmlext)$//;
 my $archive = ( $uname =~ /($docview)archive/i )?1:undef;
 if( $ltype =~ /^view/ && $ltype ne "viewpages" ){ $ldest = $base.$adminbase."view.".$htmlext; }
-my ($cterr,$ctref) = sub_get_all($fu,$ltype,\%config,[$partnerview]);
+my @subs = @addsubs;push @subs,$partnerview;
+my ($cterr,$ctref) = sub_get_all($fu,$ltype,\%config,\@addsubs);
 admin_json_out({ 'error' => "admin_list alert: no useable data retrievable by server: \n\ncterr:$cterr \n".Data::Dumper->Dump([$ctref],["ctref"])." \n\n$debug" },$origin,$callback) unless defined $ctref && !defined $cterr;
 my %m = %{ $ctref };
 my %folders = ();

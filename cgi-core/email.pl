@@ -172,6 +172,8 @@ our $ask = undef;
 our $callback = "";
 our $endout = "";
 our $eresp = "";
+our $gmailout = "";
+our $totalout = "";
 our $debug = "";
 
 our $datetime = email_get_date(); #14:10:39_15--10--2015
@@ -235,8 +237,9 @@ if( $k=~ /^namelastname/i ){ if($pdata{$k} ne ""){ $fullname{'last'} = $pdata{$k
 
 if($k eq "returncopy_X"){if($pdata{$k} ne ''){$returnmail = $pdata{$k};}$h = 1;}
 if($k eq "returnlist_X"){if($pdata{$k} ne ''){ @returnlist = split(/\|/,$pdata{$k});for my $i( 0..$#returnlist ){ $returnlist[$i] =~ s/^(pre|opt)_(.*?)_([0-9]+)$/$2/; } }$h = 1;}
-if($k=~ /^shoporder-([0-9]+)/i){ push @SHOP,$pdata{$k};$h = 1; }
-if($k=~ /^shoptotal/i){ $shoptotal = $pdata{$k};$h = 1; }
+
+if($k=~ /^shoporder-([0-9]+)/i){ push @SHOP,$pdata{$k};$h = 1;$gmailout.= "shoporder = $pdata{$k}\n\n";  }
+if($k=~ /^shoptotal/i){ $shoptotal = $pdata{$k};$h = 1;$totalout = "$k = $pdata{$k}\n\n";  }
 
 if( $pdata{$k} =~ /\[url="/i || $pdata{$k} =~ /<a href="/ || $pdata{$k} =~ /http:\/\// ){ $spamfail = 1; }
 ##if($pdata{$k} ne ""){ 
@@ -295,7 +298,7 @@ $intro = $COPY{$title};
 my $ftt = $efoot;
 $ftt =~ s/<br \/>/\n/gi;
 $ftt =~ s/<.*?>//gi;
-$out = $intro."\n\n".$out.( (defined $allfields)?$NFout:"" )."\n\n".$ftt;
+$out = $intro."\n\n".$out.( (defined $allfields)?$NFout:"" )."\n\n".$gmailout."\n".$totalout."\n\n".$ftt;
 $rout = $intro."\n\n".$returnmail."\n\n".$RRout."\n\n".$ftt;
 
 $debug.= "\n\nreclist = ".$reclist."\n";

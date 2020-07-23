@@ -32,6 +32,7 @@ our $serverip = join "|",@servers;
 our $sendtemp = $defs::sendtemp;
 our $peserver = (defined $defs::nonpeserver)?undef:1;
 our $cgipath = $defs::cgipath;
+our $cgiurl = $defs::cgiurl;
 our $cgirelay = $defs::cgirelay;
 our $base = $defs::base;
 our $baseview = $defs::baseview;

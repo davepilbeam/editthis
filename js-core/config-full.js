@@ -10,6 +10,7 @@ var G = G || {};
 4/ alter E.server if not PE server 
 5/ alter E.servertrack if not PE server
 6/ alter E.geo if required
+7/ alter E.place placeholder color
 */ 
 Object.append(E,{ 
 //
@@ -19,9 +20,10 @@ e_text: '',
 fonts: { type:{ 'font_light':null,'font_regular':null,'font_italic':null,'font_bold':null,'font_bolditalic':null,'head_light':null,'head_regular':null,'head_italic':null,'head_bold':null,'head_bolditalic':null },wait:1 }, 
 geo: null,
 goals: {}, 
-cgiurl: 'cgi-bin/members/', //cgi-bin/etc/ 
+cgiurl: 'cgi-bin/', //cgi-bin/members/ 
 jsurl: '', //'' = (E.durl) or full js dir url 
 mforce: null, //force cookies 
+place: '#555',
 server: 'pe', //pe = not use thatsthat.uk 
 servertrack: 'pe', //pe = not use thatsthat.uk 
 track: null, 
@@ -52,7 +54,7 @@ canvas: {},
 css: { 
 t: [ 
 '.tt_unselect: { '+E.css[E.bsr]+'-user-select:none; user-select:none; cursor:pointer; }',
-'::'+E.css[E.bsr]+( (E.bsr == 2 || E.bsr == 4)?'input-':'' )+'placeholder { color:#9b2580; }'
+'::'+E.css[E.bsr]+( (E.bsr == 2 || E.bsr == 4)?'input-':'' )+'placeholder { color:'+E.place+'; }'
 ] 
 },
 defs: { ext:'.html',folder:'_',map:'Site-Map',sep:'<-//->',space:'-' }, 
@@ -300,7 +302,7 @@ loadF: function(a,b){ var d = a.getElement('a'),m = {},n,o,p = {},q,t,u,v,w;if(d
 });
 
 Object.append(G,{ 
-alertG: function(a,b,c,d){ a = Array.convert(a);var ff,l,m = $('tt_modal'),t;ff = function(e){ G.stopG(e);if(c && typeOf(c) == 'function'){c();}new Element('div',{'id':'tt_modal','html':m.retrieve('revert')}).replaces(m);$('body0').removeClass('tt_modalon').removeEvents('keydown'); };t = m.getElement('.modal-container');if(m){ if(b){ l = m.getElement('#m-close');if(t && l){ l.attachMe({'click':ff});m.store('revert',m.get('html'));t.empty();$$(a).inject(t);m.addClass(b);$('body0').addClass('tt_modalon').attachMe({'keydown':function(e){G.keyG(e,'esc',ff);} }); } } else { if(t){ t.empty();$$(a).inject(t); } }if(d && typeOf(d) == 'function'){d();} } },
+alertG: function(a,b,c,d){ a = Array.convert(a);var ff,l,m = $('tt_modal'),t;ff = function(e){ G.stopG(e);if(c && typeOf(c) == 'function'){c();}new Element('div',{'id':'tt_modal','html':m.retrieve('revert')}).replaces(m);$('body0').removeClass('tt_modalon').removeEvents('keydown'); };t = m.getElement('.modal-container');if(m){ if(b){ if(t){ m.store('revert',m.get('html'));t.empty();l = new Element('a',{'id':'m-close','href':'#','html':'&times;'}).inject(t).attachMe({'click':ff});$$(a).inject(t);m.addClass(b);$('body0').addClass('tt_modalon').attachMe({'keydown':function(e){G.keyG(e,'esc',ff);} }); } } else { if(t){ t.empty();$$(a).inject(t); } }if(d && typeOf(d) == 'function'){d();} } },
 assetG: function(a,b){ var j = E.jsurl,n = a.replace(/([0-9]+)$/,''),o,s = ($$('script[id='+a+']')[0])?1:null;j+= a;o = (s)?1:(G[n] && G[n].inited)?1:null;if(o){ if(b && typeOf(b) == 'function'){b();} else {if(G[n] && G[n].loadF){G[n].loadF();}} } else { new Asset.javascript(j+'.js',{ id:a,onLoad:function(){ G[n].initF();if(b && typeOf(b) == 'function'){b();} else { if(G[n].loadF){G[n].loadF();} } } }); } },
 aswidthG: function(a){ var x = E.viewportG().x;return ( x <= G.mobile.view.mobile.x )?'mobile':( x <= G.mobile.view.tablet.x )?'tablet':'desktop'; },
 changeG: function(a){ if( $('body0') ){ $('body0').setStyle('visibility','hidden');G.styler.setF(a);$('body0').setStyle('visibility','visible');} },

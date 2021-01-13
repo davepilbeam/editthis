@@ -1,5 +1,6 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
 
+use cPanelUserConfig;
 #editthis version:8.2.2 EDGE
 
 package subs;
@@ -2002,21 +2003,23 @@ $tm = $k;$tm =~ s/$c{'mobpic'}\.(png|jpg|gif)$/\.$1/;if( -f $c{'base'}.$tm ){ $k
 }
 } 
 }
+
 if( defined $single && defined $m{$single} ){ 
 %m = ( $single => [ sort keys %{$data{$single}} ] );  
 } else {
 if( defined $m{$k} ){ $dbug.= "$m{$k}{'url'}[0] == $k \n";
-@{ $m{$k}{'used'} } = sort keys $data{$k};if( defined $kk ){ @{ $m{$k}{'mobile'} }[0] = $kk; }
+@{ $m{$k}{'used'} } = sort keys %{$data{$k}};if( defined $kk ){ @{ $m{$k}{'mobile'} }[0] = $kk; }
 } else { 
 if( $k !~ /\.($c{'htmlext'}|png|jpg|gif)/ ){ $dbug.= "sort for $k \n"; 
 foreach my $j( sort keys %m){ 
 if( defined $m{$j}{'parent'} && $m{$j}{'parent'}[0] =~ /^($k)$/ ){ $dbug.= "parent: $j = $m{$j}{'parent'}[0] = $k \n";
-@{ $m{$j}{'used'} } = sort keys $data{$k};if( defined $kk ){ @{ $m{$j}{'mobile'} }[0] = $kk; } 
+@{ $m{$j}{'used'} } = sort keys %{$data{$k}};if( defined $kk ){ @{ $m{$j}{'mobile'} }[0] = $kk; } 
 } 
 }
 }
 }
 }
+
 }
 ###sub_json_out({ 'check library_list 3' => "dbug: $dbug" },$c{'origin'},$c{'callback'});
 ###sub_json_out({ 'check library_list 4' => "base:$c{'base'} dir:$dir \nfilter:$filter \nm = ".Data::Dumper->Dump([\%m],["m"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
@@ -3836,7 +3839,7 @@ $debug.= "parent ($$) = child $forks ($pid) starts \n";
 } else { #child
 close STDOUT;
 my ($serr,$smsg) = $subref->($arrays[$i]);
-if( defined $serr ){ push $msg.= "warning: $serr \n"; } else { $msg.= "$smsg \n"; }
+if( defined $serr ){ $msg.= "warning: $serr \n"; } else { $msg.= "$smsg \n"; }
 ###sub_log_out({ 'check menu_fork 3' => "$i = pro:$pro \n\n".Data::Dumper->Dump([\$arrays[$i]],["array $i"])."\n\n mmsg: $msg \nerr:$err \n\n $debug \n $c{'debug'}" },$c{'base'});
 exit;
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
 
-#editthis version:8.2.2 EDGE
+use cPanelUserConfig;
+#editthis version:8.2.2 EDGE +novel
 
 use strict;
 #use warnings;
@@ -65,6 +66,7 @@ our $body_regx = $defs::body_regx;
 our $homeurl = $defs::homeurl;
 our $taglister = $defs::taglister;
 our $liblister = $defs::liblister;
+our $chapterlister = $defs::chapterlister;
 our $webbase = $defs::webbase;
 our %perms = %defs::perms;
 our $softversion = $defs::softversion;
@@ -224,6 +226,7 @@ if( $sitepage =~ /($site_file)$/ || $format eq "fullmenu" ){ $fullmenu = 1; } el
 'body_regx' => $body_regx,
 'callback' => $callback,
 'cgipath' => $cgipath,
+'chapterlister' => $chapterlister,
 'clsdata' => $clsdata,
 'cssview' => $cssview,
 'debug' => $debug,

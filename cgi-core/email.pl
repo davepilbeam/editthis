@@ -1,10 +1,9 @@
-#!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
+#!/usr/bin/perl
+use cPanelUserConfig;
+#editthis version:8.2.2 EDGE +novel
 
-#editthis version:8.2.2 EDGE
-
+use CGI::Carp qw(fatalsToBrowser);
 use strict;
-#use warnings;
-#use cPanelUserConfig;
 
 use CGI;
 use CGI qw/escape unescape/;
@@ -32,6 +31,7 @@ $incerr.= "couldn't do $incfile: $!\n" unless defined $increturn;
 $incerr.= "couldn't run $incfile\n" unless $increturn;
 }
 }
+###email_respond("test:","cgix: $cgix = envpath: $envpath = incerr: $incerr = serverenv: $defs::serverenv");
 
 our %MAP = (); #'IP_location' => 'CountryRegistered'
 our %checkgroup = ();
@@ -54,7 +54,6 @@ our $mail_program = $defs::mail_program;
 our $smtp_server = $defs::smtp_server;
 our $adminaddr = $defs::adminaddr;
 our $fromaddr = $defs::fromaddr;
-our $cgipath = $defs::cgipath;
 our $cgirelay = $defs::cgirelay;
 
 our $http = $defs::http;
@@ -80,8 +79,6 @@ our $resourcefolder = $defs::resourcefolder;
 our $pdffolder = $defs::pdffolder;
 our $cssview = $defs::cssview;
 
-
-$CGI::POST_MAX = $defs::postmax;
 our $resdir = join "|",@defs::RESERVED;
 our $listdir = join "|",@defs::LISTDIR;
 our $bandir = join "|",@defs::BANDIR;
@@ -172,8 +169,6 @@ our $ask = undef;
 our $callback = "";
 our $endout = "";
 our $eresp = "";
-our $gmailout = "";
-our $totalout = "";
 our $debug = "";
 
 our $datetime = email_get_date(); #14:10:39_15--10--2015
@@ -183,11 +178,12 @@ our $senddate = $sendtime;$senddate =~ s/^(.*?)_//;$senddate =~ s/\-/\//g; #03/0
 our $usetime = $sendtime;$usetime =~ s/:/-/g;
 $sendtime =~ s/_/ /g; #14:10:39 15-10-2015
 
+$CGI::POST_MAX = $defs::postmax;
 
 email_respond("error:","Unauthorised user request received by server $ENV{'SERVER_ADDR'}") unless $serverenv =~ /^($serverip)/; # == $serverip / $debug
 our $xx = ( $xxurl ne "" && $ENV{'REMOTE_ADDR'} =~ /^($xxurl)/ )?1:( $xurl ne "" && $ENV{'REMOTE_ADDR'} =~ /($xurl)/ )?1:0;if($xx > 0){ email_exit(); }
 
-email_respond("error:","Data size [ ".$ENV{'CONTENT_LENGTH'}." ] is greater than the maximum ".$CGI::POST_MAX."k allowed ") if $ENV{'CONTENT_LENGTH'} && $ENV{'CONTENT_LENGTH'} > $CGI::POST_MAX;
+email_respond("error:","Data size [ $ENV{'CONTENT_LENGTH'} ] is greater than the maximum  $defs::postmax k allowed ") if $ENV{'CONTENT_LENGTH'} && $ENV{'CONTENT_LENGTH'} > $CGI::POST_MAX;
 
 our $query = CGI->new();
 our %pdata = $query->Vars; my @new_keys = keys %pdata;s/^(opt|pre)_(.*?)_([0-9]+)$/$2/ foreach @new_keys; @pdata{@new_keys} = delete @pdata{keys %pdata}; # $debug.= Data::Dumper->Dump([\%pdata],["PDATA"])."\n";
@@ -237,13 +233,12 @@ if( $k=~ /^namelastname/i ){ if($pdata{$k} ne ""){ $fullname{'last'} = $pdata{$k
 
 if($k eq "returncopy_X"){if($pdata{$k} ne ''){$returnmail = $pdata{$k};}$h = 1;}
 if($k eq "returnlist_X"){if($pdata{$k} ne ''){ @returnlist = split(/\|/,$pdata{$k});for my $i( 0..$#returnlist ){ $returnlist[$i] =~ s/^(pre|opt)_(.*?)_([0-9]+)$/$2/; } }$h = 1;}
-
-if($k=~ /^shoporder-([0-9]+)/i){ push @SHOP,$pdata{$k};$h = 1;$gmailout.= "shoporder = $pdata{$k}\n\n";  }
-if($k=~ /^shoptotal/i){ $shoptotal = $pdata{$k};$h = 1;$totalout = "$k = $pdata{$k}\n\n";  }
+if($k=~ /^shoporder-([0-9]+)/i){ push @SHOP,$pdata{$k};$h = 1; }
+if($k=~ /^shoptotal/i){ $shoptotal = $pdata{$k};$h = 1; }
 
 if( $pdata{$k} =~ /\[url="/i || $pdata{$k} =~ /<a href="/ || $pdata{$k} =~ /http:\/\// ){ $spamfail = 1; }
 ##if($pdata{$k} ne ""){ 
-if( $k ne "js" && $k ne "ask" && $k ne "spam" && !email_process($k,$pdata{$k}) && !defined $h && $k !~ /^(formtype|recipients|html|locate|spamcheck|spamresult|cgiurl|cgireturn|copytype|submit)$/i ){
+if( $k ne "js" && $k ne "ask" && $k ne "spam" && $k !~ /manifest/i && !email_process($k,$pdata{$k}) && !defined $h && $k !~ /^(formtype|recipients|html|locate|spamcheck|spamresult|cgiurl|cgireturn|copytype|submit)$/i ){
 my @ar = ();
 if( defined $MAP{$k} ){ 
 @ar = ($MAP{$k},$pdata{$k});$out.= "$MAP{$k} = $pdata{$k}\n\n"; 
@@ -298,7 +293,7 @@ $intro = $COPY{$title};
 my $ftt = $efoot;
 $ftt =~ s/<br \/>/\n/gi;
 $ftt =~ s/<.*?>//gi;
-$out = $intro."\n\n".$out.( (defined $allfields)?$NFout:"" )."\n\n".$gmailout."\n".$totalout."\n\n".$ftt;
+$out = $intro."\n\n".$out.( (defined $allfields)?$NFout:"" )."\n\n".$ftt;
 $rout = $intro."\n\n".$returnmail."\n\n".$RRout."\n\n".$ftt;
 
 $debug.= "\n\nreclist = ".$reclist."\n";
@@ -338,8 +333,6 @@ for my $i(0..$#toaddr){ push @recipients,$toaddr[$i]; } #send to @toaddr / bcc t
 
 if($html){ $html = email_html_me(\@HM); }
 
-if( defined $peserver ){
-
 my $bc = join ",",@bcc;
 for my $i(0..$#recipients){
 if($recipients[$i] ne "" && $recipients[$i] =~ /^(.*?)\@(.*?)\.(.*?)$/ ){
@@ -348,50 +341,6 @@ $eresp = email_send_mail($recipients[$i],$bc,$fromaddr,$sub,$out.$debug,$html);
 ###email_json_out("{ \"check 3\":\"$debug = $recipients[$i], $bc, $fromaddr, $sub, $out, $html \" }");
 }
 }
-
-} elsif( defined $authuser && defined $authpass ){
-eval "use Net::SMTP";
-if($@){
-
-$debug.= "Tried to use Net::SMTP: ".$@."<br />";
-my $bc = join ",",@bcc;
-for my $i(0..$#recipients){
-if($recipients[$i] ne "" && $recipients[$i] =~ /^(.*?)\@(.*?)\.(.*?)$/ ){
-if( $i > 0){ $bc = ""; }
-$eresp = email_send_mail($recipients[$i],$bc,$fromaddr,$sub,$out.$debug,$html); 
-###email_json_out("{ \"check 4\":\"$debug = $recipients[$i], $bc, $fromaddr, $sub, $out, $html \" }");
-}
-}
-
-} else {
-
-my $mes = "";
-my $ent = Net::SMTP->new($smtp_server,port=>$authport,Debug=>1) or $mes.= "$smtp_server Net::SMTP failed to create object ($!; $@)<br />";
-$debug.= "mail server domain = ".$ent->domain."<br />host = ".$ent->host."<br />banner = ".$ent->banner."<br />";
-if($mes ne ""){ email_json_out("{ \"error\":\"$mes<br />The mailserver ($smtp_server) has been unable to send this email: $! $mes $debug\" }"); }
-if( defined $authsmtp ){ $ent->auth($authuser,$authpass) or $mes.= "Can't authenticate into ".$ent->host." : $debug = ".$ent->message()."<br />"; }
-my @goodto = ();
-my @goodbcc = ();
-if($mes eq ""){ 
-$ent->mail($fromaddr);
-@goodto = $ent->to(@recipients,{ SkipBad => 1 });
-@goodbcc = $ent->bcc(@bcc,{ SkipBad => 1 });
-$ent->data();
-$ent->datasend("Subject: $sub\n");
-$ent->datasend("From: $fromaddr\n");
-$ent->datasend("MIME-Version: 1.0\n");
-$ent->datasend("Content-type: text/html; charset=UTF-8\n");
-$ent->datasend("Content-Transfer-Encoding: 8bit\n");
-$ent->datasend("\n");
-if($html){ $ent->datasend("\n$html\n"); } else { $ent->datasend("\n$out\n$debug\n"); }
-$ent->dataend();
-$debug.= "successful to: @goodto <br />successful bcc: @goodbcc <br /";
-$ent->quit or email_json_out("{ \"error\":\"$mes<br />email failed at quit: $mes <br /> $debug \" }" );
-}
-
-}
-}
-
 ###email_json_out("{ \"check 5\":\"email sent: $debug = $fromaddr, $sub, $out, $html \" }");
 
 ###email_respond("check 6: $returnmail = $emailaddr = $fromaddr, $sub, $out.$debug, $html");
@@ -773,82 +722,46 @@ exit;
 }
 
 sub email_send_mail{
-my ($to,$bcc,$from,$sub,$data,$ht) = @_;
+my ($to,$bcc,$from,$sub,$data,$debug,$ht) = @_;
 my $mes = "";
-my $mout = "";
-my $ent;
-my $plain;
-my $html;
-my $loc = undef;
 my $dbg = "$to, $bcc, $from, $sub, $data, $ht";
+###email_json_out("{ \"check send_mail 1\":\"$dbg = $mes $debug\" }");
 
-eval "use MIME::Entity"; # doesn't work with v. 0.74!
+eval "use MIME::Entity";
 if($@){
 
-$mes.= "Tried to use MIME::Entity ".$@."<br />";
-eval "use Email::Simple";
-if($@){
-
-$mes.= "Tried to use Email::Simple: ".$@."<br />";
-eval "use LWP::UserAgent";
-if($@){
-
-$mes.= "Tried to use LWP::UserAgent: ".$@."<br />";
-open my $mailopen, "| $mail_program" or return "error: $mes<br />The mailserver('sendmail') has been unable to send this email: $! ";
-if( $ht =~ /[a-zA-Z0-9]+/ ){ print $mailopen "Content-Type: text/html\n\n"; }
-print $mailopen "To: $to\n";
-print $mailopen "Bcc: $bcc\n";
-print $mailopen "From: $from\n";
-print $mailopen "Subject: $sub\n";
-print $mailopen "User Name (if available) - $ENV{'REMOTE_USER'}\n";
-print $mailopen "User Address - $ENV{'REMOTE_ADDR'}\n";
-print $mailopen "User Browser - $ENV{'HTTP_USER_AGENT'}\n\n";
-if( $ht =~ /[a-zA-Z0-9]+/ ){ print $mailopen "$ht"; } else { print $mailopen $data; }
-close($mailopen);
-email_html_out($mes."<br />Trying to use SendMail: $!.");
+$dbg.= "Trying to use MIME::Entity: ".$@."<br />";
 
 } else {
-my $ua = LWP::UserAgent->new;
-my $response = undef;
-if(-e $base."mailer.php"){
-$ua->agent("thatsthat/$softversion");
-$ua->timeout(10);
-$ua->env_proxy;
-$mout = "\nUser Name (if available) - $ENV{'REMOTE_USER'}\nAddress - $ENV{'REMOTE_ADDR'}\nBrowser - $ENV{'HTTP_USER_AGENT'}\n$usetime\n\n".$out;
-$response = $ua->get($baseview.'/mailer.php?to='.$to.'&bcc='.$bcc.'&from='.$from.'&sub='.$sub.'&body='.$mout); ###my $response = $ua->get('http://intasave.org.cn/mailer.php?to='.uri_encode($to).'&bcc='.uri_encode($bcc).'&from='.uri_encode($from).'&sub='.uri_encode($sub).'&body='.uri_encode($mout));
-if($response->is_success){ $mes.= "PHP thinks the email was sent correctly..<br />"; } else { email_json_out("{ \"error\":\"Encountered an error sending your message: ".$response->status_line."\" }"); }
-} else { 
-$mes.= "<br />".$baseview."Mailer.php file is not present..<br />Trying email relay:<br />";
-use HTTP::Request::Common qw(POST);
-my $ct = $ua->request(POST $http.'//'.$cgirelay.'email.pl',Content_Type => 'form-data',Content => \%pdata);
-if ($ct->is_success){ $mes.= "Email relay thinks the email was successful..<br />"; } else { $mes.= "Error from email relay sending your message: ".$ct->status_line; }
-}
-}
 
-} else {
-my %smail = ( 'from' => $from,'to' => $to,'bcc' => $bcc,'subject' => $sub );
-my $ent = Email::Simple->create( header => [ From => $smail{'from'},To => $smail{'to'},Bcc => $smail{'bcc'},Subject => $smail{'subject'} ],body => (($ht)?$ht:$data) );
-$ent->header_set( 'Content-Type' => 'text/html; charset="utf-8"' );
-$ent->header_set( 'Content-Transfer-Encoding' => 'quoted-printable' );
-open my $mailopen, "| $mail_program" or email_json_out("{ \"error\":\"$mes<br />The mailserver('Email::Simple) has been unable to send this email: $! \" }");
-print $mailopen($ent->as_string);
-close($mailopen);
-}
+our $ent = MIME::Entity->build( 'Encoding' => "base64",
+'Return-Path' => $from,
+'To' => $to,
+#'Cc' => $bcc,
+'From' => $from,
+'Subject' => $sub,
+'Sender' => $from,
+'Data' => $data
+);
 
-} else {
-if($ht){
-$ent = MIME::Entity->build( 'Type' => "multipart/alternative",'Return-Path' => $from,'To' => $to,'Bcc' => $bcc,'From' => $from,'Subject' => $sub,'Sender' => $from );
-$ent->attach( 'Data' => $ht,'Type' => "text/html; charset=UTF-8",'Encoding' => "quoted-printable" );
-$ent->attach( 'Data' => $data,'Type'  => "text/plain; charset=UTF-8",'Encoding' => "quoted-printable" );
-} else {
-$ent = MIME::Entity->build( 'Type' => "text/html",'Charset' => "UTF-8",'Encoding' => "quoted-printable",'Return-Path' => $from,'To' => $to,'Bcc' => $bcc,'From' => $from,'Subject' => $sub,'Sender' => $from,'Data' => $data );
-}
-#$ent->smtpsend or email_html_out("The mailserver('Mime::Entity') has been unable to send this email: $! $dbg");
-#or
-#
-open MAIL, "| $mail_program" or email_json_out("{ \"error\":\"The mailserver('Mime::Entity') has been unable to send this email: $! $dbg \" }");$ent->print(\*MAIL);close MAIL;
+$mes = "Mime Entity mail ok $dbg";
+$ent->smtpsend or $mes = "The mailserver('Mime::Entity') has been unable to send this email: $! $dbg $debug";
 $ent->purge;
+
 }
 
+###email_json_out("{ \"check send_mail 2\":\"$dbg = $mes = $debug \" }");
 return $mes;
+	
+#if($ht){
+#$ent = MIME::Entity->build( 'Type' => "multipart/alternative",'Return-Path' => $from,'To' => $to,'Bcc' => $bcc,'From' => $from,'Subject' => $sub,'Sender' => $from );
+#$ent->attach( 'Data' => $ht,'Type' => "text/html; charset=UTF-8",'Encoding' => "quoted-printable" );
+#$ent->attach( 'Data' => $data,'Type'  => "text/plain; charset=UTF-8",'Encoding' => "quoted-printable" );
+#} else {
+#$ent = MIME::Entity->build( 'Type' => "text/html",'Charset' => "UTF-8",'Encoding' => "quoted-printable",'Return-Path' => $from,'To' => $to,'Bcc' => $bcc,'From' => $from,'Subject' => $sub,'Sender' => $from,'Data' => $data );
+#}
+#$ent->smtpsend or $mes = "The mailserver('Mime::Entity') has been unable to send this email: $! $dbg";
+#$ent->purge;
+#}
+
 }

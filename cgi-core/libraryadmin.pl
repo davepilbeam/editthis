@@ -1,6 +1,7 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
 
-#editthis version:8.2.2 EDGE
+use cPanelUserConfig;
+#editthis version:8.2.2 EDGE +novel
 
 use strict;
 #use warnings;
@@ -55,6 +56,7 @@ our $body_regx = $defs::body_regx;
 our $homeurl = $defs::homeurl;
 our $taglister = $defs::taglister;
 our $liblister = $defs::liblister;
+our $chapterlister = $defs::chapterlister;
 our $webbase = $defs::webbase;$webbase =~ s/\/$//;
 our %perms = %defs::perms;
 our %defsort = %defs::defsort;
@@ -286,7 +288,7 @@ if( $k eq 'regexp' ){ $regexp = $pdata{'regexp'};$outstr{'regexp'} = $regexp; }
 if( $k eq 'code' ){ $code = $pdata{'code'};$outstr{'code'} = $code; }
 if( $k eq 'replace' ){ $replace = sub_clean_name($pdata{'replace'},$htmlext);$replace = Encode::decode('utf8',$replace);$outstr{'replace'} = $replace; } #replace1+replace2
 if( $k eq 'type' ){ $type = Encode::decode('utf8',$pdata{'type'});if( $type eq "alertfolders" ){ $hidealert = 1;$type = "viewalert"; } } 
-# addfolders addpages alertfolders archivepages changeaddfolders changeaddpages changearchivepages changedeletefiles changedeletefolders changedeletepages changedistribute changedeploysite changedownloadfolders changedupepages changelibrarypages changelockpages changeunlockpages changeimagepages changerenamefiles changerenamefolders changerankpages changerestorepages changesavepages changesearchfolders changesectionpages changesubpages changetitlepages changeuploadfolders changeuploadsite compressfiles deletefiles deletepages deploysite distribute downloadfolders dupepages editblocks editlibrary editpages getfiles getimages getedittextclips getgridclips getsectionclips getguides hidemappages hidefolderpages hidepages  viewconfigpages listmenupages newlinkpages newmenupages renamefiles renamefolders reorderpages restoredelete restoreprotect restoresite searchfolders showpages showmappages uncompressfiles uploadfolders usedfiles viewalert viewall viewfix viewfolders viewpages viewsharefix viewversionpages
+# addfolders addpages alertfolders archivepages changeaddfolders changeaddpages changearchivepages changedeletefiles changedeletefolders changedeletepages changedupefiles changedistribute changedeploysite changedownloadfolders changedupepages changelibrarypages changelockpages changeunlockpages changeimagepages changerenamefiles changerenamefolders changerankpages changerestorepages changesavepages changesearchfolders changesectionpages changesubpages changetitlepages changeuploadfolders changeuploadsite compressfiles deletefiles deletepages dupefiles deploysite distribute downloadfolders dupepages editblocks editchapter editlibrary editpages getfiles getimages getedittextclips getgridclips getsectionclips getguides hidemappages hidefolderpages hidepages  viewconfigpages listmenupages newlinkpages newmenupages renamefiles renamefolders reorderpages restoredelete restoreprotect restoresite searchfolders showpages showmappages uncompressfiles uploadfolders usedfiles viewalert viewall viewfix viewfolders viewpages viewsharefix viewversionpages
 if( $k eq 'url' ){ $pdata{'url'} = Encode::decode('utf8',$pdata{'url'});$pdata{'url'} = sub_title_deslash($pdata{'url'},\@seclist);$url = sub_clean_name($pdata{'url'},$htmlext);$sitepage = $url; } #documents/Publications/Presentations-and-Brochures/CARIBSAVE-Stakeholder-Workshop-2009/.library.txt
 if( $k eq 'old' ){ $old = sub_clean_name($pdata{'old'},$htmlext);$old = Encode::decode('utf8',$old);$outstr{'old'} = $old; } # documents/Templates-and-Guides/Default-Page-Template.html | html | grid_15683655665644
 foreach my $j(keys %defsections){ my $n = lc $j;$n =~ s/\s+/-/g;if($k eq $n){ $gsections{$j} = $defsections{$j}->[1];$debug.= "gsection: $k = $n from $j \n"; } }
@@ -352,6 +354,7 @@ my $dtmp = $fullurl;if( $type ne "login" && $type ne "viewall" && $type ne "view
 'body_regx' => $body_regx,
 'callback' => $callback,
 'cgipath' => $cgipath,
+'chapterlister' => $chapterlister,
 'clsdata' => $clsdata,
 'cssview' => $cssview,
 'debug' => $debug,
@@ -525,7 +528,7 @@ admin_json_out({ 'result' => (join " ",@res) },$origin,$callback);
 if( $type eq "viewconfigpages" ){ admin_display_config($type,$fullurl); } else { admin_list($url,$fullurl,$type,$base.$adminbase.$dest); }
 
 
-} elsif( $type eq "editlibrary" ){
+} elsif( $type =~ /^edit(chapter|library)/ ){
 admin_display_library($type,$fullurl);
 
 
@@ -676,7 +679,7 @@ admin_json_out({ 'result' => \%gu },$origin,$callback);
 admin_display_pageadd($type,$fullurl);
 
 
-} elsif( $type eq "addfolders" || $type eq "deletefiles" ||$type eq "deletefolders" ||  $type eq "deletepages" || $type eq "downloadfolders" || $type eq "reorderpages" || $type eq "renamefiles" || $type eq "renamefolders" || $type eq "searchfolders" ){
+} elsif( $type eq "addfolders" || $type eq "deletefiles" || $type eq "dupefiles" || $type eq "deletefolders" ||  $type eq "deletepages" || $type eq "downloadfolders" || $type eq "reorderpages" || $type eq "renamefiles" || $type eq "renamefolders" || $type eq "searchfolders" ){
 #admin/libraryadmin.pl?type=addfolders&url=documents%2FImages%2Fbackgrounds%2F
 #admin/libraryadmin.pl?type=deletefolders&url=documents%2FImages%2Fbackgrounds%2F
 #admin/libraryadmin.pl?type=renamefolders&url=documents%2FImages%2FTest-Folder%2F
@@ -689,10 +692,11 @@ admin_display_pageadd($type,$fullurl);
 #admin/libraryadmin.pl?type=deletefiles&url=documents%2FImages%2Fbackgrounds%2F&old=documents%2FImages%2Fbackgrounds%2Fheader-solutions.png
 #admin/libraryadmin.pl?type=renamefiles&url=documents%2FImages%2Fbackgrounds%2F&old=documents%2FImages%2Fbackgrounds%2Fheader-solutions.png
 #admin/libraryadmin.pl?type=deletefiles&url=documents%2FArchive%2FGroup-News%2F2015%2FGroup_News.html%2F&old=documents%2FArchive%2FGroup-News%2F2015%2FGroup_News_Revive-Paper-sponsors-2018-Heist-Awards.html
+#admin/libraryadmin.pl?type=dupefiles&url=documents%2FNovels%2FThe-Pub-Cat%2F&old=documents%2FNovels%2FThe-Pub-Cat%2Fchapter-03.txt
 my $uptxt = admin_html_in($base.$adminbase.$dest);
 $url =~ s/(\.$htmlext).*?$/$1/;
-my $upf = ($type eq "deletefiles" || $type eq "renamefiles")?$old:$url;$upf =~ s/^($baseview)//;if( $upf =~ /($docview)Archive\//){ $upf =~ s/^(.+\/).*?(\.$htmlext)$/$1index\.$htmlext/;$url = $baseview.$upf;$fullurl = $base.$upf; }
-my $nurl = ($type eq "deletefiles" || $type eq "renamefiles")?$old:undef;
+my $upf = ($type eq "deletefiles" || $type eq "dupefiles" || $type eq "renamefiles")?$old:$url;$upf =~ s/^($baseview)//;if( $upf =~ /($docview)Archive\//){ $upf =~ s/^(.+\/).*?(\.$htmlext)$/$1index\.$htmlext/;$url = $baseview.$upf;$fullurl = $base.$upf; }
+my $nurl = ($type eq "deletefiles" || $type eq "dupefiles" || $type eq "renamefiles")?$old:undef;
 my @subs = ();
 my @als = ();
 my @warn = ();
@@ -717,6 +721,7 @@ admin_display_pagedupe($type,$fullurl);
 #type:changeaddfolders url:documents/Images/logos/customers/, new:latest-stuff
 #type:changeaddpages url:Modules.html
 #type:changedupepages url:Modules.html
+#type:changedupefiles url:Modules.html
 #type:changedeletefolders url:documents/Images/logos/customers/latest-stuff/
 #type:changedeletepages url:Modules.html
 #type:changedeletefiles url:documents%2FImages%2Fbackgrounds%2Fheader-solutions.png
@@ -724,6 +729,7 @@ admin_display_pagedupe($type,$fullurl);
 #type:changedistribute url: /
 #type:changeimagepages url:News_RSM-Becomes-Member-of-MSPAlliance.html
 #type:changelibrarypages url:documents/Digital/Datasheets/Mainframe-Services/ new:url:+24-7-Incident-Support-Help-Desk.pdf image:+24-7-Incident-Support-Help-Desk_thumb.jpg 
+#type:changechapterpages url:documents/Novels/The-Pub-Cat/chapter-01.txt
 #type:changesectionpages id:top-bar new:<div id="tt_topbar" class="new"></div>
 #type:changerankpages
 #type:changelockpages
@@ -746,7 +752,7 @@ my $oo = "";
 my $pre = undef;
 my ($cterr,$ctref,$nferr,$nf,$nn);
 #
-if( $type =~ /(library|save|section)/ ){
+if( $type =~ /(chapter|library|save|section)/ ){
 %exclude = ( 'unadd' => 1,'unreorder' => 1,'unupload' => 1,'undownload' => 1 );
 my %m = ();
 my @find = ();
@@ -756,14 +762,14 @@ my @fbase = ( $base );
 my $purl = "";
 my $dbug = "";
 my $msg = undef;
-if( $type eq "changelibrarypages" ) {$pres = "Library File";$purl.= $liblister; } else { foreach my $k(keys %gsections){ if($type eq "changesectionpages"){ push @fbase,@seclist;push @find,$gsections{$k};push @rep,$new; } else { if( $new =~ /$gsections{$k}/ism ){ push @find,$gsections{$k};push @rep,$1; } } } }
-###admin_json_out({ "check $type" => "type:$type \nid:$id \nfullurl:$fullurl \nfbase:[ @fbase ]\n\n".Data::Dumper->Dump([\%gsections],["gsections"])." \n\nnew:$new \nnf:$nf \n\n $debug" },$origin,$callback);
+if( $type eq "changelibrarypages" ){ if( $url =~ /($chapterlister)$/ ){$pres = "Chapter File";$pre = "prev"; } else {$pres = "Library File";$purl.= $liblister;} } else { foreach my $k(keys %gsections){ if($type eq "changesectionpages"){ push @fbase,@seclist;push @find,$gsections{$k};push @rep,$new; } else { if( $new =~ /$gsections{$k}/ism ){ push @find,$gsections{$k};push @rep,$1; } } } }
+###admin_json_out({ "check $type" => "type:$type \nid:$id \npres: $pres \npurl: $purl \nfullurl:$fullurl \nfbase:[ @fbase ]\n\n".Data::Dumper->Dump([\%gsections],["gsections"])." \n\nnew:$new \nnf:$nf \n\n $debug" },$origin,$callback);
 #
 if( $type =~ /^change(save|library)pages$/ ){
 ($nferr,$nf) = sub_admin_save_page($url.$purl,$fullurl.$purl,$new,\%config);
 if( defined $nferr ){ if( !defined $msg ){ $msg = "$url$purl: $nferr $nf \n"; } else { $msg.= "$url$purl: $nferr $nf \n"; } }$dbug.= "$nf \n";
 ###admin_json_out({ 'check $type' => "pres:$pres \nfullurl:$fullurl$purl \nnew:$new \nmsg:$msg \nnf:$nf \n\n".Data::Dumper->Dump([\%pdata],["PDATA"])." \n\n $debug" },$origin,$callback);
-my $upsite = ($type !~ /library/ && defined $sitemap)?( admin_sitemap_update($sitemap) ):"";
+my $upsite = ($type !~ /(library)/ && defined $sitemap)?( admin_sitemap_update($sitemap) ):"";
 $cho = ( defined $nferr )?"Warning: problem with updating $pres $nf: $nferr = $debug":"Updated $pres <b>$nf<\/b> successfully $upsite<br />";
 }
 #
@@ -903,19 +909,21 @@ $pre = "prev";
 } elsif( $type =~ /(add|dupe)/ ){
 %exclude = ( 'unadd' => 1,'unupload' => 1,'undownload' => 1 );
 my $isdoc = $fullurl;$isdoc =~ s/^($base)//;
+my $ty = ($type =~ /files/)?'File':'Page';
 if( $type =~ /dupe/ ){ $pdata{'new-parent'} = $pdata{'old'};$pdata{'old'} = $cc; }
+if( $type =~ /files$/){ $pdata{'new-parent'} =~ s/^(.+\/)(.*?)$/$1/;$new = $1.$new; }
 if( $isdoc =~ /^($docview)/ ){ delete $pdata{'new-menuurl'}; } else { if( defined $pdata{'new-menuurl'} ){ if( !defined $pdata{'new-link'} || $pdata{'new-link'} eq "" ){ $pdata{'new-link'} = $pdata{'url'}; } } }
 if( defined $pdata{'new-parent'} && $pdata{'new-parent'} =~ /($qqdelim)$/ && defined $usecase ){ $new = "index";$pdata{'new-menu'} = $usecase;$pdata{'changed'}.= "||new-menu";delete $pdata{'case'}; }
 delete $pdata{'cache'};delete $pdata{'callback'};
 if( !defined $pdata{'speed'} ){ $pdata{'speed'} = "html"; }
 ###admin_json_out({ 'check changeadddupepages' => "type:$type \nfullurl:$fullurl \nnew:$new \ncase:$usecase \nnf:$nf \n\n".Data::Dumper->Dump([\%pdata],["PDATA"])." \n\n $debug" },$origin,$callback); 
 ($nferr,$nf) = sub_admin_new($cht,$fullurl,$new,\%pdata,\%config);
-if( $isdoc =~ /^($docview)/ && $isdoc ne "" ){ $isdoc =~ s/($nf)$//;$nf = $isdoc.$nf; }
+if( $type !~ /dupe/ && $isdoc =~ /^($docview)/ && $isdoc ne "" ){ $isdoc =~ s/($nf)$//;$nf = $isdoc.$nf; }
 ###admin_json_out({ 'check changeadddupepages 1' => "type:$type \nfullurl:$fullurl \nnew:$new \nnf:$nf \n\n".Data::Dumper->Dump([\%pdata],["PDATA"])." \n\n $debug" },$origin,$callback);
 if(defined $nferr ){
-$cho = "Update Page</h3><h3 class=\"updateinfo\">Warning: problem with adding $cht $nf: $nferr = $debug";
+$cho = "Update $ty</h3><h3 class=\"updateinfo\">Warning: problem with adding $cht $nf: $nferr = $debug";
 } else {
-$cho = "Updated Page</h3><h3 class=\"updateinfo\">".( ucfirst $cht )." <b>$nf<\/b> successfully ".( ($pdata{'url'} ne "")?"updated":"added" ).".";
+$cho = "Updated $ty</h3><h3 class=\"updateinfo\">".( ucfirst $cht )." <b>$nf<\/b> successfully ".( ($type =~ /dupe/)?'created':($pdata{'url'} ne "")?"updated":"added" ).".";
 
 if($type =~ /pages/){
 my ($mlref,$cmref) = admin_reset_menus("resetmenupages","resetmenupages",$cc,{},"showall","dofork");
@@ -1145,7 +1153,7 @@ foreach my $k(keys %defsections){
 my $n = lc $k;$n =~ s/\s+/-/g;
 my $sm = '';
 my $r = @{ $defsections{$k} }[1];if(defined $r && $smtxt =~ /$r/ism ){ $sm = $1; }
-$ntxt.= '<span class="inputline unsearch globals"><div class="tt_progress"><span class="bar"></span></div><label for="new-'.$n.'_0" tabindex="0">'.$k.':</label><textarea class="gsection" id="new-'.$n.'_0" name="opt_new-'.$n.'_0" tabindex="0">'.$sm.'</textarea><a id="mlist_'.$n.'_0" class="mlist-submit gsection" title="update Global Section">Update '.$k.'</a><span class="tt_expander">&#8675;</span></span>';
+$ntxt.= '<span class="inputline unsearch globals"><div class="tt_progress"><span class="bar"></span></div><label for="new-'.$n.'_0" tabindex="0">'.$k.':</label><textarea class="gsection" id="new-'.$n.'_0" name="opt_new-'.$n.'_0" tabindex="0">'.$sm.'</textarea><a id="mlist_'.$n.'_0" class="mlist-submit gsection" title="update Global Section">Update '.$k.'</a><span class="tt_expander"> </span></span>';
 }
 $ntxt.= '</h2></div>';
 }
@@ -1205,7 +1213,7 @@ my @warn = (defined $wref)?@{$wref}:();
 my $uph = "";
 my $upf = $u;$upf =~ s/^($baseview|$base)//;$upf =~ s/($liblister)$//;
 my $ispf = (defined $subs && $subs > 0)?" and its $subs Subpage".(($subs > 1)?'s':''):"";$ispf.= (defined $als && $als > 0)?" and $als Alias".(($als > 1)?'es':''):"";
-my $nup = "";my $nfu = undef;if( $ins eq "deletepages" || $ins =~ /change(delete|library|rename)(files|pages)/ ){ $nup = $upf; } elsif( $ins =~ /changedeletefolders/ || (defined $prev && $ispf ne "") ){ ($nup,$nfu) = sub_admin_backlevel($upf,\%config); } elsif( $ins =~ /restore/ ){ $nup = sub_get_unversion($upf,\%config); } elsif( defined $nurl ){ $nup = $nurl; } else { $nup = $upf; }$nup =~ s/^($base)//;
+my $nup = "";my $nfu = undef;if( $ins eq "dupefiles" || $ins eq "deletepages" || $ins =~ /change(delete|library|rename)(files|pages)/ ){ $nup = $upf; } elsif( $ins =~ /changedeletefolders/ || (defined $prev && $ispf ne "") ){ ($nup,$nfu) = sub_admin_backlevel($upf,\%config); } elsif( $ins =~ /restore/ ){ $nup = sub_get_unversion($upf,\%config); } elsif( defined $nurl ){ $nup = $nurl; } else { $nup = $upf; }$nup =~ s/^($base)//;
 my $archive = undef;if( $u =~ /($docview)archive\//i ){ $archive = 1;$nup =~ s/\/.*?\.($htmlext)$/\//; }
 my $upbackurl = $pl."type=".( ($ins eq "changedeletepages" && $ispf eq "")?'view':($ins =~ /change(add|image|save)pages$/)?'edit':'view' );
 $upbackurl.= ( (defined $archive)?'folders':($ins =~ /section/)?'configpages':($ins =~ /restore/)?'versionpages':( $upf =~ /\.($htmlext)$/i || $ins =~ /change(add|delete|rank)pages/ || $ins eq "reorderpages" )?'pages':'folders' )."".( ($nup ne "")?'&amp;url='.$uri->encode($nup):'' );
@@ -1215,12 +1223,12 @@ $uptxt =~ s/(<script charset="utf-8" src="admin\/su.js" type="application\/javas
 
 if( $uptxt =~ /<div class="area setheaderarea"><\/div>/ ){ $uph = admin_set_headers( $uph,$dlevel,1,$upf,(($ins =~ /pages$/ && $ins !~ /library/) || $ins =~ /^reorder/)?"pages":undef,$exref,undef,undef,undef,$archive);$uptxt =~ s/<div class="area setheaderarea"><\/div>/$uph/; }
 
-if( $ins eq "deletefiles" ){ $upf = $nurl; }
+if( $ins eq "dupefiles" || $ins eq "deletefiles" ){ $upf = $nurl; }
 $uptxt =~ s/(<b class="default-folder">).*?(<\/b>)/$1$upf$2$ispf/;
 $uptxt =~ s/(name="opt_url_[0-9]+" value=").*?(")/$1$upf$2/;
 $uptxt =~ s/(<a class="navblock nav-return"\s*href=").*?(")/$1$upbackurl$2/g;
 
-if( $ins =~ /^rename/ ){ my $nn = ( $ins eq "renamefiles")?$nurl:$upf;$nn =~ s/\/$//;$nn =~ s/^.+\///;$uptxt =~ s/(name="pre_new_[0-9]+" value=").*?(")/$1$nn$2/;if( $ins eq "renamefiles" ){ $uptxt =~ s/(name="opt_old_[0-9]+" value=").*?(")/$1$nurl$2/; } }
+if( $ins =~ /^(rename|dupe)/ ){ my $nn = ( $ins eq "renamefiles" || $ins eq "dupefiles" )?$nurl:$upf;$nn =~ s/\/$//;$nn =~ s/^.+\///;$uptxt =~ s/(name="pre_new_[0-9]+" value=").*?(")/$1$nn$2/;if( $ins eq "renamefiles" || $ins eq "dupefiles" ){ $uptxt =~ s/(name="opt_old_[0-9]+" value=").*?(")/$1$nurl$2/; } }
 if( $ins =~ /^download/ ){ my $dd = admin_display_download($base.$upf);$uptxt =~ s/<div class="text setdownloadarea"><\/div>/$dd/;my $rr = admin_restore("list",[]);$uptxt =~ s/<div class="text setrestorearea">(.*?)<\/div>/$rr/; }
 if( $ins =~ /^reorder/ ){ my ($dd,$outref) = admin_display_reorder($base);$uptxt =~ s/<div class="text setreorderarea"><\/div>/$dd/; }
 
@@ -1249,9 +1257,14 @@ my $err = undef;
 
 ($err,$ltxt) = sub_libraryfile_update("editlibrary",$f,\%config,'all');
 admin_json_out({ 'error' => "displaylibrary: fullurl: $fullurl \nty:$ty \nerr: $err \n $debug" },$origin,$callback) if defined $err;
-###admin_json_out({ 'check displaylibrary' => "f: $f \nltxt: $ltxt\n\n err:$err \n$debug" },$origin,$callback);
+###admin_json_out({ 'check displaylibrary' => "f: $f \n fullurl:$fullurl chapterlister:$chapterlister \n ltxt: $ltxt\n\n err:$err \n$debug" },$origin,$callback);
+if( $f =~ /$chapterlister/ ){
+$ntxt = '<div class="inputline unsearch globals libraryfiles"><div class="tt_progress"><span class="bar"></span></div><textarea class="glibrary" id="new-libraryfile_0" name="opt_new-libraryfile_0" tabindex="0">'.$ltxt.'</textarea><a id="mlist_libraryfile_0" class="mlist-submit glibrary" title="update Chapter file">Update Chapter File</a> <input id="url_0" name="opt_url_0" value="'.$upf.'" type="hidden" /></div>';
+$uptxt =~ s/<h3><b class="ititle">Edit Library File<\/b> for this folder:<\/h3>/<h3><b class="ititle">Edit Chapter File<\/b> for this Novel:<\/h3>/i;
+$upbackurl =~ s/($chapterlister)$//;
+} else {
 $ntxt = '<div class="inputline unsearch globals libraryfiles"><div class="tt_progress"><span class="bar"></span></div><textarea class="glibrary" id="new-libraryfile_0" name="opt_new-libraryfile_0" tabindex="0">'.$ltxt.'</textarea><a id="mlist_libraryfile_0" class="mlist-submit glibrary" title="update Library file">Update Library File</a> <a id="refresh_libraryfile_0" class="mlist-submit refresh glibrary" title="refresh Library file">Refresh Library File</a><input id="url_0" name="opt_url_0" value="'.$upf.'" type="hidden" /></div>';
-
+}
 $uptxt =~ s/<div class="area setheaderarea"><\/div>/$uph/;
 $uptxt =~ s/(name="opt_url_[0-9]+" value=").*?(")/$1$upf$2/;
 $uptxt =~ s/(<a class="navblock nav-return"\s*href=").*?(")/$1$upbackurl$2/g;
@@ -1421,7 +1434,7 @@ my $c = 5;
 my ($prerr,$prref) = sub_page_return("editpages",[$u],\%config);
 admin_json_out({ 'error' => "pagedupe: fullurl: $fullurl \ntype:$type \nprerr: $prerr \n\n".Data::Dumper->Dump([$prref],["prref"])."\n\n $debug" },$origin,$callback) if defined $prerr;
 my @etmp = @{$prref};
-my %edata = %{ $etmp[0]{'data'} };
+my %edata = %{ $etmp[0]{'data'} } || ( 'url' => $u );
 my $mpar = "";
 my $par = "";
 my $tmp = $edata{'url'}->[0];$tmp =~ s/^($base|$baseview)//;$tmp =~ s/\.($htmlext)$//;if( $tmp =~ /($qqdelim)/ ){ $par = $tmp;$par =~ s/^(.+)$qqdelim(.*?)$/$1/;$mpar = $par.".$htmlext";$par.= $delim; } ##==pilbeam
@@ -2297,6 +2310,10 @@ if( $nonempty < 0.5){ $r = '<div class="text"><h2><span class="info">'.$emptymsg
 if( $respoint ne "" ){ $r.= '<div class="text"><h2><div class="info restore">'.$respoint.'</div></h2></div>'; }
 $txt =~ s/<div class="area setnavarea"><\/div>/<div class="navarea"><div class="column"><div class="row">$r<\/div><\/div><\/div>/; 
 if( $txt =~ /<div class="area setheaderarea"><\/div>/ ){ $h = admin_set_headers( $h,$dlevel,( scalar @submenu ),$fu,( (defined $pages && defined $m{'pages'})?"pages":undef ),$exref,undef,undef,undef,$archive );$txt =~ s/<div class="area setheaderarea"><\/div>/$h/; }
+
+my $ps = admin_countpages($base);
+$txt =~ s/(<div class="text setfilearea"><\/div>)/ <div class="infoline" style="font-size:80%; text-align:center; margin:10px;"><h3>This site contains $ps Pages - <i>$page_limit is the maximum supported by the current interface.<\/i><\/h3><\/div>$1/;
+
 if( defined $m{'alerts'} && keys %{$m{'alerts'}} > 0 ){ my $s = admin_set_alerts($ltype,$m{'alerts'});$txt =~ s/<div class="text setfilearea"><\/div>/$s/; }
 
 ###admin_json_out({ 'check admin_list 5: LOCAL' => "$debug \nid: $id \ntype: $type \nfu: $fu \nbase:$base \nnwbase:$nwbase \nobase: $obase \nsubdir: $subdir \nbaseview:$baseview \nsubmenu: [ @submenu ] \npages: $pages \ndlevel: $dlevel \norigin: $origin \n\n".Data::Dumper->Dump([\%m],["m"]) },$origin,$callback);
@@ -2347,15 +2364,16 @@ if( $ty eq "resetmenupages" ){
 
 if( $ty eq "newlinkpages" || $ty eq "newtitlepages" ){
 my $nsw = ($ty eq "newtitlepages")?"title":"link";
+my %sw = ( 'new-'.$nsw.'url' => $new,'old' => $old,'changed' => $pdata{'changed'} );
+if( $ty eq "newlinkpages" && defined $pdata{'new-menuurl'} ){ $sw{'new-menuurl'} = $pdata{'new-menuurl'}; }
 ###admin_json_out({ 'check '.$ty => "ty:$ty \nnsw:$nsw \nfu:$fu \nnew:$new \nold: $old\n\n".Data::Dumper->Dump([\%pdata],["PDATA"])." \n\n $debug" },$origin,$callback);
-my ($nferr,$nf) = sub_admin_new('page',$fu,$uf,{ 'new-'.$nsw.'url' => $new,'old' => $old,'changed' => $pdata{'changed'} },\%config);
-if( $ty eq "newlinkpages" ){
-print "Location: ".$pl."type=editpages&url=".( $uri->encode($new) )."\n\n";
-exit(0);
-} else {
+my ($nferr,$nf) = sub_admin_new('page',$fu,$uf,\%sw,\%config);
 $kk.= "<u>$new</u>";
 $kk.= (defined $nferr)?"<u class=\"error\">Warning: problem with updating $nsw $nf: $nferr = $debug</u>":"<u class=\"update\">[ updated ]</u>";
 ###admin_json_out({ 'check '.$ty.' 1' => "ty:$ty \nurl:$url \nfu:$fu\nold: $old \nnew:$new \n\n kk: $kk \n\n $debug" },$origin,$callback);
+if( !defined $nferr && $ty eq "newlinkpages" ){
+admin_json_out({ 'result' => $kk,'reload' => $pl."type=editpages&url=".( $uri->encode($new.'.'.$htmlext) ) },$origin,$callback);
+} else {
 admin_json_out({ 'result' => $kk },$origin,$callback);
 }
 }
@@ -2643,7 +2661,7 @@ my $nonempty = $non;
 # 'published' => [ '17/01/2018' ],
 # 'title' => [ 'Mainframe Optimisation: Capacity Cost Reduction' ]
 # }                                                                                                        },
-###admin_json_out({ 'check set_files' => "fu:$fu\n keys:".( keys %files )." \n\n".Data::Dumper->Dump([\%files],["files"])." \n\n".Data::Dumper->Dump([$mref],["mref"])."\n\nr:$r \n\n\n $debug" },$origin,$callback);
+###admin_json_out({ 'check set_files' => "fu:$fu\n chapterlister:$chapterlister \nkeys:".( keys %files )." \n\n".Data::Dumper->Dump([\%files],["files"])." \n\n".Data::Dumper->Dump([$mref],["mref"])."\n\nr:$r \n\n\n $debug" },$origin,$callback);
 
 if( keys %files > 0 ){
 foreach my $k( sort keys %files ){ 
@@ -2653,8 +2671,14 @@ my $ulist = 0;if( defined $files{$k}{'used'} && scalar @{ $files{$k}{'used'} } >
 
 if( $files{$k}{'url'}[0] !~ /_thumb\.(jpg|png|gif)$/i ){
 my $sp = '';if( defined $files{$k}{'image'} ){ my $im = $files{$k}{'image'}[0];$im =~ s/^(.+)\///;$sp = ' data-thumb="Image: '.$im.'"'; }
-$r.= '<div class="text nonmenufolder"'.$sp.'><div class="tt_progress"><span class="bar"></span></div><h2>';
-$r.= ( ( $k =~ /\.(txt|$htmlext)$/ )?'<a class="navblock nav-edit" href="'.$pl.'type=editpages&amp;url='.$fn.'" title="edit Page" target="_blank">&#160;</a>':'' ).
+$r.= '<div class="text nonmenufolder"'.$sp.'><div class="tt_progress"><span class="bar"></span></div><h2>'; #documents/Novels/The-Pub-Cat/chapter-01.txt
+$r.= (
+( $k =~ /-([0-9]+)\.txt$/ )?'<a class="navblock nav-edit" href="'.$pl.'type=editchapter&amp;url='.$fn.'" title="edit Chapter" target="_blank">&#160;</a>':
+( $k =~ /\.(txt|$htmlext)$/ )?'<a class="navblock nav-edit" href="'.$pl.'type=editpages&amp;url='.$fn.'" title="edit Page" target="_blank">&#160;</a>':'' 
+).
+(
+( $k =~ /-([0-9]+)\.txt$/ )?'<a class="navblock nav-dupe" title="duplicate Chapter" href="'.$pl.'type=dupefiles&amp;url='.$fp.'&old='.$fn.'" title="duplicate Chapter">&#160;</a>':''
+).
 (
 ($ulist > 0)?
 '<a class="navblock nav-delete undelete" title="delete file">&#160;</a><a class="navblock nav-rename unrename" title="rename file">&#160;</a><a class="navblock tt_directupdate nav-used" href="'.$pl.'type=usedfiles&amp;url='.$fn.'" title="show used">&#160;</a>'
@@ -2668,6 +2692,7 @@ $r.= ( ( $k =~ /\.(txt|$htmlext)$/ )?'<a class="navblock nav-edit" href="'.$pl.'
 } else {
 $nonempty = $nonempty - 0.5;
 }
+
 return ($r,$nonempty);
 }
 

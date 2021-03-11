@@ -352,11 +352,12 @@ if( defined $swap{'new-url'} ){
 $n = sub_check_name($swap{'new-url'},$cref);
 ###sub_json_out({ 'check admin_new 10' => "pre:".$c{'base'}.$pre." \nn:".$c{'base'}.$n." \n\n".Data::Dumper->Dump([\%swap],["swap"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
 my $subslist = join "|",@{$c{'secsubs'}};
-my @cm = sub_admin_rename("page",$c{'base'}.$pre,$c{'base'},$n,($pre =~ /^($subslist)/?$pre:""),undef,undef,$cref,$speed);
+unshift @{$c{'seclist'}},$c{'base'};
+my @cm = sub_admin_rename("page",$c{'base'}.$pre,$c{'base'},$n,($pre =~ /^($subslist)/?$pre:""),undef,undef,\%c,$speed);
 ###sub_json_out({ 'check admin_new 11' => " \n\n".Data::Dumper->Dump([\@cm],["cm"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
 $dbug.= "\n".Data::Dumper->Dump([\@cm],["cm"])."\n";
-if( !defined $swap{'new-link'} ){
 $nomenus = 1;
+if( !defined $swap{'new-link'} ){
 if( defined $speed ){ if($speed eq "html"){ return($err,$n); } else { sub_json_out({ 'new-url' => "$pre updated successfully to $n",'reload' => $c{'pl'}."type=editpages&url=".( $uri->encode($n) ) },$c{'origin'},$c{'callback'}); } }
 }
 } else {

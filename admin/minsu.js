@@ -212,8 +212,7 @@ $$(document.getElements('form')).each(function(z,i){
 if( z.hasClass('sendable') ){
 z.formMe().addEvents({ 'click:relay(a.mlist-submit,a.mlist-delete,a.nav-infoalert)':function(e,el){
 
-G.stopG(e);var c,f,l,n,o = {},p,q,s,t = $(el),tp,u = '',v = 1,w,y; //
-console.log('mlist-submit ',t,e);
+G.stopG(e);var c,f,l,n,o = {},p,q,s,t = $(el),tp,u = '',v = 1,w,y; //console.log('mlist-submit ',t,e);
 if(t){ 
 if( t.hasClass('mlist-delete') ){
 c = t.getPrevious('a');y = t.getPrevious('textarea');console.log('delete c:',c,' y:',y);if(c && y){y.set('text','').addClass('tt_changed');c.fireEvent('click',{'target':c});}
@@ -222,9 +221,24 @@ y = (t.getParent('.mapper'))?[ t.getPrevious('input') ]:t.getParent('.inputline'
 if( t.hasClass('refresh') || f && !f.hasClass('tt_inputfail') ){
 c = t.getNext('input[type=checkbox]');
 l = t.getParent('.inputline.mapper') || t.getParent('.seo') || t.getParent('.tags') || t.getParent('.inputline').getPrevious('label') || null;w = (l && l.getAttribute('data-mref'))?l.getAttribute('data-mref'):null;if(f && f.get('id')){u = f.get('id').replace(/^(.*?)new\-/,'').replace(/_([0-9]+)$/,'');v = f.get('id').replace(/^.+_/,'');}s = w || u;tp = (w)?t.getParent('.inputline'):t.getParent('.mline');
-p = (t.getParent('.inputline.mapper'))?f.getProperty('value'):(f.hasClass('protect'))?'restoreprotect':(f.hasClass('menu'))?'newmenupages':(f.hasClass('title') || f.hasClass('shortname') || f.hasClass('url') || f.hasClass('seo') || f.hasClass('tags') || f.hasClass('alias'))?'changeaddpages':(f.hasClass('glibrary'))?'changelibrarypages':(f.hasClass('clipdata'))?'getalterclips':(f.hasClass('gsection'))?'changesectionpages':'newtitlepages';
+p = (t.getParent('.inputline.mapper'))?f.getProperty('value'):(f.hasClass('protect'))?'restoreprotect':(f.hasClass('menu'))?'newmenupages':(f.hasClass('url'))?'newlinkpages':(f.hasClass('title') || f.hasClass('shortname') || f.hasClass('seo') || f.hasClass('tags') || f.hasClass('alias'))?'changeaddpages':(f.hasClass('glibrary'))?'changelibrarypages':(f.hasClass('clipdata'))?'getalterclips':(f.hasClass('gsection'))?'changesectionpages':'newtitlepages';
 q = { 'class':( f.hasClass('seo')?'seo':f.hasClass('tags')?'tags':f.hasClass('title')?'title':u ),'type':p,'old':( (l && l.getElement('span'))?l.getElement('span').get('text'):'' ),'new':(t.getParent('.inputline.mapper'))?u:f.getProperty('value') };//console.log('url menu ',f,f.getProperty('class'),' l = ',l,' t = ',t,' q = ',q,' w = ',w);
-if(w){ if(f.hasClass('seo') || f.hasClass('tags') || f.hasClass('title')){q['changed'] = 'new-'+u;q['new-'+u] = f.getProperty('value');} else if(f.hasClass('url')){q['changed'] = 'new-menuurl';q['new-menuurl'] = (( l && l.getNext('.inputline') && l.getNext('.inputline').getElement('.ibefore') )?l.getNext('.inputline').getElement('.ibefore').get('text'):"")+f.getProperty('value'); } else { if(f.hasClass('alias')){q['changed'] = 'new-link';q['new-link'] = f.getProperty('value');} } }
+if(w){ if(f.hasClass('seo') || f.hasClass('tags') || f.hasClass('title') || f.hasClass('shortname') ){q['changed'] = 'new-'+u;q['new-'+u] = f.getProperty('value');} else if(f.hasClass('url')){q['changed'] = 'new-menuurl';q['new-menuurl'] = (( l && l.getNext('.inputline') && l.getNext('.inputline').getElement('.ibefore') )?l.getNext('.inputline').getElement('.ibefore').get('text'):"")+f.getProperty('value'); } else { if(f.hasClass('alias')){q['changed'] = 'new-link';q['new-link'] = f.getProperty('value');} } }
+
+
+/*
+if( w && !f.hasClass('tt_inputfail') ){ 
+c = t.getNext('input[type=checkbox]');
+l = t.getParent('.inputline').getPrevious('label');
+s = f.get('id').replace(/^new\-/,'').replace(/_([0-9]+)$/,'');
+tp = t.getParent('.mline');
+p = (f.hasClass('protect'))?'restoreprotect':(f.hasClass('menu'))?'newmenupages':(f.hasClass('url'))?'newlinkpages':(f.hasClass('glibrary'))?'changelibrarypages':(f.hasClass('gsection'))?'changesectionpages':'newtitlepages';
+q = { 'type':p,'old':( (l && l.getElement('span'))?l.getElement('span').get('text'):'' ),'new':f.getProperty('value') };
+//console.log('url menu ',f,f.getProperty('class'),' l = ',l,' t = ',t,' q = ',q);
+*/
+
+
+
 if(f.hasClass('gsection') || f.hasClass('clipdata') || f.hasClass('glibrary')){
 new Element('input',{'type':'hidden','name':'opt_type_0','value':q['type']}).inject(t,'after');new Element('input',{'type':'hidden','name':'opt_'+s+'_0','value':s}).inject(t,'after');new Element('input',{'type':'hidden','name':'opt_new_0','value':q['new']}).inject(t,'after');f.getParent('form.sendable').getElements('*[id^=new-]').setProperty('disabled',true);f.getParent('form.sendable').submit();
 } else {
@@ -234,12 +248,17 @@ new Element('input',{'type':'hidden','name':'opt_type_0','value':'newmenupages'}
 } else { 
 //console.log('epullG t:',t,' f:',f,' tp:',tp,' q:',q);
 G.epullG(f.getParent('form.sendable').getProperty('action'),tp,q,function(sa,sb){ var sf,sg = 'hidepage',sh,sk,sp = t.getParent('.text'),sr = (sb == 'OK')?sb:'FAILED',ss = "",st;
-sf = function(sfa,sfb,sfc){ if(sfb){sk = sfb.getProperty('data-menu');console.log('sp = ',sp,' sk = ',sk);if(sk){sk = sk.replace(/\.(0|00)$/,'');sk+=sfa['menu'];sfb.setProperty('data-menu',sk);if( sk.test(/\.(0|00)$/) ){if( document.location.href.test(/editpages/) || sk.test(/000/) ){if(sk.test(/\.00$/)){sg = 'hidemappage';sfb.getParent('form.sendable').removeClass('hidepage');}sfb.getParent('form.sendable').addClass(sg);}sfb.removeClass('showpage').addClass('mhidepage');} else {if( document.location.href.test(/editpages/) || sk.test(/000/) ){sfb.getParent('form.sendable').unclassMe('hidepage hidemappage');}sfb.addClass('showpage').removeClass('mhidepage');}}}if(sfc &&sfa['label']){ sfc.set('html',sfa['label']); }return sfa['html']; };
-if(sr == 'OK'){ if( sa['html'] ){ 
+sf = function(sfa,sfb,sfc){ if(sfb){sk = sfb.getProperty('data-menu');console.log('sp:',sp,' sk:',sk);if(sk){sk = sk.replace(/\.(0|00)$/,'');sk+=sfa['menu'];sfb.setProperty('data-menu',sk);if( sk.test(/\.(0|00)$/) ){if( document.location.href.test(/editpages/) || sk.test(/000/) ){if(sk.test(/\.00$/)){sg = 'hidemappage';sfb.getParent('form.sendable').removeClass('hidepage');}sfb.getParent('form.sendable').addClass(sg);}sfb.removeClass('showpage').addClass('mhidepage');} else {if( document.location.href.test(/editpages/) || sk.test(/000/) ){sfb.getParent('form.sendable').unclassMe('hidepage hidemappage');}sfb.addClass('showpage').removeClass('mhidepage');}}}if(sfc &&sfa['label']){ sfc.set('html',sfa['label']); }return sfa['html']; };
+//console.log('sa:',sa,' sb:',sb,' sr:',sr,' = ',document.location.href);
+if(sr == 'OK'){ 
+if( sa['reload'] ){
+(function(){console.log('refreshing page name..');document.location = sa['reload'];}).delay(0); 
+} else if( sa['html'] ){ 
 if( sa['field'] ){ ss = sa['html'];if(sa['field'] == 'new-date'){st = tp.getParent('.text');if(st){st.setAttribute('data-tagged','Date:'+sa['title']);}} else if(sa['field'] == 'new-title'){st = z.getElement('span.navtext');if(st){st.set('text',sa['title']);}} } else { ss = sf(sa,sp,tp.getPrevious('label')); } 
 } else { 
-Object.each(sa,function(v,k){ss+= '<span class="senddata">'+v+'</span>';}); 
-} }if(tp){ tp.set('html',ss);tp.getElements('input,textarea').each(function(z1,i){z1.inputMe(z1.getProperty('value'));});if(sr != 'OK'){tp.addClass('sendfail');}} }); 
+Object.each(sa,function(v,k){ss+= '<span class="senddata">'+v+'</span>';});
+} }
+if(tp){ tp.set('html',ss);tp.getElements('input,textarea').each(function(z1,i){z1.inputMe(z1.getProperty('value'));});if(sr != 'OK'){tp.addClass('sendfail');}} }); 
 }
 }
 } } 

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
 
-#editthis version:8.2.2 EDGE
+#editthis version:8.2.2
 
 use strict;
 use warnings;
@@ -9,7 +9,7 @@ use Config;
 use File::Spec;
 
 my $vers = "8.2.2";
-my ($lwp,$okLWP,$ua,$u,$auth,$capture,$curl,$daemon,$dropbox,$status,$ebay,$resp,$lsimple,$mails,$mime,$esimple,$sender,$sendmail,$esender,$encode,$creator,$transport,$ios,$iostr,$ole,$smtp,$config,$filestat,$filefind,$filepath,$fileglob,$util,$filecopy,$filetmp,$cgi,$cgiescape,$cgicarp,$dumper,$encode2,$uri,$filebase,$filespec,$hreq,$jsn,$scalar,$sobj,$tloc,$twit,$tiny,$mmap,$imager,$jsmin,$csmin,$whtm,$zip);
+my ($lwp,$okLWP,$lagent,$ua,$u,$auth,$capture,$curl,$daemon,$dropbox,$status,$ebay,$resp,$lsimple,$mails,$mime,$esimple,$sender,$sendmail,$esender,$encode,$creator,$transport,$ios,$iostr,$ole,$smtp,$config,$filestat,$filefind,$filepath,$fileglob,$util,$filecopy,$filetmp,$cgi,$cgiescape,$cgicarp,$dumper,$encode2,$uri,$filebase,$filespec,$hreq,$jsn,$scalar,$sobj,$tloc,$face,$twit,$tiny,$mmap,$imager,$jsmin,$csmin,$whtm,$zip);
 
 my $envpath = File::Spec->rel2abs( __FILE__ );
 $envpath =~ s/(\/cgi\-bin|\/cgi)\/.*?$/$1/;
@@ -18,18 +18,20 @@ our $uaref = "";
 our $http = ( $ENV{'HTTPS'} )?"https:":"http:";
 ###
 
-eval "use LWP"; $lwp = $@?0:1;
-eval "use LWP::Simple"; $lsimple = $@?0:1;
-
-if($lsimple){
-eval "use LWP::UserAgent";
-$ua = LWP::UserAgent->new(timeout => 30);
+eval "use LWP";$lwp = $@?0:1;
+eval "use LWP::Simple";$lsimple = $@?0:1;
+eval "use LWP::UserAgent";$lagent = $@?0:1;
+if($lsimple && $lagent){
+use HTTP::Request;
 $u = $http."//".$ENV{'HTTP_HOST'}."/index.html";
-$resp = $ua->request(HTTP::Request->new('GET', $u));
+my $ua = LWP::UserAgent->new( ssl_opts => { verify_hostname => 0 },timeout => 30);
+my $req = HTTP::Request->new( GET => $u);
+$resp = $ua->request($req);
 $uaref = $ua->agent;
 my $rr = $resp->content;
-$okLWP = (defined $rr && $rr =~ /ok/i)?'<b style="color:#0a9;">OK ('.$u.')':'<b style="color:#c00;">FAILED: '.$rr.' ('.$u.')';
+$okLWP = (defined $rr && $rr =~ /ok/i)?'<b style="color:#0a9;">OK ('.$u.')':'<b style="color:#c00;">FAILED: '.$rr.' = '.$resp->code.' ('.$u.')';	
 }
+
 eval "use Mail::Sender"; $mails = $@?0:1;
 eval "use MIME::Entity"; $mime = $@?0:1;
 eval "use Email::Simple"; $esimple = $@?0:1;if( $esimple ){ eval "use Email::Simple::Creator"; $creator = $@?0:1; }
@@ -60,6 +62,7 @@ eval "use Scalar::Util"; $scalar = $@?0:1;
 eval "use Time::Local"; $tloc = $@?0:1;
 eval "use Try::Tiny"; $tiny = $@?0:1;
 eval "use eBay::API::Simple"; $ebay = $@?0:1;
+eval "use Facebook::OpenGraph"; $face = $@?0:1;
 eval "use Net::Twitter::Lite::WithAPIv1_1"; $twit = $@?0:1;
 eval "use Imager"; $imager = $@?0:1;
 eval "use XML::SimpleObject"; $sobj = $@?0:1;
@@ -69,8 +72,8 @@ eval "use HTTP::Daemon::SSL"; $daemon = $@?0:1;
 eval "use HTTP::Status"; $status = $@?0:1;
 eval "use IO::Socket::SSL"; $ios = $@?0:1;
 eval "use WWW::Curl";$curl = $@?0:1;
-eval "use JavaScript::Minifier";$jsmin = $@?0:1;
-eval "use CSS::Compressor";$csmin = $@?0:1;
+eval "use JavaScript::Packer";$jsmin = $@?0:1;
+eval "use CSS::Minifier";$csmin = $@?0:1; 
 eval "use WebService::Dropbox";$dropbox = $@?0:1; 
 #eval "use IO::String";$iostr = $@?0:1;
 #eval "use Capture::Tiny"; $capture = $@?0:1;
@@ -86,6 +89,7 @@ print "Content-type: text/html\n\n";
 print "<html><body><pre>";
 
 printf $f, "Server","<b>$ENV{'HTTP_HOST'}</b><br />";
+printf $f, "protocol",$ENV{'HTTPS'}." = ".$http;
 printf $f, "editthis","v$vers";
 printf $f, "OS",$Config{osname};
 printf $f, "Version",$Config{archname};
@@ -148,17 +152,18 @@ printf $f, "Email::Sender::Transport::SMTP", ($transport? "v$Email::Sender::Tran
 print "<br />";
 
 printf $f,"Optional Functionality Modules","";
-printf $f, "Blogger: XML::SimpleObject", ($sobj? "v$XML::SimpleObject::VERSION " : "not ")."installed";
-printf $f, "CSS::Compressor", ($csmin? "v$CSS::Compressor::VERSION " : "not ")."installed";
-printf $f, "HTTP::Daemon::SSL", ($daemon? "v$HTTP::Daemon::SSL::VERSION " : "not ")."installed";
-printf $f, "eBay::API::Simple", ($ebay? "v$eBay::API::Simple::VERSION " : "not ")."installed";
-printf $f, "Imager", ($imager? "v$Imager::VERSION " : "not ")."installed";
-printf $f, "JavaScript::Minifier", ($jsmin? "v$JavaScript::Minifier::VERSION " : "not ")."installed";
-printf $f, "IO::Socket::SSL", ($ios? "v$IO::Socket::SSL::VERSION " : "not ")."installed";
-printf $f, "HTTP::Status", ($daemon? "v$HTTP::Status::VERSION " : "not ")."installed";
-printf $f, "Net::Twitter::Lite::WithAPIv1_1", ($twit? "v$Net::Twitter::Lite::WithAPIv1_1::VERSION " : "not ")."installed";
-printf $f, "File::Temp", ($filetmp? "v$File::Temp::VERSION " : "not ")."installed";
 printf $f, "Archive::Zip", ($zip? "v$Archive::Zip::VERSION " : "not ")."installed";
+printf $f, "Blogger: XML::SimpleObject", ($sobj? "v$XML::SimpleObject::VERSION " : "not ")."installed";
+printf $f, "CSS::Minifier", ($csmin? "v$CSS::Minifier::VERSION " : "not ")."installed";
+printf $f, "eBay::API::Simple", ($face? "v$eBay::API::Simple::VERSION " : "not ")."installed";
+printf $f, "Facebook::OpenGraph", ($face? "v$Facebook::OpenGraph::VERSION " : "not ")."installed";
+printf $f, "File::Temp", ($filetmp? "v$File::Temp::VERSION " : "not ")."installed";
+printf $f, "Imager", ($imager? "v$Imager::VERSION " : "not ")."installed";
+printf $f, "IO::Socket::SSL", ($ios? "v$IO::Socket::SSL::VERSION " : "not ")."installed";
+printf $f, "HTTP::Daemon::SSL", ($daemon? "v$HTTP::Daemon::SSL::VERSION " : "not ")."installed";
+printf $f, "HTTP::Status", ($daemon? "v$HTTP::Status::VERSION " : "not ")."installed";
+printf $f, "JavaScript::Packer", ($jsmin? "v$JavaScript::Packer::VERSION " : "not ")."installed";
+printf $f, "Net::Twitter::Lite::WithAPIv1_1", ($twit? "v$Net::Twitter::Lite::WithAPIv1_1::VERSION " : "not ")."installed";
 printf $f, "WebService::Dropbox", ($dropbox? "v$WebService::Dropbox::VERSION " : "not ")."installed";
 printf $f, "WWW::Curl", ($curl? "v$WWW::Curl::VERSION " : "not ")."installed";
 #printf $f, "IO::String", ($iostr? "v$IO::String::VERSION " : "not ")."installed";

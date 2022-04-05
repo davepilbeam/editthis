@@ -1,10 +1,10 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
-
-use cPanelUserConfig;
-#editthis version:8.2.2 EDGE +novel
+###use cPanelUserConfig;
+#editthis version:8.2.3 EDGE
 
 package subs;
 use strict;
+#use warnings;
 
 use CGI qw/:standard/;
 use CGI::Util qw/escape unescape/;
@@ -1705,8 +1705,8 @@ push( @LWP::Protocol::https::EXTRA_SOCK_OPTS,MaxLineLength => 0 );
 use LWP::Protocol::http;
 push( @LWP::Protocol::http::EXTRA_SOCK_OPTS,MaxLineLength => 0 );
 }
-my $ua = LWP::UserAgent->new;
-$ua->agent("thatsthat/8.2.2 (Centos 7)");
+my $ua = LWP::UserAgent->new( ssl_opts => { verify_hostname => 0 });
+$ua->agent("thatsthat/8.2.3 (Centos 7)");
 if( defined $relay && defined $pref){
 use HTTP::Request::Common qw(POST);
 $res = $ua->request(POST $dest,Content_Type => 'form-data',Content => $pref);

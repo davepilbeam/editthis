@@ -1,6 +1,6 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
-
-#editthis version:8.2.2 EDGE
+###use cPanelUserConfig;
+#editthis version:8.2.3 EDGE
 
 use strict;
 #use warnings;
@@ -49,7 +49,7 @@ our $referers = join "|",@refs;
 imager_json_out({ 'error' => "Unauthorised user request from $ENV{'HTTP_REFERER'}" },$origin,$callback) unless $ENV{'HTTP_REFERER'} =~ /($referers)/;
 }
 
-our @servers = ( "127.0.0.1","141.0.165.151","86.15.164.221","81.168.114.213","94.197.127.29","46.32.235.70","10.168.1.117" );
+our @servers = ( "127.0.0.1" );
 push @servers,@defs::serverip;
 for my $i(0..$#servers){ $servers[$i] =~ s/\.([0-9]+)$//; }
 our $serverip = join "|",@servers;

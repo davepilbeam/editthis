@@ -1,9 +1,9 @@
-#!/usr/bin/perl
-use cPanelUserConfig;
-#editthis version:8.2.2 EDGE +novel
+#!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
+###use cPanelUserConfig;
+#editthis version:8.2.3 EDGE
 
-use CGI::Carp qw(fatalsToBrowser);
 use strict;
+#use warnings;
 
 use CGI;
 use CGI qw/escape unescape/;
@@ -165,6 +165,7 @@ our %fullname = ( title => "",first => "",last =>"" );
 our $nameswitch = undef;
 our $allfields = undef;
 our @NOFILL = ();
+my $nozip = undef;
 our $ask = undef;
 our $callback = "";
 our $endout = "";
@@ -197,8 +198,12 @@ my $h = undef;
 if( $k =~ /manifest/i && $pdata{$k} ne "" ){ email_exit(); }
 if( $k eq "callback" ){ $callback = $pdata{$k}; }
 if( $k eq "spam" ){ email_exit(); }
-if( $k eq "message" || $k eq "details" || $k eq "name" ){ if( defined $spamurl && ($pdata{$k} =~ /ht(t)*p(s)*:\/\//i || $pdata{$k} =~ /\b(porno|sex|hacked|sexe|gay)\b/i || $pdata{$k} =~ /\@.*?\.(com|ru|ua|ro|fr|co\.uk)$/i) ){ email_exit(); } }
-
+if( defined $spamurl ){
+if( $k eq "message" || $k eq "details" || $k eq "name" ){ 
+if( $pdata{$k} =~ /\@/ ){ email_exit(); }
+if( $pdata{$k} =~ /ht(t)*p(s)*:\/\//i || $pdata{$k} =~ /\b(porno|hotmail|sex|hacked|sexe|gay)\b/i || $pdata{$k} =~ /\@.*?\.(com|ru|ua|ro|fr|co\.uk)$/i ){ email_exit(); } 
+}
+}
 if( $k eq "recipients" ){ $reclist = $pdata{$k}; }
 if( $k eq "locate" ){ $locate = $pdata{$k}; }
 if( $k eq "spamcheck" ){ $spamcheck = $pdata{$k}; }
@@ -209,6 +214,7 @@ if( $k eq "email" || $k =~ /^email/i ){ $emailaddr = $pdata{$k}; }
 if( $k eq "library" ){ @libraryfiles = split /\|\|/,$pdata{$k}; } #Digital/Case-Studies/RSM-Case-Study-1.pdf||Digital/Case-Studies/RSM-Case-Study-3.pdf||Digital/Data-Sheets/zRSM-Realtime-Data-Sheet.pdf\
 if( $k eq "html" ){ $html = undef; }
 if( $k eq "js" ){ $noscript = ""; }
+if( $k eq 'zip' ){ $nozip = 'ok'; }
 if( $k eq 'ask' ){ $ask = "ok";push @recipients,'admin@thatsthat.co.uk'; }
 
 if($k=~ /^allfields/i){if($pdata{$k} ne ""){$allfields = 1;}$h = 1;}
@@ -238,7 +244,7 @@ if($k=~ /^shoptotal/i){ $shoptotal = $pdata{$k};$h = 1; }
 
 if( $pdata{$k} =~ /\[url="/i || $pdata{$k} =~ /<a href="/ || $pdata{$k} =~ /http:\/\// ){ $spamfail = 1; }
 ##if($pdata{$k} ne ""){ 
-if( $k ne "js" && $k ne "ask" && $k ne "spam" && $k !~ /manifest/i && !email_process($k,$pdata{$k}) && !defined $h && $k !~ /^(formtype|recipients|html|locate|spamcheck|spamresult|cgiurl|cgireturn|copytype|submit)$/i ){
+if( $k ne "js" && $k ne "ask" && $k ne "spam" && $k !~ /manifest/i && !email_process($k,$pdata{$k}) && !defined $h && $k !~ /^(formtype|recipients|html|locate|spamcheck|spamresult|cgiurl|cgireturn|copytype|zip|submit)$/i ){
 my @ar = ();
 if( defined $MAP{$k} ){ 
 @ar = ($MAP{$k},$pdata{$k});$out.= "$MAP{$k} = $pdata{$k}\n\n"; 
@@ -251,7 +257,28 @@ if( defined $MAP{$k} ){
 } elsif($k =~ /birthyear$/){ 
 @ar = ("date of birth",$fullbirthdate{'day'}." ".$fullbirthdate{'month'}." ".$fullbirthdate{'year'} );
 } else { 
-@ar = ($k,$pdata{$k});$out.= "$k = $pdata{$k}\n\n"; 
+
+
+if( $k eq "library" && ( scalar @libraryfiles > 0 ) && !defined $nozip ){ 	
+		
+#Digital/Digital/Arctic-Snow-Digital	
+#Digital/Coated/Arctic-Matt	
+my %lfiles = ();	
+my $t = "";	
+for my $i(0..$#libraryfiles){ 	
+$libraryfiles[$i] =~ s/^($resourcefolder)(.+)\.(jpg|png|gif)$/$2/i;	
+$libraryfiles[$i] =~ s/^(.*?)\/(.*?)-$1$/$2/i;	
+$libraryfiles[$i] =~ s/^.+\///i;	
+$lfiles{$libraryfiles[$i]} = $libraryfiles[$i];	
+}	
+$out.= "$k = ";	
+for my $key (sort keys %lfiles){ $t.= $key."<br />";$out.= " $key \n "; }	
+@ar = ($k,$t);$out.= "\n\n"; 	
+		
+} else { 	
+@ar = ($k,$pdata{$k});$out.= "$k = $pdata{$k}\n\n"; 	
+}
+
 }
 #$debug.= " $k = @ar<br />";
 push @HM,[@ar];
@@ -280,7 +307,7 @@ push @RRM,[@hi];$RRout.= $hi[0]." = ".$hi[1]."\n\n";
 
 
 ##if( defined $allfields ){ push @HM,@NOFILL; }
-#$debug.= "allfields: $allfields = @HM == \n\n@NOFILL\n";
+#$debug.= "allfields: $allfields = ".(  Data::Dumper->Dump([\@HM,'HM']) )." ".(  Data::Dumper->Dump([\@libraryfiles],'libraryfiles') )."== \n\n@NOFILL\n";
 
 email_respond("error:","Warning: no Form data was received: $debug") unless scalar @HM > 0;
 
@@ -356,10 +383,15 @@ if( defined $ask){
 email_json_out({ 'response' => "email sucessfully sent to @recipients" },undef,$callback);
 
 } elsif( scalar @libraryfiles > 0 ){
+###email_json_out({ 'check 7' => "libraryfiles: \n@libraryfiles \nnozip: $nozip \n\n $debug" });	
+if( defined $nozip){	
+email_html_out( $endout );	
+} else {	
 for my $i(0..$#libraryfiles){ $libraryfiles[$i] = $base.$docview.$libraryfiles[$i]; }
 ###email_json_out({ 'check 7' => "libraryfiles: \n@libraryfiles \n\n $debug" });
 $endout = email_zip_out(\@libraryfiles,$base.$backupbase.$resourcefolder.$usetime.".zip",undef);
 email_html_out( $endout );
+}
 
 } else {
 

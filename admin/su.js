@@ -1,5 +1,5 @@
 
-/*#editthis version:8.2.2 EDGE*/
+/*#editthis version:8.2.3 EDGE*/
 
 Object.append(Element.NativeEvents,{dragenter:2,dragleave:2,dragover:2,drop:2});
 
@@ -325,6 +325,7 @@ return ks;
 
 editareaG: function(a,b,c,d,e,f,g){
 var c1 = {},cc,ff,f,g1,i,jj,kk,m = e,mm,p = (e.parentconfig)?e.parenttype:(c)?c.tag:e.subtype,pp,q = [ b.getElement('.nav-exit'),b.getElement('.nav-update'),b.getElement('.nav-menuback') ],qq,rr,u = '',uu,w,xx = {},yy;
+b.store('latest',{'unique':c});
 if(c && !c.update){c.update = q;}
 console.log('editarea: a:',a,' b:',b,' c:',c,' d:',d,' e:',e,' f:',f,' p:',p,' = m:',m,' q:',q); 
 
@@ -581,15 +582,17 @@ case 'edittype': fv = fa.retrieve('editdata');if(fa && fv){ fp = fa.getParent('d
 jj = function(je){ G.stopG(je);
 console.log('jj: ',je,' a:',a,' b:',b,' c:',c,' f:',f,' g:',g,' p:',p);
 /* a:editfeed  b:<div class="tt_topmenu tt_menu8"> c:undefined  f:11 */
-var i,i1,ja,jb,jc = 0,jd = {},jf = function(){ var jm = c.el.getParent('.tt_hasmedium'),jn;if(c.type == 'editimagelink'){c.el.getParent('.text').set('html','&#160;');} else {G.erangyG(c.el,'replace');}if(jm && jm.clean){jm.clean();} },jff,jg,jh,ji,jk = {},jl,jm,jn,jo = [],jp,jq,jr,js = '',jt = je.target,ju,jv = {},jw,jx = {},jy,jz = {};
+var i,i1,ja,jb,jc = 0,jd = {},jf,jff,jg,jh,ji,jk = {},jl,jm,jn,jo = [],jp,jq,jr,js = '',jt = je.target,ju,juu = b.retrieve('latest')['unique'] || c,jv = {},jw,jx = {},jy,jz = {};
+jf = function(){ var jm = juu.el.getParent('.tt_hasmedium'),jn;if(juu.type == 'editimagelink'){juu.el.getParent('.text').set('html','&#160;');} else {G.erangyG(juu.el,'replace');}if(jm && jm.clean){jm.clean();} },
+
 uu(jt.getParent('form'));
 if( jt.hasClass('nav-menuback') ){
 switch(a){
 case 'editclipboard': case 'editinput': case 'editfeed': case 'edittype': G.emenuswitchG(E.eloutput,f,null,'unfill',E.lastscroll); break;
-case 'editlink': b.getElement('.formgrid').vizMe('hide',function(){ if( jt.hasClass('asrevert') || c.url == 'href_placeholder.html' ){ jf();G.emenuswitchG(E.eloutput,f,null,'unfill',E.lastscroll); } else { G.eblocknavG(je,f); } }); break;
+case 'editlink': b.getElement('.formgrid').vizMe('hide',function(){ if( jt.hasClass('asrevert') || juu.url == 'href_placeholder.html' ){ jf();G.emenuswitchG(E.eloutput,f,null,'unfill',E.lastscroll); } else { G.eblocknavG(je,f); } }); break;
 }
 } else if( jt.hasClass('nav-exit') && !jt.hasClass('unrevert') ){
-b.getElement('.formgrid').vizMe('hide',function(){ kk(c); });
+b.getElement('.formgrid').vizMe('hide',function(){ kk(juu); });
 } else if( jt.hasClass('nav-update') && !jt.hasClass('unsave') ){
 switch(a){
 case 'editclipboard':
@@ -635,7 +638,7 @@ if( p.test(/^(input|textarea|select|p)$/i) ){
 jg = b.getElement('.inputgrid');
 console.log('jj inputgrid ',jg,' from ',jt,' = formstage:',jg.retrieve('formstage') );
 jr = ( $('tt_required') )?$('tt_required').checked:null;if(jr && jr != ''){jd['required'] = jr;}
-c1 = jg.retrieve('formstage') || c;
+c1 = jg.retrieve('formstage') || juu;
 jd.type = ( $('tt_typelink') )?$('tt_typelink').options[$('tt_typelink').options.selectedIndex].value:(c1.detailtype)?c1.detailtype:(e.type)?e.type:'text';
 
 jg.getElements('li.fli').each(function(z,i){ 
@@ -670,24 +673,24 @@ c1.detailparent.addClass('formtext').adopt( new Element('p',{ 'html':(jd.text ||
 c1.detailparent.removeClass('formtext');
 jff = function(jfa,jfb,jfc){ return new Element('label',{ 'for':jfb,'class':'l-'+jd.type+((jd.type == 'checkbox' || jd.type == 'radio')?' css-check':''),'html':((jfc)?jfc:jfa.text)+((jfa.required)?E.eform.req:'') }); };
 switch(jd.type){
-case 'radio': Object.keys(jd).sort().each(function(z,i){ if( z.test(/^el_([0-9]+)/) ){ jn = new Element('input',{ 'class':'css-check','type':jd.type,'id':qq(jd.name)+'_'+i,'name':((jd.required)?'pre_':'opt_')+qq(jd.name)+'_'+c.number,'value':(jd[z].value || '') });if(jd[z].selected){jn.setProperty('checked',true);}jl = jff( jd[z],qq(jd.name)+'_'+i,jd[z]['label'] );c1.detailparent.adopt(jn,jl); } }); break;
-case 'select': Object.keys(jd).sort().each(function(z,i){ if( z.test(/^el_([0-9]+)/) ){ jq+= '<option value="'+jd[z]['value']+'"'+( (jd[z]['selected'])?' selected':'' )+'>'+jd[z]['label']+'</option>'; } });jn = new Element('select',{ 'id':qq(jd.name)+'_'+c.number,'name':((jd.required)?'pre_':'opt_')+qq(jd.name)+'_'+c.number,'html':jq });jl = jff(jd,qq(jd.name)+'_'+c.number),c1.detailparent.adopt(jl,jn); break;
-case 'submit': new Element('input',{'type':'submit','name':'submit_'+c.number,'value':jd.value,'class':'sub-s'}).inject(c1.detailparent); break;
+case 'radio': Object.keys(jd).sort().each(function(z,i){ if( z.test(/^el_([0-9]+)/) ){ jn = new Element('input',{ 'class':'css-check','type':jd.type,'id':qq(jd.name)+'_'+i,'name':((jd.required)?'pre_':'opt_')+qq(jd.name)+'_'+juu.number,'value':(jd[z].value || '') });if(jd[z].selected){jn.setProperty('checked',true);}jl = jff( jd[z],qq(jd.name)+'_'+i,jd[z]['label'] );c1.detailparent.adopt(jn,jl); } }); break;
+case 'select': Object.keys(jd).sort().each(function(z,i){ if( z.test(/^el_([0-9]+)/) ){ jq+= '<option value="'+jd[z]['value']+'"'+( (jd[z]['selected'])?' selected':'' )+'>'+jd[z]['label']+'</option>'; } });jn = new Element('select',{ 'id':qq(jd.name)+'_'+juu.number,'name':((jd.required)?'pre_':'opt_')+qq(jd.name)+'_'+juu.number,'html':jq });jl = jff(jd,qq(jd.name)+'_'+juu.number),c1.detailparent.adopt(jl,jn); break;
+case 'submit': new Element('input',{'type':'submit','name':'submit_'+juu.number,'value':jd.value,'class':'sub-s'}).inject(c1.detailparent); break;
 default: 
 console.log('default: ',a,c1.detailparent,' = ',jd);
-jk = Object.merge(jk,{ 'type':jd.type,'id':qq(jd.name)+'_'+c.number,'name':((jd.required)?'pre_':'opt_')+qq(jd.name)+'_'+c.number,'value':(jd.value || '') });if(jd.type == 'checkbox'){ jk = Object.merge(jk,{'class':'css-check'}); }if(jd.placeholder){ jk = Object.merge(jk,{'placeholder':jd.placeholder}); }
+jk = Object.merge(jk,{ 'type':jd.type,'id':qq(jd.name)+'_'+juu.number,'name':((jd.required)?'pre_':'opt_')+qq(jd.name)+'_'+juu.number,'value':(jd.value || '') });if(jd.type == 'checkbox'){ jk = Object.merge(jk,{'class':'css-check'}); }if(jd.placeholder){ jk = Object.merge(jk,{'placeholder':jd.placeholder}); }
 if(jd.spam){ jk = Object.merge(jk,{'spam':jd.spam});if( $('spamresult_edit') ){$('spamresult_edit').set('value',jd.spam);} }
 console.log('save: ',a,b,c1.detailparent,' = ',jk);
-jn = (jd.type == 'textarea')?new Element('textarea',Object.merge(jk,E.eform['textarea'])):new Element('input',jk);if(jd.selected){jn.setProperty('checked',true);}jl = jff(jd,qq(jd.name)+'_'+c.number);
+jn = (jd.type == 'textarea')?new Element('textarea',Object.merge(jk,E.eform['textarea'])):new Element('input',jk);if(jd.selected){jn.setProperty('checked',true);}jl = jff(jd,qq(jd.name)+'_'+juu.number);
 if( jd.type == 'checkbox'){ c1.detailparent.adopt(jn,jl) } else { c1.detailparent.adopt(jl,jn); }
 }
 }
 
 jg.vizMe('hide');
-$$(c.update).unclassMe('unrevert unsave');
+$$(juu.update).unclassMe('unrevert unsave');
 console.log('save 2: ',c1.detailparent.get('html'),' c1 = ',c1,' f = ',f,' hide ',b,' change:',E.eloutput );
 G.esaveableG(1,E.eloutput);b.getElements('div.formgrid').destroy();G.emenuswitchG(E.eloutput,8,null,'unfill',E.lastscroll);
-if(c.func && typeOf(c.func) == 'function'){c.func(c1.detailparent);}
+if(juu.func && typeOf(juu.func) == 'function'){juu.func(c1.detailparent);}
 
 
 } else if( p == 'form' ){
@@ -695,7 +698,7 @@ if(c.func && typeOf(c.func) == 'function'){c.func(c1.detailparent);}
 
 jg = b.getElement('.formgrid');
 jn = $('body0').getElements('form[id^=cgi_form]').length;
-jx = new Element('form',{ 'id':'cgi_form_'+jn,'action':( $('action_edit').get('value') || c.action),'method':( $('method_edit').get('value') || c.method ),'accept-charset':'UTF-8' });
+jx = new Element('form',{ 'id':'cgi_form_'+jn,'action':( $('action_edit').get('value') || juu.action),'method':( $('method_edit').get('value') || juu.method ),'accept-charset':'UTF-8' });
 ji = jg.getElements('li.fli');
 js+= '<fieldset>\n<ul class="ful">\n';
 for(i=0;i<ji.length;i++){
@@ -752,9 +755,9 @@ js+= '</li>\n';
 }
 
 js+= '\n</ul>\n</fieldset>';
-console.log('jj: js:',js,' = jx:',jx,' eloutput:',E.eloutput,' c:',c);
+console.log('jj: js:',js,' = jx:',jx,' eloutput:',E.eloutput,' c:',c,' juu:',juu);
 jx.set('html',js).replaces(E.eloutput.getElement('form'));
-if( $('cgireturn_edit') && $('cgireturn_edit').checked ){ if( !$('tt_returndiv_'+c.number) ){ new Element('div',{'id':'tt_returndiv_'+c.number,'class':'row editblock','html':'<div class="edittext tt_erow tt_areawaiting">\n<div class="ehilite tt_e1row">&#160;</div>\n<div class="text">\n<p>Thank you.</p>\n<p>Please see a copy of your form submission below:</p>\n</div>\n</div>'}).inject(jx.getParent('.editblock'),'after');G.eselectG();G.emenuiconG(jx);jx.scrollMe(); } } else { if( $('tt_returndiv_'+c.number) ){ $('tt_returndiv_'+c.number).destroy(); } }
+if( $('cgireturn_edit') && $('cgireturn_edit').checked ){ if( !$('tt_returndiv_'+juu.number) ){ new Element('div',{'id':'tt_returndiv_'+juu.number,'class':'row editblock','html':'<div class="edittext tt_erow tt_areawaiting">\n<div class="ehilite tt_e1row">&#160;</div>\n<div class="text">\n<p>Thank you.</p>\n<p>Please see a copy of your form submission below:</p>\n</div>\n</div>'}).inject(jx.getParent('.editblock'),'after');G.eselectG();G.emenuiconG(jx);jx.scrollMe(); } } else { if( $('tt_returndiv_'+juu.number) ){ $('tt_returndiv_'+juu.number).destroy(); } }
 E.eloutput.dataMe();
 console.log('form = ',jx,' target is ',E.eloutput,' editdata is ',E.eloutput.retrieve('editdata'));
 G.esaveableG(1,E.eloutput);b.getElements('div.formgrid').destroy();G.emenuswitchG(E.eloutput,11);
@@ -800,12 +803,12 @@ G.esaveableG(1,E.eloutput);E.eloutput = jn;b.getElements('div.formgrid').destroy
 }
 
 break;
-case 'editlink': console.log('editlink save: ',je,' == c.el:',c.el,' E.eselection:',E.eselection,' c:',c);
+case 'editlink': console.log('editlink save: ',je,' == juu.el:',juu.el,' E.eselection:',E.eselection,' juu:',juu);
 if( E.eselection ){ jf(); } else { 
-jn = new Element('a',{}).setProperty('title',$('tt_titlelink').get('value')).setProperty('href',$('tt_urllink').get('value'));if($('tt_targetlink').options[$('tt_targetlink').options.selectedIndex].value > 0){jn.setProperty('target','_blank');}if(c.type != 'editimagelink'){ jn.set('text',$('tt_textlink').get('value')).unclassMe('edittextlink edittextemail editlinkinline').addClass( $('tt_typelink').options[$('tt_typelink').options.selectedIndex].value); }
-if( c.el.get('tag') == 'p'){ c.el.empty().adopt(jn); } else { jn.replaces(c.el); }
+jn = new Element('a',{}).setProperty('title',$('tt_titlelink').get('value')).setProperty('href',$('tt_urllink').get('value'));if($('tt_targetlink').options[$('tt_targetlink').options.selectedIndex].value > 0){jn.setProperty('target','_blank');}if(juu.type != 'editimagelink'){ jn.set('text',$('tt_textlink').get('value')).unclassMe('edittextlink edittextemail editlinkinline').addClass( $('tt_typelink').options[$('tt_typelink').options.selectedIndex].value); }
+if( juu.el.get('tag') == 'p'){ juu.el.empty().adopt(jn); } else { jn.replaces(juu.el); }
 }
-$(c['update'][0]).removeClass('unsave');$(c['update'][1]).removeClass('unrevert');
+$(juu['update'][0]).removeClass('unsave');$(juu['update'][1]).removeClass('unrevert');
 G.esaveableG(1,E.eloutput);b.getElements('div.formgrid').destroy();G.emenuswitchG(E.eloutput,f,null,'unfill',E.lastscroll);
 break;
 }

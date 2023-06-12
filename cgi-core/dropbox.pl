@@ -25,26 +25,26 @@ our $incerr = "";
 # https://www.dropbox.com/developers/apps/info/ifu1q89jpe3lrzb
 # https://metacpan.org/pod/WebService::Dropbox
 
-our $appname = "thatsthat_library";
-our $appkey = "ifu1q89jpe3lrzb";
-our $appsecret = "13j5yw0v2durnsf";
-our $apptoken = "ihUL6HKYp5YAAAAAAAAAvKF7DOy_GTTugQmmX_6PEoUz5Er91Ik1YuKtj3YU7yBW";
+our $appname = "domain_library";
+our $appkey = "key";
+our $appsecret = "secret";
+our $apptoken = "apptoken";
 our $docfolder = "documents";
 our $dropfolder = "Dropbox";
 our $thumbfolder = "$docfolder/$dropfolder";
 our $thumbext = "_thumb";
 our %applinks = (
-'Case Studies' => "https://www.dropbox.com/sh/beoewypvo4s6ul4/AAClKphUH1w9N-PTlcUi1Xdja?dl=0",
-'Datasheets' => "https://www.dropbox.com/sh/dcvjuniqpd275un/AADSy7OSevI14Z-_yeN7M0Xpa?dl=0"
+'Case Studies' => "https://www.dropbox.com/sh/link",
+'Datasheets' => "https://www.dropbox.com/sh/link"
 );
-# https://www.dropbox.com/s/26599f2c6bohzqe/RSM-Systems-Engineer.zip?dl=0
+# https://www.dropbox.com/s/app/RSM-Systems-Engineer.zip?dl=0
 
-our @servers = ( "127.0.0.1","141.0.165.151","86.15.164.221","81.168.114.213","94.197.127.29","46.32.235.70","10.168.1.117" );
+our @servers = ( "127.0.0.1" );
 our $serverenv = $ENV{'SERVER_ADDR'};
 
 our @refs = ();
 if( defined $ENV{'HTTP_HOST'} && $ENV{'HTTP_HOST'} =~  /thatsthat\.co\.uk/ ){ 
-@refs = ( "thatsthat.co.uk" );
+@refs = ( "domain.co.uk" );
 our $referers = join "|",@refs;
 dropbox_json_out({ 'error' => "Unauthorised user request from $ENV{'HTTP_REFERER'} " }) unless $ENV{'HTTP_REFERER'} =~ /($referers)/;
 } else {

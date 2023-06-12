@@ -1,10 +1,9 @@
 #!/usr/bin/perl -I/var/www/vhosts/pecreative.co.uk/perl5/lib/perl5
-###use cPanelUserConfig;
-#editthis version:8.2.3 EDGE
+
+#editthis version:8.2.2 EDGE
 
 package subs;
 use strict;
-#use warnings;
 
 use CGI qw/:standard/;
 use CGI::Util qw/escape unescape/;
@@ -52,7 +51,7 @@ $n = "";
 } elsif( $n =~ /\.($c{'fxfile'})$/i ){
 $n =~ s/^(.+)\/.*?$/$1/i;($n,$f) = sub_get_parent($n); # documents/Images/
 } else {
-$n =~ s/($c{'chapterlister'}|$c{'liblister'}|$c{'taglister'})$//i;
+$n =~ s/($c{'liblister'}|$c{'taglister'})$//i;
 }
 
 ###sub_json_out({ 'debug' => "check admin_backlevel: u:$u \n\n n:$n \n\n fn:$fn \ndbug:$dbug \n\n f: $f  = $c{'debug'}" },$c{'origin'},$c{'callback'}); #fu: /var/www/vhosts/pecreative.co.uk/thegatemaker.co.uk/thegatemaker.pecreative.co.html 
@@ -91,7 +90,7 @@ if( -f $n && !defined $force ){ return "this $ty already exists: [ $n ]"; }
 return "rename error with $ty [ $o ] $!" unless -f $o;
 cp ($o,$n) or try { die "admin_copy: copy $o to $n failed: $!"; } catch { $err = "admin_copy: copy $o to $n failed: $_"; };
 if( !defined $err ){ 
-if( -f $n ){ chmod (0664,$n) or try { die "admin_copy: chmod $n failed: $!"; } catch { $dbug = "admin_copy: chmod $n failed: $_"; }; } else { $dbug = "admin_copy: $n is not a file $!";  }
+chmod (0664,$n) or try { die "admin_copy: chmod $n failed: $!"; } catch { $dbug = "admin_copy: chmod $n failed: $_"; }; 
 }
 return $err;
 }
@@ -166,7 +165,7 @@ my $ex1 = '<a href="'.$h.'" title="fix problem" target="_blank">manual fix requi
 ###return "admin_fixeror: u:$u er:$er n:$n h:$h [ $pdir,$f ]\n";
 if( $er =~ /permissions are changed to 664/i ){
 my $perr = undef;
-if( -f $c{'base'}.$u ){ chmod (0664,$c{'base'}.$u) or try { die "fixerror: chmod $u failed: $!"; } catch { $perr = "fixerror: chmod $u failed: $_"; }; } else { $perr = "fixerror: $u is not  a file: $_"; }
+chmod (0664,$c{'base'}.$u) or try { die "fixerror: chmod $u failed: $!"; } catch { $perr = "fixerror: chmod $u failed: $_"; };
 if( defined $perr){ $s = $ex.' <strong>'.$perr.'</strong> '.$ex1; } else { $s = '<span>'.$er.': <b>fixed</b></span>'; }
 } elsif( $er =~ /permissions need to be changed to 775/i ){
 my $terr = undef;
@@ -261,7 +260,7 @@ my %data = (defined $pref)?%{$pref}:();if( defined $data{'class'} ){ delete $dat
 my %c = %{$cref};
 my %swap = ();
 my $pre = "";
-my $speed = undef;
+my $speed = undef;if( defined $data{'speed'} ){ $speed = $data{'speed'};delete $data{'speed'}; }
 my $write = (defined $data{'new-overwrite'})?undef:"nowrite";
 my $upmenus = undef;
 my $upm = undef;
@@ -269,19 +268,12 @@ my $subn = undef;
 my $dbug = "";
 my $err = undef;
 ###sub_json_out({ 'check admin_new' => "in:$in u:$u n:$n  \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
-if( $in eq "page"){ #page
-
+if( $in eq "page"){
 if( defined $data{'new-overwrite'} ){ delete $data{'new-overwrite'}; }
 if( defined $data{'new-titleurl'} ){
-$data{'new-title'} = $data{'new-titleurl'};delete $data{'new-titleurl'};
-my ($merr,$mmsg,$mtxt) = sub_page_update($u,undef,\%data,undef,undef,"samemenu",$cref);
-$err = $merr if defined $merr;
-return ($err,$mtxt);
+$data{'new-title'} = $data{'new-titleurl'};delete $data{'new-titleurl'};my ($merr,$mmsg,$mtxt) = sub_page_update($u,undef,\%data,undef,undef,"samemenu",$cref);$err = $merr if defined $merr;return ($err,$mtxt);
 } elsif( defined $data{'new-baseurl'} ){
-if( defined $data{'addallsite'} ){ delete $data{'addallsite'}; }
-my ($merr,$mmsg,$mtxt) = sub_page_update($u,undef,\%data,undef,undef,undef,$cref,$write);
-$err = $merr if defined $merr;
-return ($err,$mtxt);
+if( defined $data{'addallsite'} ){ delete $data{'addallsite'}; }my ($merr,$mmsg,$mtxt) = sub_page_update($u,undef,\%data,undef,undef,undef,$cref,$write);$err = $merr if defined $merr;return ($err,$mtxt);
 } else {
 if( defined $data{'new-menuurl'} && $data{'changed'} =~ /new-menu(url)*/ ){ # Capacity Cost Reduction New
 $data{'new-url'} = sub_title_in($data{'new-menuurl'},$cref).".".$c{'htmlext'};$data{'changed'}.= "||new-url"; # Capacity-Cost-Reduction-New.html
@@ -292,13 +284,12 @@ delete $data{'new-parent'};
 my $nu = $data{'new-url'};$nu =~ s/\.($c{'htmlext'})$/.jpg/; # Mainframe-Services_Capacity-Cost-Reduction-New.jpg
 my $nulok = ( $nu =~ /($c{'cssview'})og\// )?'og/':'';
 if( defined $data{'new-og:image'} || !-f $c{'baseview'}.$c{'cssview'}.$nulok.$nu ){
-my $nulok = ( $nu =~ /($c{'cssview'})og\// )?'og/':'';
 if( !-f $c{'baseview'}.$c{'cssview'}.$nulok.$nu ){ # //revive.pecreative.co.uk/LIB/Paper_About-Us_Who-We-Are.jpg
 my $im = $c{'base'}.$c{'cssview'}.$nulok.$data{'url'};$im =~ s/\.($c{'htmlext'})$/.jpg/; #$dbug.= "og:image $im - change to ".$c{'base'}.$c{'cssview'}.$nulok.$nu." \n";
 if( -f $im ){ $dbug.= "og:image $im exists - replace with ".$c{'base'}.$c{'cssview'}.$nulok.$nu."\n";$data{'new-og:image'} = $c{'baseview'}.$c{'cssview'}.$nu;mv ($im,$c{'base'}.$c{'cssview'}.$nulok.$nu) or $dbug.= "error renaming $im to $nu: $! \n";$data{'changed'}.= "||new-og:image"; } 
 }
 }
-if( defined $data{'new-linkurl'} ){ $data{'new-link'} = $data{'new-linkurl'};$data{'new-link'}.= ".".$c{'htmlext'} if $data{'new-link'} !~ /\.($c{'httmlext'})$/;$data{'changed'}.= "||new-link";delete $data{'new-linkurl'}; }
+if( defined $data{'new-linkurl'} ){ $data{'new-link'} = $data{'new-linkurl'};$data{'changed'}.= "||new-link";delete $data{'new-linkurl'}; }
 if( defined $data{'new-link'} && defined $data{'url'} && $data{'new-link'} eq $data{'url'} ){ $data{'new-link'} = $data{'new-url'};$data{'changed'}.= "||new-link"; } # Mainframe-Services_Capacity-Cost-Reduction-New.html
 delete $data{'new-menuurl'};$data{'changed'} =~ s/(\|\|)*new-menuurl//;
 }
@@ -307,7 +298,7 @@ if( defined $data{'new-link'} ){ $data{'new-link'} = sub_title_deslash( $data{'n
 if( defined $data{'new-url'} ){ $data{'new-url'} = sub_title_deslash( $data{'new-url'},$c{'secsubs'} ); }
 
 if( defined $data{'old'} && $data{'old'} ne "" ){
-	#
+
 $pre = $data{'old'};
 $pre = $c{'templateview'}.$c{'deftemp'} if !-f $c{'base'}.$pre;
 if( defined $data{'new-menu'} && defined $data{'new-updateall'} ){
@@ -315,6 +306,7 @@ if( defined $data{'new-menu'} && defined $data{'new-updateall'} ){
 $upmenus = 1;
 $upm = "samemenu";
 ###sub_json_out({ 'check admin_new 4' => "in:$in u:$u n:$n  \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
+#
 } elsif( $n ne "index" && defined $data{'new-linkurl'} ){
 $data{'new-link'} = $data{'new-linkurl'};
 $data{'new-url'} = $data{'new-linkurl'};
@@ -322,6 +314,7 @@ delete $data{'new-linkurl'};
 $upmenus = 1;
 $upm = "samemenu";
 ###sub_json_out({ 'check admin_new 5' => "in:$in u:$u n:$n  \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
+#
 } else {
 if( $data{'type'} eq "changedupepages" ){ $n = $data{'new-url'}; }
 ###sub_json_out({ 'check admin_new 6' => "$data{'type'} = copy pre:$c{'base'}$pre to nw:$c{'base'}$n \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
@@ -340,25 +333,24 @@ if( defined $rerr){ return ($rerr,$n); } else { my @chs = split /\|\|/,$data{'ch
 }
 $upmenus = 1;
 }
-#
+
 } else {
-#
+
 if( defined $data{'changed'} ){
 $pre = $u;
 $pre =~ s/^($c{'base'})//;
 my @chs = split /\|\|/,$data{'changed'};for my $i(0..$#chs){ if( defined $data{$chs[$i]} ){ $swap{$chs[$i]} = $data{$chs[$i]}; } }
 ###sub_json_out({ 'check admin_new 9' => "in:$in \npre:$pre \nn:$n \n\n".Data::Dumper->Dump([\%swap],["swap"])."\n\n \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
+#
 if( defined $swap{'new-url'} ){ 
 $n = sub_check_name($swap{'new-url'},$cref);
 ###sub_json_out({ 'check admin_new 10' => "pre:".$c{'base'}.$pre." \nn:".$c{'base'}.$n." \n\n".Data::Dumper->Dump([\%swap],["swap"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
 my $subslist = join "|",@{$c{'secsubs'}};
-unshift @{$c{'seclist'}},$c{'base'};
-my @cm = sub_admin_rename("page",$c{'base'}.$pre,$c{'base'},$n,($pre =~ /^($subslist)/?$pre:""),undef,undef,\%c,$speed);
-###sub_json_out({ 'check admin_new 11' => " \n\n".Data::Dumper->Dump([\@cm],["cm"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
+my @cm = sub_admin_rename("page",$c{'base'}.$pre,$c{'base'},$n,($pre =~ /^($subslist)/?$pre:""),undef,undef,$cref,$speed);
 $dbug.= "\n".Data::Dumper->Dump([\@cm],["cm"])."\n";
 $nomenus = 1;
-if( !defined $swap{'new-link'} ){
-if( defined $speed ){ if($speed eq "html"){ return($err,$n); } else { sub_json_out({ 'new-url' => "$pre updated successfully to $n",'reload' => $c{'pl'}."type=editpages&url=".( $uri->encode($n) ) },$c{'origin'},$c{'callback'}); } }
+if(defined $speed){ 
+if($speed eq "html"){ return($err,$n); } else { sub_json_out({ 'new-url' => "$pre updated successfully to $n",'reload' => $c{'pl'}."type=editpages&url=".( $uri->encode($n) ) },$c{'origin'},$c{'callback'}); }
 }
 } else {
 $n = $pre;
@@ -367,21 +359,14 @@ if( defined $swap{'new-link'} ){ $upmenus = 1; }
 $upm = "samemenu";
 %data = %swap;
 }
-#
 }
-
 }
+###sub_json_out({ 'check admin_new 11' => "in:$in \npre:$pre \nu:$u \nn:$n \nsubn:$subn \nnomenus:$nomenus \nupm:$upm \nupmenus:$upmenus \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n".Data::Dumper->Dump([\%swap],["swap"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
 
-###sub_json_out({ 'check admin_new 12' => "in:$in \npre:$pre \nu:$u \nn:$n \nsubn:$subn \nnomenus:$nomenus \nupm:$upm \nupmenus:$upmenus \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n".Data::Dumper->Dump([\%swap],["swap"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
 if( defined $data{'new-menu'} && $data{'new-menu'} =~ /\.00$/ ){ $upmenus = undef; } #'new-menu' => '001.999.00',
 if( !defined $nomenus ){ my ($uerr,$un) = sub_admin_updatemenus($u,$n,$subn,\%data,\%swap,$upm,$upmenus,$cref);$err = $uerr if defined $uerr && $uerr != 0; }
 
-} else { #folder #files
-
-if( -f $u ){
-###sub_json_out({ 'check admin_new 12' => "in:$in \ncopy u:$u to $c{'base'}$n \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
-$err = sub_admin_copy('File',$u,$c{'base'}.$n,$cref);return ("error creating file [ $c{'base'}$n ]: $err",$n) if defined $err;
-} else {
+} else { #folder
 if($u !~ /\/$/){ $u.= "/"; }
 $n =~ s/^\///;
 $n = sub_check_name($n,$cref);
@@ -395,9 +380,6 @@ return ("error creating folder [ $u$n ]: $err",$n) if defined $err;
 ###$err = sub_file_create($u.$n."/.library.txt","");return ("error creating file [ $u$n/.library.txt ]: $err",$n) if defined $err; ### ==pilbeam 
 }
 }
-
-}
-
 
 return ($err,$n); #if( !defined $speed || $speed eq "html" ){ sub_json_out({ 'query' => "$pre updated successfully" },$c{'origin'},$c{'callback'}); }
 }
@@ -648,6 +630,7 @@ my $err = undef;
 # par: header-news.png 
 # nn: /var/www/vhosts/pecreative.co.uk/rsmpartners.com/documents/Images/backgrounds/header-news6.png
 # uf: documents/Images/backgrounds/header-news.png 
+$u =~ s/\%5E/^/g; ##==pilbeam
 ###sub_json_out({ 'check admin_rename' => "ty:$ty \nu:$u [ exists:".( (-e $u)?"yes":"no" )." ] \n speed:$speed \n\nnpar:$npar \nn:$n \n par:$par \nnn:$nn [ exists:".( (-e $nn)?"yes":"no" )." ] \n uf:$uf to ur:$ur\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
 if( -e $u ){
 if( -e $nn ){  
@@ -660,6 +643,8 @@ if( -e $nn ){ $nn =~ s/\-copy2/-copy3/; }
 # to
 # /var/www/vhosts/pecreative.co.uk/denmaur.com/Paper_Products_Revive_Test_copy.html
 $dbug.= "page: renaming $u to $nn \n";
+###sub_json_out({ 'check admin_rename 1' => "ty:$ty \nu:rename $u to $nn [ exists:".( (-e $u)?"yes":"no" )." ] \n speed:$speed \n\nnpar:$npar \nn:$n \n par:$par \nnn:$nn [ exists:".( (-e $nn)?"yes":"no" )." ] \n uf:$uf to ur:$ur\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
+
 mv ($u,$nn) or $err = "mv error renaming $u to $nn: $!";
 if( !defined $err ){
 if( $ty eq "page" ){
@@ -689,7 +674,10 @@ $err = "error renaming $ty $u to $nn: unknown file $!";
 if( defined $err){
 @cm = ( "Warning: $err" );
 } else {
-###sub_json_out({ 'debug' => "check admin_rename 1: ty:$ty \n findstr:$findstr \n repstr:$repstr \n hm:[ ".( join "\n",@hm )."] \n dbug: $dbug \n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
+
+if( $ty eq "page" ){ unshift( @{$c{'seclist'}},$c{'base'}); }###==pilbeam
+
+###sub_json_out({ 'debug' => "check admin_rename 2: ty:$ty \n findstr:$findstr \n repstr:$repstr \n hm:[ ".( join "\n",@hm )."] \n dbug: $dbug \n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
 @cm = sub_get_changed( (($ty eq "page")?"pages":"all"),"rename",$c{'seclist'},$cref,$findstr,$repstr,"alter",$regexp,"code",$usecase,$inmenus,undef,$speed);
 }
 return @cm;
@@ -705,7 +693,7 @@ $ntxt = sub_clean_utf8( $ntxt,$c{'UTF'},$c{'UTF1'},undef,"keep urls" ); #"despac
 my $err = undef;
 my $rerr = undef;
 ###sub_json_out({ 'check save_page' => "u:$u \nfu:$fu \nvname:$vname \nun:$un \n\nntxt:\n$ntxt \n\n$err \n\n".$c{'debug'} },$c{'origin'},$c{'callback'});
-if( $fu =~ /($c{'chapterlister'}|$c{'liblister'}|$c{'taglister'})$/ ){ 
+if( $fu =~ /($c{'liblister'}|$c{'taglister'})$/ ){ 
 $err = sub_file_create($fu,"") unless !defined $over && -f $fu;return ("page save: error creating file [ $fu ]: $err") if defined $err; $err = sub_page_print($fu,$ntxt);
 } else { 
 return ("page save: server cannot locate file: $fu $c{'debug'} $! ") unless -f $fu; 
@@ -844,13 +832,17 @@ my $utype = (defined $ins && $ins eq "all")?"all":(defined $ins && $ins eq "page
 my @ls = ( 'blocks','pages' );
 my $dbug = "";
 my $msg = undef;
-###sub_json_out({ 'check admin_search' => "utype:$utype \nins:$ins \ninlistdir:$inlistdir \nu:$u \nfref:@{$fref} \nfindstr:$findstr \nrepstr:$repstr \n speed:$speed \nalter:$alter \nregex:$regex \ncode:$code \ncase:$case\n\n".Data::Dumper->Dump([\%m],["m"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check admin_search' => "utype:$utype \nins:$ins \ninmenus:$inmenus \ninlistdir:$inlistdir \nu:$u \nfref:@{$fref} \nfindstr:$findstr \nrepstr:$repstr \n speed:$speed \nalter:$alter \nregex:$regex \ncode:$code \ncase:$case\n\n".Data::Dumper->Dump([\%m],["m"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
 foreach my $ar( sort keys %{ $c{'editareas'} } ){ if( $c{'editareas'}{$ar} > 1 ){ push @ls,$ar; } } # [ 'blocks','pages','date','link','menu','shortname','menuname','url' ]
 if( defined $inmenus ){ push @ls,('menutext','sitemaptext'); }
 my @terms = (defined $findstr)?split /\+/,$findstr:undef; #sausage+water
 my @reps = (defined $repstr)?split /\+/,$repstr:undef; #sausage1+water1
 @{ $m{'find'} } = @terms;
 @{ $m{'replace'} } = @reps;
+
+###pilbeam
+###if( $speed == 0){$speed = undef;}
+###
 
 if( defined $speed && defined $alter ){
 
@@ -951,16 +943,16 @@ my $u = "";
 my $dir = $f;$dir =~ s/^(.+\/)(.*?)$/$1/;$u = $2;
 my %c = %{$cref};
 my $lister = $dir.$c{'liblister'};
-my $chaplister = $dir.$c{'chapterlister'};
 my @terms = @{$tref};
 my @reps = @{$rref};
 my @intxt = ();
 my $msg = "";
 my $ok = undef;
 
-if( -f $lister || -f $chaplister ){
-my $ls = ( -f $lister )?$lister:$chaplister;
-my ($ierr,$otxt) = sub_get_contents($ls,$cref,"text");$msg = "warning: file $ls not found: skipping $u <br />" if defined $ierr;
+if( -f $lister ){
+my ($ierr,$otxt) = sub_get_contents($lister,$cref,"text");
+$msg = "warning: file $lister not found: skipping $u <br />" if defined $ierr;
+
 if( $msg eq "" ){
 $msg.= "rewriting $u:<br />";
 @intxt = split /\n/,$otxt;
@@ -1003,11 +995,11 @@ if( $intxt[$i] =~ /$terms[$j]/i ){ $intxt[$i] =~ s/($terms[$j])/$reps[$j]/gi;if(
 # author: Andrew Downie\n
 ###sub_json_out({ 'check file_rewrite' => "f:$f \n u:$u \ndir:$dir \n\nintxt: [\n ".( join "\n",@intxt )." \n] \nok:$ok \n\nterms:[ @terms ] \nreps:[ @reps ] \nregex:$regex \ncase:$case \nmsg:$msg" },$c{'origin'},$c{'callback'});
 if( defined $ok){
-my $herr = sub_page_print($ls,(join "\n",@intxt));if( defined $herr ){ $msg.= $herr; } else { $msg.= "<i>updated</i><br />"; }
+my $herr = sub_page_print($lister,(join "\n",@intxt));if( defined $herr ){ $msg.= $herr; } else { $msg.= "<i>updated</i><br />"; }
 }
 
 } else {
-$msg.= "warning: file $lister or $chaplister not found: skipping $u <br />";
+$msg.= "warning: file $lister not found: skipping $u <br />";
 }
 
 ###sub_json_out({ 'check file_rewrite 1' => "f:$f \n u:$u \ndir:$dir \n\nintxt: [\n ".( join "\n",@intxt )." \n] \nok:$ok \n\nterms:[ @terms ] \nreps:[ @reps ] \nregex:$regex \ncase:$case \nmsg:$msg" },$c{'origin'},$c{'callback'});
@@ -1049,7 +1041,7 @@ my %mref = %{ sub_parse_menutext($stxt,$cref) };
 if( defined $mref{'menutext'}[0] ){ $newm = $mref{'menutext'}[0]; }
 if( defined $mref{'sitemaptext'}[0] ){ $news = $mref{'sitemaptext'}[0]; }
 }
-###sub_json_out({ 'check admin_updatemenus 1' => "u:$u \nn:$n \n\n[ $c{'base'}.$n,$subn ] upm = $upm \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n newm:$newm \n\nnews:$news \n upmenus:$upmenus \n $c{'debug'}" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check admin_updatemenus 1' => "u:$u \nn:$n \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n newm:$newm \n\nnews:$news \n upmenus:$upmenus \n $c{'debug'}" },$c{'origin'},$c{'callback'});
 if( !defined $data{'new-updateall'} ){
 ($merr,$mmsg,$mtxt) = sub_page_update($c{'base'}.$n,$subn,\%data,$newm,$news,$upm,$cref);
 $err = $merr if defined $merr;
@@ -1118,7 +1110,7 @@ my $herr = sub_page_print($nf,$ou);
 if( defined $herr ){ 
 $err = "create file $nf failed: $herr"; 
 } else { 
-if(-f $nf ){ chmod (0664,$nf) or try { die "filecreate: chmod $nf failed: $!"; } catch { $dbug.= "filecreate: chmod $nf failed: $_"; }; } else { $dbug.= "$nf is not a file $!"; } ###chown (-1,getgrnam($perms{'group'}),$nf) or $err = "chown $nf failed: $!";
+chmod (0664,$nf) or try { die "filecreate: chmod $nf failed: $!"; } catch { $dbug.= "filecreate: chmod $nf failed: $_"; }; ###chown (-1,getgrnam($perms{'group'}),$nf) or $err = "chown $nf failed: $!";
 }
 return $err;
 }
@@ -1197,7 +1189,7 @@ my @tags = ($in ne "viewfiles")?sub_get_tags($u,undef,$cref,"trim"):();
 for my $i(0..$#tags){
 my ($ierr,$otxt) = sub_get_contents($c{'base'}.$tags[$i],$cref); ###'file'
 $c{'debug'} = "alert: $ierr = $tags[$i] \notxt:$otxt \n\n$c{'debug'} \n" if defined $ierr; ###$c{'debug'}.= "alert: $i = $tags[$i] = \notxt:$otxt \n";
-$tags[$i] =~ s/($c{'liblister'}|$c{'chapterlister'})$//;
+$tags[$i] =~ s/($c{'liblister'})$//;
 %{ $libfilelist{$tags[$i]} } = sub_parse_tags($otxt,$tags[$i],$cref); # $taglist = { 'documents/Digital/Datasheets/Security-Software'' => { 'documents/Digital/Datasheets/Security-Software/zDetect.pdf' => { epochcreated => [1479081600],area => [],author => ['Andrew Downie'],focus => [],tags => [],image => ['zDetect_thumb.jpg'],created => ['14/11/2016'],archive => [],group => [],text => [],url => ['zDetect.pdf'],title => ['zDetect'] } } }
 }
 foreach my $k(sort keys %libfilelist){
@@ -1539,7 +1531,8 @@ my %c = %{$cref};
 my %m = ();
 my @s = ();
 my $dbug = "";
-###sub_json_out({ 'check get_changed' => "ins:$ins ty:$ty \nfref:$fref \ninlistdir:$inlistdir \nfindstr:$findstr \nrepstr:$repstr \nspeed:$speed \nalter:$alter \ninmenus:$inmenus \nregex:$regex \ncase:$case \n\n".Data::Dumper->Dump([\%m],["m"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
+$findstr =~ s/\%5E/\^/g; ###==pilbeam
+###sub_json_out({ 'check get_changed' => "ins:$ins ty:$ty \nfref:@{$fref} \ninlistdir:$inlistdir \nfindstr:$findstr \nrepstr:$repstr \nspeed:$speed \nalter:$alter \ninmenus:$inmenus \nregex:$regex \ncase:$case \n\n".Data::Dumper->Dump([\%m],["m"])."\n\n $c{'debug'}" },$c{'origin'},$c{'callback'});
 my ($resp,$mref) = sub_admin_search($ins,$ty,$fref,$cref,$findstr,$repstr,$alter,$regex,$code,$case,$inmenus,$inlistdir,$speed);
 if( defined $resp ){ $c{'debug'}.= $resp; };
 %m = %{$mref};
@@ -1634,7 +1627,7 @@ if( defined $fset && !defined $ok ){ for my $i(0..$#faux){if( $n =~ /^($c{'base'
 if( defined $ok ){ if(defined $trim){ $n =~ s/^($c{'base'})//; }if( $n !~ /\/\.(.*?)$/ ){push @out,$n;} } 
 }
 },$nb);
-###sub_json_out({ 'error' => "check get_files: nb:$nb \ndepth:$depth \ntrim:$trim \njs:$js \nmiss:$miss \nover:$over \nfaux: [ @faux ] \nfset:$fset \n\nout = [ @out ] \n\n$dbug \n\n$c{'debug'}" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check files' => "check get_files: nb:$nb \ndepth:$depth \ntrim:$trim \njs:$js \nmiss:$miss \nover:$over \nfaux: [ @faux ] \nfset:$fset \n\nout = [ @out ] \n\n$dbug \n\n$c{'debug'}" },$c{'origin'},$c{'callback'});
 return @out; }
 
 sub sub_get_filepath{ my ($line,$cref) = @_;my %c = %{$cref};$line =~ s/^($c{'base'})//;my @g = split /\//g,$line;my $file = pop @g;my $l = scalar @g;my %h = ( 'item' => $g[$c{'dlevel'}],'length' => $l,'path' => \@g );if( $file =~ /\.($c{'fxfile'})$/i ){ $h{'file'} =  $file; } else { $h{'folder'} = $file; }return \%h; }
@@ -1648,29 +1641,29 @@ my ($u,$cref,$taginfo,$trim) = @_; #[ { 'parent' => 'Who-We-Are.html','href' => 
 my %c = %{ $cref };
 my %t = (defined $taginfo)?%{$taginfo}:();
 my $nosub = ( defined $trim && defined $c{'subdir'} && $c{'subdir'} ne "" )?1:undef;
-my ($pdir) = sub_get_parent($u);
+my $pdir = sub_get_parent($u);
 my %d = ();
 my @tmp = ();
 my $ntmp = "";
 my $htmp = "";
 my $ptmp = "";
 my $utmp = "";
-###sub_json_out({'debug' => "check get_info:u:$u \nc=  ".Data::Dumper->Dump([\%c],["c"]) },$c{'origin'},$c{'callback'});
+###sub_json_out({'debug' => "check get_info:u:$u \n nosub = $nosub \npdir = $pdir \nc=  ".Data::Dumper->Dump([\%c],["c"]) },$c{'origin'},$c{'callback'});
 if( -e $u ){ 
 if( !defined $d{'menuname'} ){ @{ $d{'menuname'} } = (); $ntmp = $u;$ntmp =~ s/^($c{'base'})//;if( $ntmp =~ /\.($c{'htmlext'})$/ ){ $ntmp =~ s/(\.$c{'htmlext'})$//;$ntmp = sub_title_out($ntmp,$cref); } else { $ntmp =~ s/^.+\///; }push @{ $d{'menuname'} },$ntmp; }
 if( !defined $d{'href'} ){  @{ $d{'href'} } = ();$htmp = $u;$htmp =~ s/^($c{'base'})//;if( defined $nosub ){ $htmp =~ s/$c{'subdir'}//; }push @{ $d{'href'} },$htmp; }
 my %dt = %{ sub_get_data($u,$cref) };
 if( defined $nosub ){ 
-$ptmp = $dt{'parent'};$ptmp =~ s/^($c{'subdir'})//;@{ $dt{'parent'} } = ( $ptmp );
-$utmp = $dt{'url'};$utmp =~ s/^($c{'subdir'})//;@{ $dt{'url'} } = ( $utmp );
-shift @{ $dt{'path'} }; 
+$ptmp = $dt{'parent'};$ptmp =~ s/^($c{'subdir'})//;$dt{'parent'} = $ptmp;
+$utmp = $dt{'url'};$utmp =~ s/^($c{'subdir'})//;$dt{'url'} = $utmp;
+#shift @{ $dt{'path'} };  ###removes documents from path
 }
-if( $htmp =~ /\.($c{'htmlext'})$/ && $htmp =~ /$c{'qqdelim'}/  ){ $ptmp = $htmp;$ptmp =~ s/^(.+)$c{'qqdelim'}(.*?)$/$1/;$ptmp.= ".".$c{'htmlext'};@{ $dt{'parent'} } = ( $ptmp); }
+if( $htmp =~ /\.($c{'htmlext'})$/ && $htmp =~ /$c{'qqdelim'}/  ){ $ptmp = $htmp;$ptmp =~ s/^(.+)$c{'qqdelim'}(.*?)$/$1/;$ptmp.= ".".$c{'htmlext'};@{ $dt{'parent'} } = ( $ptmp ); }
 my $p = sub_admin_test_name($u,$cref);if( defined $p ){ push @{ $dt{'issues'} },$p; }
 if( -d $pdir && ! -w $pdir ){ push @{ $dt{'issues'} },"Parent directory permissions need to be changed to 775"; }
 %d = %{ sub_merge_hash( \%d,\%dt,\%t ) };
-###if( $u =~ /RSM-Partners-Logo-Tagline.eps$/ ){ 
-###sub_json_out({'debug' => "check get_info1:u:$u \n\n".Data::Dumper->Dump([\%d],["d"])." = ".Data::Dumper->Dump([\%dt],["dt"])." = ".Data::Dumper->Dump([$taginfo],["taginfo"])." \n\n$c{'debug'} " },$c{'origin'},$c{'callback'}); 
+###if( $u =~ /RSM-Partners-zSecurity-Logo/ ){ 
+###sub_json_out({'debug' => "check get_info1:u:$u \nnosub = $nosub \npdir = $pdir \n\n".Data::Dumper->Dump([\%d],["d"])." = ".Data::Dumper->Dump([\%dt],["dt"])." = ".Data::Dumper->Dump([$taginfo],["taginfo"])." \n\n$c{'debug'} " },$c{'origin'},$c{'callback'}); 
 ###}
 }
 return \%d; 
@@ -1706,7 +1699,7 @@ use LWP::Protocol::http;
 push( @LWP::Protocol::http::EXTRA_SOCK_OPTS,MaxLineLength => 0 );
 }
 my $ua = LWP::UserAgent->new( ssl_opts => { verify_hostname => 0 });
-$ua->agent("thatsthat/8.2.3 (Centos 7)");
+$ua->agent("thatsthat/8.2.2 (Centos 7)");
 if( defined $relay && defined $pref){
 use HTTP::Request::Common qw(POST);
 $res = $ua->request(POST $dest,Content_Type => 'form-data',Content => $pref);
@@ -1756,7 +1749,7 @@ push @m,$u;
 $dbug.= "get source:\n\n unable to open $u: $! ";
 }
 if( !defined $inlistdir ){ my @s = ();for my $i(0..$#m){ if($m[$i] !~ /($c{'listdir'})/ ){ push @s,$m[$i]; } }@m = @s; }
-###sub_json_out({ 'check get_source 1' => "in: $in \nu: $u = ".( -d $u)." \nfaux:".Data::Dumper->Dump([\@faux],["faux"])." \nv: $v \ninlistdir:$inlistdir \nlistdir:$c{'listdir'} \nm:".Data::Dumper->Dump([\@m],["m"])." \n\n$c{'debug'}" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check get_source 1' => "in: $in \nu: $u = ".( -d $u)." \nfaux:".Data::Dumper->Dump([\@faux],["faux"])." \nv: $v \ninlistdir:$inlistdir \nlistdir:$c{'listdir'} \n dbug:$dbug \n\nm:".Data::Dumper->Dump([\@m],["m"])." \n\n$c{'debug'}" },$c{'origin'},$c{'callback'});
 return ($err,\@m);
 }
 
@@ -1764,7 +1757,7 @@ sub sub_get_subpages{ my ($mref) = @_;my @m = @{$mref};my @n = ();for my $i(0..$
 
 sub sub_get_subnumber{ my ($f,$cref) = @_;my %c = %{$cref};my @subs = ();my $msg = "";$f =~ s/\.($c{'htmlext'})$//;my @pgs = sub_get_html($c{'base'},$cref,$c{'base'});for my $i(0..$#pgs){ $msg.= "$i: ".$pgs[$i]." == "."$f".$c{'delim'};my $qm = '^'.quotemeta($f).$c{'qqdelim'};if( $pgs[$i] =~ $qm ){ push @subs,$pgs[$i];$msg.= " MATCH"; }$msg.="\n"; }return (\@subs,$msg); }
 
-sub sub_get_tags{ my ($nb,$sw,$cref,$trim) = @_;my %c = %{$cref};my @p = ();find(sub { my $n = undef;if( -f $File::Find::name && $File::Find::name =~ /($c{'liblister'}|$c{'chapterlister'})$/i ){ $n = $File::Find::name; }if( -f $File::Find::name && defined $sw && $File::Find::name =~ /($c{'taglister'})$/i ){ $n = $File::Find::name; }if( defined $n ){ if( defined $trim ){ $n =~ s/^($c{'base'})//; }push @p,$n; } },$nb);return @p; }
+sub sub_get_tags{ my ($nb,$sw,$cref,$trim) = @_;my %c = %{$cref};my @p = ();find(sub { my $n = undef;if( -f $File::Find::name && $File::Find::name =~ /($c{'liblister'})$/i ){ $n = $File::Find::name; }if( -f $File::Find::name && defined $sw && $File::Find::name =~ /($c{'taglister'})$/i ){ $n = $File::Find::name; }if( defined $n ){ if( defined $trim ){ $n =~ s/^($c{'base'})//; }push @p,$n; } },$nb);return @p; }
 
 sub sub_get_target{ my ($in,$bs,$sdir,$url,$nbs) = @_;if($in !~ /^(htt(p|ps):)*\/\//){ $in =~ s/^($sdir)//;$in = $bs.$in; }$in =~ s/($url)/$nbs/;if($in !~ /\.(.*?)$/){ $in =~ s/([^\/])$/\//; }return $in; }
 
@@ -2020,23 +2013,21 @@ $tm = $k;$tm =~ s/$c{'mobpic'}\.(png|jpg|gif)$/\.$1/;if( -f $c{'base'}.$tm ){ $k
 }
 } 
 }
-
 if( defined $single && defined $m{$single} ){ 
 %m = ( $single => [ sort keys %{$data{$single}} ] );  
 } else {
 if( defined $m{$k} ){ $dbug.= "$m{$k}{'url'}[0] == $k \n";
-@{ $m{$k}{'used'} } = sort keys %{$data{$k}};if( defined $kk ){ @{ $m{$k}{'mobile'} }[0] = $kk; }
+@{ $m{$k}{'used'} } = sort keys $data{$k};if( defined $kk ){ @{ $m{$k}{'mobile'} }[0] = $kk; }
 } else { 
 if( $k !~ /\.($c{'htmlext'}|png|jpg|gif)/ ){ $dbug.= "sort for $k \n"; 
 foreach my $j( sort keys %m){ 
 if( defined $m{$j}{'parent'} && $m{$j}{'parent'}[0] =~ /^($k)$/ ){ $dbug.= "parent: $j = $m{$j}{'parent'}[0] = $k \n";
-@{ $m{$j}{'used'} } = sort keys %{$data{$k}};if( defined $kk ){ @{ $m{$j}{'mobile'} }[0] = $kk; } 
+@{ $m{$j}{'used'} } = sort keys $data{$k};if( defined $kk ){ @{ $m{$j}{'mobile'} }[0] = $kk; } 
 } 
 }
 }
 }
 }
-
 }
 ###sub_json_out({ 'check library_list 3' => "dbug: $dbug" },$c{'origin'},$c{'callback'});
 ###sub_json_out({ 'check library_list 4' => "base:$c{'base'} dir:$dir \nfilter:$filter \nm = ".Data::Dumper->Dump([\%m],["m"])."\n\n $dbug" },$c{'origin'},$c{'callback'});
@@ -2122,7 +2113,6 @@ my $dbug = "";
 my $c = 0;
 foreach my $k( 
 sort { 
-( $tmp{$a}{'sorttype'} eq "url" )?$tmp{$a}{'data'}{'url'}[0] cmp $tmp{$b}{'data'}{'url'}[0]:
 ( $tmp{$a}{'sorttype'} eq "21" )?$tmp{$b}{'data'}{'epoch'}[0] <=> $tmp{$a}{'data'}{'epoch'}[0] || $tmp{$a}{'data'}{'title'}[0] cmp $tmp{$b}{'data'}{'title'}[0]:
 ( $tmp{$a}{'sorttype'} eq "12" )?$tmp{$a}{'data'}{'epoch'}[0] <=> $tmp{$b}{'data'}{'epoch'}[0] || $tmp{$a}{'data'}{'title'}[0] cmp $tmp{$b}{'data'}{'title'}[0]:
 ( $tmp{$a}{'sorttype'} eq "az" )?$tmp{$a}{'data'}{'title'}[0] cmp $tmp{$b}{'data'}{'title'}[0]:
@@ -2130,8 +2120,7 @@ sort {
 $tmp{$a}{'data'}{'menu'}[0] <=> $tmp{$b}{'data'}{'menu'}[0] || $tmp{$a}{'data'}{'url'}[0] cmp $tmp{$b}{'data'}{'url'}[0] || $tmp{$b}{'data'}{'epoch'}[0] <=> $tmp{$a}{'data'}{'epoch'}[0] || $tmp{$a}{'data'}{'title'}[0] cmp $tmp{$b}{'data'}{'title'}[0] #rank
 } 
 keys %tmp ){ 
-#
-$dbug.= "$k = $tmp{$k}{'sorttype'} >> $tmp{$k}{'url'}[0] = $tmp{$k}{'data'}{'menu'}[0] \n"; # if $tmp{$k}{'data'}{'url'}[0] =~ /^Events_/;
+#$dbug.= "$k = $tmp{$k}{'sorttype'} >> $tmp{$k}{'url'}[0] = $tmp{$k}{'data'}{'menu'}[0] \n"; # if $tmp{$k}{'data'}{'url'}[0] =~ /^Events_/;
 if( defined $tmp{$k}{'pages'} ){ $tmp{$k}{'data'}{'pages'} = sub_menu_sort( $tmp{$k}{'pages'},\%dupes,$cref,$showall ); }
 delete $tmp{$k}{'data'}{'path'};
 delete $tmp{$k}{'data'}{'parent'};
@@ -2140,8 +2129,7 @@ $nv[$c] = $tmp{$k}{'data'};$c++; #$dbug.= "$c = $tmp{$k}{'data'}{'url'}[0] = $k 
 } else {
 if( !defined $dupes{$tmp{$k}{'data'}{'url'}[0]} && !defined $dupes{$tmp{$k}{'data'}{'menu'}[0]} ){ 
 if( !defined $tmp{$k}{'data'}{'issues'} || $tmp{$k}{'data'}{'issues'} !~ /URL Tag/ ){ $dupes{$tmp{$k}{'data'}{'url'}[0]} = 1;$dupes{$tmp{$k}{'data'}{'menu'}[0]} = 1;$nv[$c] = $tmp{$k}{'data'};$c++; 
-#
-$dbug.= "$c = $tmp{$k}{'data'}{'url'}[0] = $k = $tmp{$k}{'sorttype'}\n"; # if $tmp{$k}{'data'}{'url'}[0] =~ /^Events_/; 
+#$dbug.= "$c = $tmp{$k}{'data'}{'url'}[0] = $k = $tmp{$k}{'sorttype'}\n"; # if $tmp{$k}{'data'}{'url'}[0] =~ /^Events_/; 
 } }
 }
 }
@@ -2456,32 +2444,20 @@ sub sub_libraryfile_update{
 my ($ty,$f,$cref,$all) = @_;
 my %c = %{$cref};
 my $dir = $f;$dir =~ s/^($c{'base'}$c{'docview'})(.*?\/)(.*?)$/$1$2/; #(/var/www/vhosts/pecreative.co.uk/rsmpartners.com/documents/)(Partner-Portal/)Presentations/test-document.pdf #(/var/www/vhosts/pecreative.co.uk/rsmpartners.com/documents/)(Partner-Portal/)test-document.pdf
-my $lfile = $dir;
+my $lfile = $dir;$lfile.= $c{'liblister'};
 my $ltxt = "";
 my $err = undef;
-if( -f $f && $f =~ /$c{'chapterlister'}/ ){ 
-
-my ($ierr,$otxt) = sub_get_contents($f,$cref,"text");
-if( defined $ierr ){ $err.= $ierr; } else { $ltxt = $otxt; }
-###sub_json_out({ 'check libraryupdate' => "get chapter $f\n\n ltxt:$ltxt \nerr:$ierr \n$c{'debug'}" },$c{'origin'},$c{'callback'});
-
-} else { 
-
-$lfile = $dir.$c{'liblister'};
 if( -f $lfile ){
 my ($ferr,$fref) = sub_files_return($ty,$dir,$cref,$all);
 $err = "Update Library: $dir: $ferr \n\n".Data::Dumper->Dump([$fref->{'files'}],["files"])."\n\n $c{'debug'}" if defined $ferr;
-###sub_json_out({ 'check libraryupdate 1' => "".Data::Dumper->Dump([$fref->{'files'}],["files"])."\n\n err:$err \n$c{'debug'}" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check libraryupdate' => "".Data::Dumper->Dump([$fref->{'files'}],["files"])."\n\n err:$err \n$c{'debug'}" },$c{'origin'},$c{'callback'});
 if( !defined $err ){ 
 $ltxt = sub_libraryfile_out($fref->{'files'},$cref); 
-###sub_json_out({ 'check libraryupdate 2' => "dir:$dir \nltxt: $ltxt \n\n".Data::Dumper->Dump([$fref->{'files'}],["files"])."\n\n \n$c{'debug'}" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check libraryupdate 1' => "dir:$dir \nltxt: $ltxt \n\n".Data::Dumper->Dump([$fref->{'files'}],["files"])."\n\n \n$c{'debug'}" },$c{'origin'},$c{'callback'});
 my ($nferr,$nf) = sub_admin_save_page($c{'liblister'},$lfile,$ltxt,$cref,undef,'overwrite');
 if( defined $nferr ){ $err = "Update Library file: $ltxt: $nferr \n"; }
 }
 }
-
-}
-
 return ($err,$ltxt);
 }
 
@@ -2650,15 +2626,13 @@ sub_html_out($otxt);
 sub sub_page_print{
 my ($fu,$otxt) = @_;
 my $herr = undef;
-if( -f $fu ){ 
 my $hfile2 = gensym;
-open($hfile2,">:utf8",$fu) or try { die "save_page: open file $fu failed: $!"; } catch { $herr = "save_page: open file $fu failed: $_ \n"; }; 
+open($hfile2,">:utf8",$fu) or try { die "save_page: open file $fu failed: $!"; } catch { $herr = "save_page: open file $fu failed: $_ \n"; };
 if( defined $hfile2 && !defined $herr ){
 flock ($hfile2,2);
 print $hfile2 $otxt;
 close($hfile2);
 }
-} else { $herr = "save_page: $fu is not a file $! \n"; }
 return $herr;
 }
 
@@ -2859,6 +2833,7 @@ if( $ins eq "viewaux" ){ push @ct,sub_get_html($c{'base'},$cref,undef,$c{'auxfil
 return ("alert page_return: no useable data retrievable by server: ins:$ins \nf:$f \n$c{'debug'}",\%jout) unless $ct[0] ne "";
 #/var/www/vhosts/pecreative.co.uk/onlinederby.co.uk/documents/Archive/News/index.html
 #/var/www/vhosts/pecreative.co.uk/rsmpartners.com/Services_Skills-&-Resources.html
+#/var/www/vhosts/pecreative.co.uk/rsmpartners.com/Blog.New-Test-Page^^.html
 #/var/www/vhosts/pecreative.co.uk/rsmpartners.com/newest/Site-Map.html
 #/var/www/vhosts/pecreative.co.uk/rsmpartners.com/ie-icon-150x150.png
 
@@ -3199,13 +3174,12 @@ my $err = undef;
 my ($ferr,$fmsg,$ntxt) = sub_page_updateset($f,$newm,$news,\%data,$cref,undef,$keep);
 $err.= $ferr if defined $ferr;
 $msg.= "Page update: ".$fmsg;
-if( defined $subf ){
-###sub_json_out({ 'check page_update 2' => "f:$f \nsubf:$subf \n\n newm:$newm \n\n\n news:$news \n\n upm:$upm \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n'" },$c{'origin'},$c{'callback'}); 
+if( defined $subf ){ 
 my ($serr,$smsg,$ntxt) = sub_page_updateset($subf,$newm,$news,\%data,$cref,"new-sub-");
 $err.= $serr if defined $serr;
 $msg.= "Subpage update: ".$smsg;
 }
-###sub_json_out({ 'check page_update 3' => "f:$f \nsubf:$subf \n newm:$newm \n news:$news \n upm:$upm \n$ntxt:$ntxt \n\nerr: $err \n\nmsg: $msg \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n'" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check page_update 2' => "f:$f \nsubf:$subf \n newm:$newm \n news:$news \n upm:$upm \n$ntxt:$ntxt \n\nerr: $err \n\nmsg: $msg \n\n".Data::Dumper->Dump([\%data],["data"])."\n\n'" },$c{'origin'},$c{'callback'});
 return ($err,$msg,$ntxt);
 }
 
@@ -3242,7 +3216,8 @@ foreach my $k( keys %edits){ if( $edits{$k} > 0 ){
 my $ed = ( defined $sub && defined $data{$sub.$k} )?$data{$sub.$k}:(defined $data{'new-'.$k} )?$data{'new-'.$k}:undef;
 if( defined $ed ){ if( $k eq "author" ){$m{$k} = $ed;$dbug.= "HEAD1: $k = ".$ed."\n";} else {$m{'edit'.$k} = $ed;$dbug.= "EDIT1: $k = ".$ed."\n";} } 
 } }
-###sub_json_out({ 'check page_updateset 1' => "f:$f  \n\n".Data::Dumper->Dump([\%m],["m"])."\n\n ntxt:\n$ntxt $dbug'" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check page_updateset 1' => "f:$f, newm:$newm, news:$news, c: ".Data::Dumper->Dump([\%c],["c"]).", data: ".Data::Dumper->Dump([\%data],["data"]).", sub: $sub, keep:$keep  \n\n".Data::Dumper->Dump([\%m],["m"])."\n\n ntxt:\n$ntxt $dbug'" },$c{'origin'},$c{'callback'});
+$f =~ s/\%5E/^/g; ##==pilbeam
 if(-f $f){ 
 my ($ierr,$otxt) = sub_get_contents($f,$cref,"text");
 if( !defined $ierr ){ 
@@ -3302,7 +3277,7 @@ $dtxt = $ntxt;while( $dtxt =~ /(\s*<ul class="menu">.*?<\/ul>)(\s*<\/div>)/gis )
 if( defined $news ){ $ntxt =~ s/(\s*<ul class="sitemap">.*?<\/ul>)(\s*<\/div>)/$news$2/gism; }
 }
 $ntxt = sub_clean_utf8( $ntxt,$c{'UTF'},$c{'UTF1'},"despace" );
-###if( $f =~ /Group.Links/ ){
+###if( $f =~ /Gen-Z/ ){
 ###sub_json_out({ 'check page_updateset 3' => "upshare:$upshare f:$f \n\n ntxt:\n$ntxt \n\n$dbug'" },$c{'origin'},$c{'callback'});
 ###}
 if( !defined $keep ){ 
@@ -3316,7 +3291,7 @@ $err = "error: write page_updateset 1: $ierr <br />";
 } else {
 $err = "error: write page_updateset 2: open $f failed: $! <br />";
 }
-###sub_json_out({ 'check page_updateset 4' => "f:$f  \n\n".Data::Dumper->Dump([\%m],["m"])."\n\n ntxt:\n$ntxt $dbug'" },$c{'origin'},$c{'callback'});
+###sub_json_out({ 'check page_updateset 4' => "f:$f  \n\n".Data::Dumper->Dump([\%m],["m"])."\n\n  err:$err \n\nntxt:\n$ntxt $dbug'" },$c{'origin'},$c{'callback'});
 return ($err,$msg,$ntxt);
 }
 
@@ -3649,30 +3624,18 @@ my $sh = $files[$i];$sh =~ s/^($c{'base'})//;
 my $tmp = $files[$i];$tmp =~ s/^($c{'base'})/$c{'baseview'}/;
 my $ext = lc $tmp;$ext =~ s/^(.+)\.//;
 my $tt = sub_title_out( $tmp,$cref );$tt =~ s/\.(.*?)$//; #ucfirst = $tt =~ s/([\w']+)/\u\L$1/g;
-%{ $jout{$sh} } = ();
-if( $sh =~ /$c{'chapterlister'}$/ ){
-my $n = $1;
-my ($ierr,$ctxt) = sub_get_contents($files[$i],$cref,"text");
-if( !defined $ierr ){ $ctxt =~ /^(.*?)\n/;$tt = $n.": ".$1;$jout{$sh}{'sorttype'} = "url"; }
-} else {
-$jout{$sh}{'sorttype'} = $rank;
-}
 #$dbug.= "$i = $sh = $tt \n";
-
+%{ $jout{$sh} } = ();
+$jout{$sh}{'sorttype'} = $rank;
 %{ $jout{$sh}{'data'} } = %{ sub_merge_hash( {},sub_get_data($files[$i],$cref),{'title' => [$tt],'href' => [$tmp],'type' => [$ext]} ) };
 }
 # %jout = ( 'documents/PDF/Policies/Terms-of-Business/POL50-Demo-Test-2.pdf' => { 'data' => { 'published' => ['26/02/2018'], 'versions' => [],'epoch' => [1519647593],'size' => ['1562k'],'parent' => ['documents/PDF/Policies/Terms-of-Business'],'url' => ['documents/PDF/Policies/Terms-of-Business/POL49-Demo-Test-1.pdf'] } } )
 ###$dbug.= "\n\n".Data::Dumper->Dump([\%jout],["jout"])." \n\n";
 my @mout = @{ sub_menu_sort(\%jout,{},$cref,"files") };
-###sub_json_out({'check return_files' => "f:$f \npagesort:$rank \n\n$dbug \n\n".Data::Dumper->Dump([\@mout],["mout"])." \n\n$c{'debug'}"},$c{'origin'},$c{'callback'});
+###sub_json_out({'check return_files' => "f:$f \npagesort:$rank \n\n$dbug \n\ni".Data::Dumper->Dump([\@mout],["mout"])." \n\n$c{'debug'}"},$c{'origin'},$c{'callback'});
 for my $i(0..$#mout){ 
 my %h = %{$mout[$i]};
-if( $h{'href'}->[0] =~ /^(.+)\/$c{'chapterlister'}$/ ){
-my $novel = $1;my $chap = $2;$novel =~ s/^.+\///;$h{'href'}->[0] = $c{'baseview'}.$c{'cgipath'}.'novelize.pl?novel='.$novel.'&chapter='.$chap;
-push @out,'<a class="filelistitem filelist'.$h{'type'}->[0].'" href="'.$h{'href'}->[0].'" title="go to chapter '.$chap.'" data-size="'.$h{'size'}->[0].'" data-published="'.$h{'published'}->[0].'"><span>'.$h{'title'}->[0].'</span></a>'; 
-} else {
 push @out,'<a class="filelistitem filelist'.$h{'type'}->[0].'" href="'.$h{'href'}->[0].'" title="download '.(uc $h{'ext'}->[0]).' file" target="_blank" data-size="'.$h{'size'}->[0].'" data-type="'.(uc $h{'type'}->[0]).'" data-published="'.$h{'published'}->[0].'"><span>'.$h{'title'}->[0].'</span></a>'; 
-}
 }
 ###sub_json_out({'check return_files 1' => "f:$f \npagesort:$rank \n\nfiles = (".( scalar @out ).") ".Data::Dumper->Dump([\@out],["out"])." \n\n$c{'debug'}"},$c{'origin'},$c{'callback'});
 if( scalar @out > 0 ){
@@ -3886,7 +3849,7 @@ $debug.= "parent ($$) = child $forks ($pid) starts \n";
 } else { #child
 close STDOUT;
 my ($serr,$smsg) = $subref->($arrays[$i]);
-if( defined $serr ){ $msg.= "warning: $serr \n"; } else { $msg.= "$smsg \n"; }
+if( defined $serr ){ push $msg.= "warning: $serr \n"; } else { $msg.= "$smsg \n"; }
 ###sub_log_out({ 'check menu_fork 3' => "$i = pro:$pro \n\n".Data::Dumper->Dump([\$arrays[$i]],["array $i"])."\n\n mmsg: $msg \nerr:$err \n\n $debug \n $c{'debug'}" },$c{'base'});
 exit;
 }

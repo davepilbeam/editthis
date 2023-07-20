@@ -201,7 +201,7 @@ if( $k eq "spam" ){ email_exit(); }
 if( defined $spamurl ){
 if( $k eq "message" || $k eq "details" || $k eq "name" ){ 
 if( $pdata{$k} =~ /\@/ ){ email_exit(); }
-if( $pdata{$k} =~ /ht(t)*p(s)*:\/\//i || $pdata{$k} =~ /\b(porno|hotmail|sex|hacked|sexe|gay)\b/i || $pdata{$k} =~ /\@.*?\.(com|ru|ua|ro|fr|co\.uk)$/i ){ email_exit(); } 
+if( $pdata{$k} =~ /ht(t)*p(s)*:\/\//i || $pdata{$k} =~ /\b(XRumerTest|porno|hotmail|sex|hacked|sexe|gay)\b/i || $pdata{$k} =~ /\@.*?\.(com|ru|ua|ro|fr|co\.uk)$/i ){ email_exit(); }
 }
 }
 if( $k eq "recipients" ){ $reclist = $pdata{$k}; }
@@ -210,7 +210,7 @@ if( $k eq "spamcheck" ){ $spamcheck = $pdata{$k}; }
 if( $k eq "spamresult" ){ $spamresult = $pdata{$k}; }
 if( $k eq "formtype" ){ $formtype = $pdata{$k};$sub = $pdata{$k}." from ".$etitle.": ".$usetime; }
 if( $k eq "copytype" ){ $copyto = $pdata{$k}; }
-if( $k eq "email" || $k =~ /^email/i ){ $emailaddr = $pdata{$k}; }
+if( $k eq "email" || $k =~ /^email/i ){ if( $pdata{$k} =~ /\@.*?\.ru$/i ){ email_exit(); } else { $emailaddr = $pdata{$k}; } }
 if( $k eq "library" ){ @libraryfiles = split /\|\|/,$pdata{$k}; } #Digital/Case-Studies/RSM-Case-Study-1.pdf||Digital/Case-Studies/RSM-Case-Study-3.pdf||Digital/Data-Sheets/zRSM-Realtime-Data-Sheet.pdf\
 if( $k eq "html" ){ $html = undef; }
 if( $k eq "js" ){ $noscript = ""; }
@@ -431,10 +431,10 @@ return $msg;
 
 sub email_zip_out{
 # u:  '/var/www/vhosts/pecreative.co.uk/westfieldhealthdigitalresource.co.uk/documents'
-# fref: [ '/var/www/vhosts/pecreative.co.uk/westfieldhealthdigitalresource.co.uk/documents/Site Pages','/var/www/vhosts/pecreative.co.uk/westfieldhealthdigitalresource.co.uk/documents/Canvas' ]
-# fref: [ '/var/www/vhosts/pecreative.co.uk/westfieldhealthdigitalresource.co.uk/documents/Images/logos/customers','/var/www/vhosts/pecreative.co.uk/westfieldhealthdigitalresource.co.uk/TESTreviewlogo.jpg' ]
+# fref: [ '/var/www/vhosts/domain/documents/Site Pages','/var/www/vhosts/domain/documents/Canvas' ]
+# fref: [ '/var/www/vhosts/domain/documents/Images/logos/customers','/var/www/vhosts/domain/TESTreviewlogo.jpg' ]
 # dir: documents
-# nwzip:  '/var/www/vhosts/pecreative.co.uk/westfieldhealthdigitalresource.co.uk/admin/BACKUP/documents16-01-17.zip'
+# nwzip:  '/var/www/vhosts/domain/admin/BACKUP/documents16-01-17.zip'
 my ($fref,$nwzip,$save) = @_;
 my @f = @{ $fref };
 my $utitle = $nwzip;$utitle =~ s/^($base)//;
@@ -503,7 +503,7 @@ sub email_clean_xml{
 my ($s,$w) = @_;
 for my $i(0..$#UTF){ $s =~ s/($UTF[$i][0])|($UTF[$i][1])/$UTF[$i][2]/gmsi; }
 for my $i(0..$#UTF1){ $s =~ s/$UTF1[$i][0]/$UTF1[$i][1]/gmsi; }
-$s =~ s/([^a-zA-Z0-9\-\_\+\@\%\&\#<>'"=\/\.\$£\|,:;\(\)\{\}\?\!\[\]\~\s])//gmsi;
+$s =~ s/([^a-zA-Z0-9\-\_\+\@\%\&\#<>'"=\/\.\$Â£\|,:;\(\)\{\}\?\!\[\]\~\s])//gmsi;
 $s =~ s/ \& / &#38; /gi;
 $s =~ s/\t//gi;
 $s =~ s/(\n+)/\n/img;
@@ -600,7 +600,7 @@ foreach my $k( sort keys %fields){ $s.= $fields{$k}; };
 }
 
 for my $i(0..$#SHOP){
-if($SHOP[$i] ne ""){ #Main Era: 20 Other Lists Inc 28mm, Size: 20mm, Period: Colonial, Quality: Excellent, Detail: Infantry, Photo: 39475, Unit Number: 3, Reference: 24 Zulus, Pieces: 24, Price/piece £: 2, Total £: 48, Amount: 1, Subtotal: 48)
+if($SHOP[$i] ne ""){ #Main Era: 20 Other Lists Inc 28mm, Size: 20mm, Period: Colonial, Quality: Excellent, Detail: Infantry, Photo: 39475, Unit Number: 3, Reference: 24 Zulus, Pieces: 24, Price/piece Â£: 2, Total Â£: 48, Amount: 1, Subtotal: 48)
 $SHOP[$i] =~ s/:/:<\/b>/g;
 $SHOP[$i] =~ s/(Unit Number:<\/b>)(.*?),/$1<b style="color:\#006400;">$2<\/b>,/ig;
 #$SHOP[$i] =~ s/, /, <br \/><b>/g;
